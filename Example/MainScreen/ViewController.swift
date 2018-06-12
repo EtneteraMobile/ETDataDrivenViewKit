@@ -12,18 +12,18 @@ import ETDataDrivenViewKit
 class ViewController: UITableViewController {
 
     let viewModel: ViewModelType = ViewModel()
-    private lazy var tableAdapter: TableDiffAdapter = TableDiffAdapter(tableView: tableView)
 
     override func viewDidLoad() {
         super.viewDidLoad()
 
         tableView.separatorStyle = .none
-        tableAdapter.headerFactories = [HeaderProvider()]
-        tableAdapter.cellFactories = [GreenCellFactory(), YellowCellFactory()]
-        tableAdapter.footerFactories = [FooterProvider()]
+
+        tableView.adapter.headerFactories = [HeaderFooterFactory()]
+        tableView.adapter.cellFactories = [GreenCellFactory(), YellowCellFactory()]
+        tableView.adapter.footerFactories = [HeaderFooterFactory()]
 
         viewModel.didUpdateModel = { model in
-            self.tableAdapter.data = model
+            self.tableView.adapter.data = model
         }
         viewModel.loadData()
     }
@@ -31,58 +31,42 @@ class ViewController: UITableViewController {
     // MARK: - Cell factories
 
     class GreenCellFactory: AbstractCellFactory<GreenRow, UITableViewCell> {
-        override var heightDimension: HeightDimension {
-            return .calculate({ [unowned self] content in
-                if let content = self.toTypedContent(content) {
-                    let height = NSAttributedString(string: content.text, attributes: [NSAttributedStringKey.font: UIFont.systemFont(ofSize: 17)]).boundingRect(with: CGSize(width: CGFloat.greatestFiniteMagnitude, height: CGFloat.greatestFiniteMagnitude), options: .usesLineFragmentOrigin, context: nil).height
-                    return CGFloat(ceilf(Float(height))) + 20 // padding
-                }
-                fatalError("Unsupported content")
-            })
+        override func height(for content: GreenRow, width: CGFloat) -> CGFloat {
+            let height = NSAttributedString(string: content.text, attributes: [NSAttributedStringKey.font: UIFont.systemFont(ofSize: 17)]).boundingRect(with: CGSize(width: CGFloat.greatestFiniteMagnitude, height: CGFloat.greatestFiniteMagnitude), options: .usesLineFragmentOrigin, context: nil).height
+            return CGFloat(ceilf(Float(height))) + 20 // padding
         }
-        override func setup(_ cell: UITableViewCell, with content: Any) {
-            guard let cell = toTypedView(cell), let content = toTypedContent(content) else {
-                return
-            }
-            cell.textLabel?.numberOfLines = 0
-            cell.textLabel?.text = content.text
-            cell.backgroundColor = .green
+        override func setup(_ view: UITableViewCell, _ content: GreenRow) {
+            view.textLabel?.numberOfLines = 0
+            view.textLabel?.text = content.text
+            view.backgroundColor = .green
+            view.accessoryType = .detailButton
+        }
+        override func shouldHighligh(_ content: GreenRow) -> Bool {
+            return true
+        }
+        override func didSelect(_ content: GreenRow) {
+            print("didSelect")
+        }
+        override func accessoryButtonTapped(_ content: GreenRow) {
+            print("accessoryButtonTapped")
         }
     }
 
     class YellowCellFactory: AbstractCellFactory<YellowRow, UITableViewCell> {
-        override func setup(_ cell: UITableViewCell, with content: Any) {
-            guard let cell = toTypedView(cell), let content = toTypedContent(content) else {
-                return
-            }
-            cell.textLabel?.numberOfLines = 0
-            cell.textLabel?.text = content.text
-            cell.backgroundColor = .yellow
+        override func setup(_ view: UITableViewCell, _ content: YellowRow) {
+            view.textLabel?.numberOfLines = 0
+            view.textLabel?.text = content.text
+            view.backgroundColor = .yellow
         }
     }
 
     // MARK: - Header/Footer factories
 
-    class HeaderProvider: AbstractHeaderFooterFactory<Header, UITableViewHeaderFooterView> {
-        override var heightDimension: HeightDimension {
-            return .calculate({ _ in 32.0 })
+    class HeaderFooterFactory: AbstractFactory<HeaderFooter, UITableViewHeaderFooterView> {
+        override func height(for content: HeaderFooter, width: CGFloat) -> CGFloat {
+            return 32.0
         }
-        override func setup(_ view: UIView, with content: Any) {
-            guard let view = toTypedView(view), let content = toTypedContent(content) else {
-                fatalError()
-            }
-            view.textLabel?.text = content.text
-        }
-    }
-
-    class FooterProvider: AbstractHeaderFooterFactory<Footer, UITableViewHeaderFooterView> {
-        override var heightDimension: HeightDimension {
-            return .calculate({ _ in 32.0 })
-        }
-        override func setup(_ view: UIView, with content: Any) {
-            guard let view = toTypedView(view), let content = toTypedContent(content) else {
-                fatalError()
-            }
+        override func setup(_ view: UITableViewHeaderFooterView, _ content: HeaderFooter) {
             view.textLabel?.text = content.text
         }
     }

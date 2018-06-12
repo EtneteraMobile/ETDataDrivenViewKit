@@ -16,10 +16,6 @@ struct YellowRow {
     let text: String
 }
 
-struct Header {
-    let text: String
-}
-
-struct Footer {
+struct HeaderFooter {
     let text: String
 }

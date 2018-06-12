@@ -16,14 +16,17 @@
 		71437E9020737ACB00A8CC96 /* ETDataDrivenViewKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 52D6D97C1BEFF229002C0205 /* ETDataDrivenViewKit.framework */; };
 		71437E9120737ACB00A8CC96 /* ETDataDrivenViewKit.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 52D6D97C1BEFF229002C0205 /* ETDataDrivenViewKit.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		71437E9520737DDC00A8CC96 /* ViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71437E9420737DDB00A8CC96 /* ViewModel.swift */; };
-		714F95DE2073902C00B01A93 /* HeightDimension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 714F95DD2073902C00B01A93 /* HeightDimension.swift */; };
 		714F95E02073905F00B01A93 /* ViewFactories.swift in Sources */ = {isa = PBXBuildFile; fileRef = 714F95DF2073905F00B01A93 /* ViewFactories.swift */; };
 		714F95E22073929800B01A93 /* TableSection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 714F95E12073929800B01A93 /* TableSection.swift */; };
 		714F95E52073972800B01A93 /* Model.swift in Sources */ = {isa = PBXBuildFile; fileRef = 714F95E32073972300B01A93 /* Model.swift */; };
-		8933C7851EB5B820000D00A4 /* TableDiffAdapter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8933C7841EB5B820000D00A4 /* TableDiffAdapter.swift */; };
-		8933C7861EB5B820000D00A4 /* TableDiffAdapter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8933C7841EB5B820000D00A4 /* TableDiffAdapter.swift */; };
-		8933C7871EB5B820000D00A4 /* TableDiffAdapter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8933C7841EB5B820000D00A4 /* TableDiffAdapter.swift */; };
-		8933C7881EB5B820000D00A4 /* TableDiffAdapter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8933C7841EB5B820000D00A4 /* TableDiffAdapter.swift */; };
+		7163330B20CFAD6A00C65728 /* TableView+TableAdapter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7163330A20CFAD6A00C65728 /* TableView+TableAdapter.swift */; };
+		7163330C20CFAD6A00C65728 /* TableView+TableAdapter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7163330A20CFAD6A00C65728 /* TableView+TableAdapter.swift */; };
+		7163330D20CFAD6A00C65728 /* TableView+TableAdapter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7163330A20CFAD6A00C65728 /* TableView+TableAdapter.swift */; };
+		7163330E20CFAD6A00C65728 /* TableView+TableAdapter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7163330A20CFAD6A00C65728 /* TableView+TableAdapter.swift */; };
+		8933C7851EB5B820000D00A4 /* TableAdapter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8933C7841EB5B820000D00A4 /* TableAdapter.swift */; };
+		8933C7861EB5B820000D00A4 /* TableAdapter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8933C7841EB5B820000D00A4 /* TableAdapter.swift */; };
+		8933C7871EB5B820000D00A4 /* TableAdapter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8933C7841EB5B820000D00A4 /* TableAdapter.swift */; };
+		8933C7881EB5B820000D00A4 /* TableAdapter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8933C7841EB5B820000D00A4 /* TableAdapter.swift */; };
 		8933C78E1EB5B82C000D00A4 /* ETDataDrivenViewKitTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8933C7891EB5B82A000D00A4 /* ETDataDrivenViewKitTests.swift */; };
 		8933C78F1EB5B82C000D00A4 /* ETDataDrivenViewKitTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8933C7891EB5B82A000D00A4 /* ETDataDrivenViewKitTests.swift */; };
 		8933C7901EB5B82D000D00A4 /* ETDataDrivenViewKitTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8933C7891EB5B82A000D00A4 /* ETDataDrivenViewKitTests.swift */; };
@@ -90,11 +93,11 @@
 		71437E842073796200A8CC96 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		71437E862073796200A8CC96 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		71437E9420737DDB00A8CC96 /* ViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ViewModel.swift; sourceTree = "<group>"; };
-		714F95DD2073902C00B01A93 /* HeightDimension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HeightDimension.swift; sourceTree = "<group>"; };
 		714F95DF2073905F00B01A93 /* ViewFactories.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewFactories.swift; sourceTree = "<group>"; };
 		714F95E12073929800B01A93 /* TableSection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TableSection.swift; sourceTree = "<group>"; };
 		714F95E32073972300B01A93 /* Model.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Model.swift; sourceTree = "<group>"; };
-		8933C7841EB5B820000D00A4 /* TableDiffAdapter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TableDiffAdapter.swift; sourceTree = "<group>"; };
+		7163330A20CFAD6A00C65728 /* TableView+TableAdapter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "TableView+TableAdapter.swift"; sourceTree = "<group>"; };
+		8933C7841EB5B820000D00A4 /* TableAdapter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TableAdapter.swift; sourceTree = "<group>"; };
 		8933C7891EB5B82A000D00A4 /* ETDataDrivenViewKitTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ETDataDrivenViewKitTests.swift; sourceTree = "<group>"; };
 		AD2FAA261CD0B6D800659CF4 /* ETDataDrivenViewKit.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = ETDataDrivenViewKit.plist; sourceTree = "<group>"; };
 		AD2FAA281CD0B6E100659CF4 /* ETDataDrivenViewKitTests.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = ETDataDrivenViewKitTests.plist; sourceTree = "<group>"; };
@@ -227,10 +230,10 @@
 		8933C7811EB5B7E0000D00A4 /* Sources */ = {
 			isa = PBXGroup;
 			children = (
-				8933C7841EB5B820000D00A4 /* TableDiffAdapter.swift */,
-				714F95DD2073902C00B01A93 /* HeightDimension.swift */,
-				714F95DF2073905F00B01A93 /* ViewFactories.swift */,
+				8933C7841EB5B820000D00A4 /* TableAdapter.swift */,
 				714F95E12073929800B01A93 /* TableSection.swift */,
+				7163330A20CFAD6A00C65728 /* TableView+TableAdapter.swift */,
+				714F95DF2073905F00B01A93 /* ViewFactories.swift */,
 			);
 			path = Sources;
 			sourceTree = "<group>";
@@ -575,10 +578,10 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				8933C7851EB5B820000D00A4 /* TableDiffAdapter.swift in Sources */,
+				8933C7851EB5B820000D00A4 /* TableAdapter.swift in Sources */,
 				714F95E02073905F00B01A93 /* ViewFactories.swift in Sources */,
+				7163330B20CFAD6A00C65728 /* TableView+TableAdapter.swift in Sources */,
 				714F95E22073929800B01A93 /* TableSection.swift in Sources */,
-				714F95DE2073902C00B01A93 /* HeightDimension.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -594,7 +597,8 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				8933C7871EB5B820000D00A4 /* TableDiffAdapter.swift in Sources */,
+				7163330D20CFAD6A00C65728 /* TableView+TableAdapter.swift in Sources */,
+				8933C7871EB5B820000D00A4 /* TableAdapter.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -602,7 +606,8 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				8933C7881EB5B820000D00A4 /* TableDiffAdapter.swift in Sources */,
+				7163330E20CFAD6A00C65728 /* TableView+TableAdapter.swift in Sources */,
+				8933C7881EB5B820000D00A4 /* TableAdapter.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -610,7 +615,8 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				8933C7861EB5B820000D00A4 /* TableDiffAdapter.swift in Sources */,
+				7163330C20CFAD6A00C65728 /* TableView+TableAdapter.swift in Sources */,
+				8933C7861EB5B820000D00A4 /* TableAdapter.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

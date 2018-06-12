@@ -8,6 +8,7 @@
 
 import Foundation
 
+/// Holds data for section. Every section has rows, optionaly header and footer.
 public struct TableSection {
     public typealias HeaderContent = Any
     public typealias RowContent = Any

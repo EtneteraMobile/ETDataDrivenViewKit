@@ -9,66 +9,152 @@
 import Foundation
 import UIKit
 
-public protocol BaseFactoryType {
-    init()
-    var reuseId: String { get }
-    var heightDimension: HeightDimension { get }
-    var viewClass: AnyClass { get }
-    func shouldHandle(_ content: Any) -> Bool
-}
+/// Base abstraction for view factory.
+/// - Warning: Do not inherit from this class, use `AbstractFactory` or `AbstractCellFactory` instead.
+open class BaseAbstractFactory {
+    // MARK: public
 
-public protocol CellFactoryType: BaseFactoryType {
-    func setup(_ cell: UITableViewCell, with content: Any)
-}
-
-public protocol HeaderFooterFactoryType: BaseFactoryType {
-    func setup(_ view: UIView, with content: Any)
-}
-
-// MARK: - Abstract implementation
-
-open class AbstractFactory<InputType, ViewType: AnyObject>: BaseFactoryType {
-    public required init() {}
-
-    open var heightDimension: HeightDimension {
-        return .automatic
-    }
-
+    /// Reuse identifier used by tableView to recognize cell
+    /// - Note: By default is derived from class name of `self`
     open var reuseId: String {
-        return NSStringFromClass(type(of: self))
+        return _reuseId
     }
 
-    open var viewClass: AnyClass {
-        return ViewType.self
+    public init() {}
+
+    // MARK: internal
+
+    var viewClass: AnyClass {
+        fatalError("Not Implemented")
     }
 
-    open func shouldHandle(_ content: Any) -> Bool {
-        return toTypedContent(content) != nil
+    var contentClass: Any.Type {
+        fatalError("Not Implemented")
     }
 
-    // MARK: Type checking
-
-    open func toTypedContent(_ content: Any) -> InputType? {
-        return content as? InputType
+    func shouldHandleInternal(_ content: Any) -> Bool {
+        fatalError("Not Implemented")
     }
 
-    open func toTypedView(_ view: UIView) -> ViewType? {
-        return view as? ViewType
+    func heightInternal(for content: Any, width: CGFloat) -> CGFloat {
+        return UITableViewAutomaticDimension
+    }
+
+    func setupInternal(_ view: UIView, _ content: Any) {
+        fatalError("Not Implemented")
+    }
+
+    func shouldHighlighInternal(_ content: Any) -> Bool {
+        fatalError("Not Implemented")
+    }
+
+    func didSelectInternal(_ content: Any) {
+        fatalError("Not Implemented")
+    }
+
+    func accessoryButtonTappedInternal(_ content: Any) {
+        fatalError("Not Implemented")
+    }
+
+    // MARK: private
+
+    private lazy var _reuseId: String = NSStringFromClass(type(of: self))
+}
+
+/// Abstract factory for view (like Header/Footer)
+open class AbstractFactory<ContentType, View: UIView>: BaseAbstractFactory {
+    // MARK: public
+
+    /// Calculates height of component for given content and width.
+    ///
+    /// - Parameters:
+    ///   - content: Content that is used for view customization.
+    ///   - width: Max width of layouted component
+    /// - Returns: Height of component.
+    open func height(for content: ContentType, width: CGFloat) -> CGFloat {
+        return UITableViewAutomaticDimension
+    }
+
+    /// Updates given view with given content
+    ///
+    /// - Parameters:
+    ///   - view: View that will be customized
+    ///   - content: Content for customization
+    open func setup(_ view: View, _ content: ContentType) {
+        fatalError("Not Implemented")
+    }
+
+
+    /// Determines if tableView should highligh cell with given content.
+    ///
+    /// - Parameter content: Content of cell that should be highlighted
+    /// - Returns: True – highlight is enable; False – disabled highlight
+    open func shouldHighligh(_ content: ContentType) -> Bool {
+        return false
+    }
+
+
+    /// Notifies when user press cell.
+    ///
+    /// - Parameter content: Content of cell
+    open func didSelect(_ content: ContentType) {
+        fatalError("Not Implemented")
+    }
+
+    /// Notifies when user press accessory button of cell.
+    ///
+    /// - Parameter content: Content of cell
+    open func accessoryButtonTapped(_ content: ContentType) {
+        fatalError("Not Implemented")
+    }
+
+
+    // MARK: internal
+
+    override var viewClass: AnyClass {
+        return View.self
+    }
+
+    override var contentClass: Any.Type {
+        return ContentType.self
+    }
+
+    override func shouldHandleInternal(_ content: Any) -> Bool {
+        return typedContent(content) != nil
+    }
+
+    override func heightInternal(for content: Any, width: CGFloat) -> CGFloat {
+        return height(for: typedContent(content)!, width: width)
+    }
+
+    override func setupInternal(_ view: UIView, _ content: Any) {
+        setup(typedView(view)!, typedContent(content)!)
+    }
+
+    override func shouldHighlighInternal(_ content: Any) -> Bool {
+        return shouldHighligh(typedContent(content)!)
+    }
+
+    override func didSelectInternal(_ content: Any) {
+        didSelect(typedContent(content)!)
+    }
+
+    override func accessoryButtonTappedInternal(_ content: Any) {
+        accessoryButtonTapped(typedContent(content)!)
+    }
+
+    // MARK: private
+
+    func typedView(_ view: UIView) -> View? {
+        // Possible performance issue with casting
+        return view as? View
+    }
+
+    func typedContent(_ content: Any) -> ContentType? {
+        // Possible performance issue with casting
+        return content as? ContentType
     }
 }
 
-// MARK: Cell
-
-open class AbstractCellFactory<InputType, ViewType: AnyObject>: AbstractFactory<InputType, ViewType>, CellFactoryType {
-    open func setup(_ cell: UITableViewCell, with content: Any) {
-        // Empty implementation
-    }
-}
-
-// MARK: Header/Footer
-
-open class AbstractHeaderFooterFactory<InputType, ViewType: AnyObject>: AbstractFactory<InputType, ViewType>, HeaderFooterFactoryType {
-    open func setup(_ view: UIView, with content: Any) {
-        // Empty implementation
-    }
-}
+/// Abstract factory for cell
+open class AbstractCellFactory<ContentType, View: UITableViewCell>: AbstractFactory<ContentType, View> {}

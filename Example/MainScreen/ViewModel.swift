@@ -26,7 +26,7 @@ class ViewModel: ViewModelType {
     var didUpdateModel: ((Model) -> Void)?
 
     func loadData() {
-        let participants = TableSection(header: Header(text: "First section"), rows: [
+        let participants = TableSection(header: HeaderFooter(text: "First section"), rows: [
             GreenRow(text: "1\twith calculated height dimension\n\tsecond line\n\tthird line\n\tfourth\n\tfifth"),
             YellowRow(text: "2\twith automatic height dimension\n\tsecond line"),
             GreenRow(text: "3\twith calculated height dimension\n\tsecond line"),
@@ -37,14 +37,14 @@ class ViewModel: ViewModelType {
             YellowRow(text: "8\twith automatic height dimension\n\tsecond line"),
             GreenRow(text: "9\twith calculated height dimension\n\tsecond line"),
 
-            ], footer: Footer(text: "First footer"))
+            ], footer: HeaderFooter(text: "First footer"))
 
-        let mentors = TableSection(header: Header(text: "Second section"), rows: [
+        let mentors = TableSection(header: HeaderFooter(text: "Second section"), rows: [
             GreenRow(text: "1\twith calculated height dimension\n\tsecond line"),
             YellowRow(text: "2\twith automatic height dimension\n\tsecond line"),
             GreenRow(text: "3\twith calculated height dimension\n\tsecond line"),
             YellowRow(text: "4\twith automatic height dimension\n\tsecond line"),
-            ], footer: Footer(text: "Second footer"))
+            ], footer: HeaderFooter(text: "Second footer"))
         model = [participants, mentors]
     }
 }

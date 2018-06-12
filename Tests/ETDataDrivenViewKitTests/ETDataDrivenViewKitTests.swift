@@ -10,14 +10,36 @@ import Foundation
 import XCTest
 import ETDataDrivenViewKit
 
+struct TestClass {
+    let text: String
+}
+
 class ETDataDrivenViewKitTests: XCTestCase {
-    func testExample() {
-        // This is an example of a functional test case.
-        // Use XCTAssert and related functions to verify your tests produce the correct results.
-        //// XCTAssertEqual(ETDataDrivenViewKit().text, "Hello, World!")
+    var objectsAny: [Any]!
+    var objects: [TestClass]!
+
+    override func setUp() {
+        super.setUp()
+        objects = []
+        for i in 0..<5000000 {
+            objects.append(TestClass(text: "Ahoj \(i)"))
+        }
+        objectsAny = objects
     }
-    
-    static var allTests = [
-        ("testExample", testExample),
-    ]
+
+    func testPerformance1() {
+        measure {
+            objects.forEach {
+                let t = $0.text
+            }
+        }
+    }
+
+    func testPerformance2() {
+        measure {
+            objectsAny.forEach {
+                let t = ($0 as! TestClass).text
+            }
+        }
+    }
 }
