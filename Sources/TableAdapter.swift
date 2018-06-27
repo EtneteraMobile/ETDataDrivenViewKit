@@ -160,8 +160,9 @@ public class TableAdapter: NSObject, UITableViewDelegate, UITableViewDataSource 
                     return provider.heightInternal(for: content, width: width)
                 }
             }
+            fatalError("Missing Factory for content: \(content)")
         }
-        fatalError()
+        return 0.0
     }
 
     private func setup(_ view: UIView, with content: Any?, factories: [BaseAbstractFactory]) {
