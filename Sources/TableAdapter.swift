@@ -102,17 +102,15 @@ public class TableAdapter: NSObject, UITableViewDelegate, UITableViewDataSource 
         let rowData = deliveredData[indexPath.section].rows[indexPath.row]
         for provider in cellFactories {
             if provider.shouldHandleInternal(rowData) {
-                return tableView.dequeueReusableCell(withIdentifier: provider.reuseId)!
+                let cell = tableView.dequeueReusableCell(withIdentifier: provider.reuseId)!
+                let rowData = deliveredData[indexPath.section].rows[indexPath.row]
+                setup(cell, with: rowData, factories: cellFactories)
+                return cell
             }
         }
         fatalError()
     }
-
-    public func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
-        let rowData = deliveredData[indexPath.section].rows[indexPath.row]
-        setup(cell, with: rowData, factories: cellFactories)
-    }
-
+    
     public func tableView(_ tableView: UITableView, shouldHighlightRowAt indexPath: IndexPath) -> Bool {
         let rowData = deliveredData[indexPath.section].rows[indexPath.row]
         return selectCellProvider(for: rowData).shouldHighlighInternal(rowData)
