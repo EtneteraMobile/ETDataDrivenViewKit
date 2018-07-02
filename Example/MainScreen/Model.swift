@@ -8,14 +8,6 @@
 
 import Foundation
 
-struct GreenRow {
-    let text: String
-}
-
-struct YellowRow {
-    let text: String
-}
-
 struct HeaderFooter {
     let text: String
 }

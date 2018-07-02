@@ -14,9 +14,9 @@ public struct TableSection {
     public typealias RowContent = Any
     public typealias FooterContent = Any
 
-    let header: HeaderContent?
-    let rows: [RowContent]
-    let footer: FooterContent?
+    public let header: HeaderContent?
+    public let rows: [RowContent]
+    public let footer: FooterContent?
 
     public init(rows: [RowContent]) {
         self.header = nil

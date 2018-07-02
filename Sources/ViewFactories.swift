@@ -28,10 +28,6 @@ open class BaseAbstractFactory {
         fatalError("Not Implemented")
     }
 
-    var contentClass: Any.Type {
-        fatalError("Not Implemented")
-    }
-
     func shouldHandleInternal(_ content: Any) -> Bool {
         fatalError("Not Implemented")
     }
@@ -113,10 +109,6 @@ open class AbstractFactory<ContentType, View: UIView>: BaseAbstractFactory {
 
     override var viewClass: AnyClass {
         return View.self
-    }
-
-    override var contentClass: Any.Type {
-        return ContentType.self
     }
 
     override func shouldHandleInternal(_ content: Any) -> Bool {

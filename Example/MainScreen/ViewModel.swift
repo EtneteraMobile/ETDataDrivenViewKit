@@ -25,6 +25,9 @@ class ViewModel: ViewModelType {
     }
     var didUpdateModel: ((Model) -> Void)?
 
+    typealias GreenRow = ViewController.GreenCellFactory.Content
+    typealias YellowRow = ViewController.YellowCellFactory.Content
+
     func loadData() {
         let participants = TableSection(header: HeaderFooter(text: "First section"), rows: [
             GreenRow(text: "1\twith calculated height dimension\n\tsecond line\n\tthird line\n\tfourth\n\tfifth"),

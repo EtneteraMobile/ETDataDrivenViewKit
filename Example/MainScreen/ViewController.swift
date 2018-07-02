@@ -30,33 +30,41 @@ class ViewController: UITableViewController {
 
     // MARK: - Cell factories
 
-    class GreenCellFactory: AbstractCellFactory<GreenRow, UITableViewCell> {
-        override func height(for content: GreenRow, width: CGFloat) -> CGFloat {
+    class GreenCellFactory: AbstractCellFactory<GreenCellFactory.Content, UITableViewCell> {
+        override func height(for content: Content, width: CGFloat) -> CGFloat {
             let height = NSAttributedString(string: content.text, attributes: [NSAttributedStringKey.font: UIFont.systemFont(ofSize: 17)]).boundingRect(with: CGSize(width: CGFloat.greatestFiniteMagnitude, height: CGFloat.greatestFiniteMagnitude), options: .usesLineFragmentOrigin, context: nil).height
             return CGFloat(ceilf(Float(height))) + 20 // padding
         }
-        override func setup(_ view: UITableViewCell, _ content: GreenRow) {
+        override func setup(_ view: UITableViewCell, _ content: Content) {
             view.textLabel?.numberOfLines = 0
             view.textLabel?.text = content.text
             view.backgroundColor = .green
             view.accessoryType = .detailButton
         }
-        override func shouldHighligh(_ content: GreenRow) -> Bool {
+        override func shouldHighligh(_ content: Content) -> Bool {
             return true
         }
-        override func didSelect(_ content: GreenRow) {
+        override func didSelect(_ content: Content) {
             print("didSelect")
         }
-        override func accessoryButtonTapped(_ content: GreenRow) {
+        override func accessoryButtonTapped(_ content: Content) {
             print("accessoryButtonTapped")
+        }
+
+        struct Content {
+            let text: String
         }
     }
 
-    class YellowCellFactory: AbstractCellFactory<YellowRow, UITableViewCell> {
-        override func setup(_ view: UITableViewCell, _ content: YellowRow) {
+    class YellowCellFactory: AbstractCellFactory<YellowCellFactory.Content, UITableViewCell> {
+        override func setup(_ view: UITableViewCell, _ content: Content) {
             view.textLabel?.numberOfLines = 0
             view.textLabel?.text = content.text
             view.backgroundColor = .yellow
+        }
+
+        struct Content {
+            let text: String
         }
     }
 

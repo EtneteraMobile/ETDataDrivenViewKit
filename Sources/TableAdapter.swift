@@ -25,7 +25,6 @@ public class TableAdapter: NSObject, UITableViewDelegate, UITableViewDataSource 
 
     public var cellFactories: [BaseAbstractFactory] = [] {
         didSet {
-            cellFactories.checkValidity()
             cellFactories.forEach { provider in
                 tableView.register(provider.viewClass, forCellReuseIdentifier: provider.reuseId)
             }
@@ -33,7 +32,6 @@ public class TableAdapter: NSObject, UITableViewDelegate, UITableViewDataSource 
     }
     public var headerFactories: [BaseAbstractFactory] = [] {
         didSet {
-            cellFactories.checkValidity()
             headerFactories.forEach { provider in
                 tableView.register(provider.viewClass, forHeaderFooterViewReuseIdentifier: provider.reuseId)
             }
@@ -41,7 +39,6 @@ public class TableAdapter: NSObject, UITableViewDelegate, UITableViewDataSource 
     }
     public var footerFactories: [BaseAbstractFactory] = [] {
         didSet {
-            cellFactories.checkValidity()
             footerFactories.forEach { provider in
                 tableView.register(provider.viewClass, forHeaderFooterViewReuseIdentifier: provider.reuseId)
             }
@@ -186,12 +183,5 @@ public class TableAdapter: NSObject, UITableViewDelegate, UITableViewDataSource 
             fatalError()
         }
         return nil
-    }
-}
-
-extension Collection where Element: BaseAbstractFactory {
-    func checkValidity() {
-        precondition(Set(map { "\(type(of: $0))" }).count == count, "Multiple factories of same type isn't supported.")
-        precondition(Set(map { "\($0.contentClass.self)" }).count == count, "Same ContentType for multiple factories isn't supported.")
     }
 }
