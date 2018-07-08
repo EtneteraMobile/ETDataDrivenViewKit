@@ -40,6 +40,10 @@ open class BaseAbstractFactory {
         fatalError("Not Implemented")
     }
 
+    func willDisplayInternal(_ view: UIView, _ content: Any) {
+        fatalError("Not Implemented")
+    }
+
     func shouldHighlighInternal(_ content: Any) -> Bool {
         fatalError("Not Implemented")
     }
@@ -71,24 +75,29 @@ open class AbstractFactory<ContentType, View: UIView>: BaseAbstractFactory {
         return UITableViewAutomaticDimension
     }
 
-    /// Updates given view with given content
+    /// Updates given view with given content.
+    /// This function is called from cellForRow.
     ///
     /// - Parameters:
     ///   - view: View that will be customized
     ///   - content: Content for customization
-    open func setup(_ view: View, _ content: ContentType) {
-        fatalError("Not Implemented")
-    }
+    open func setup(_ view: View, _ content: ContentType) {}
 
+    /// This function is called from willDisplayCell.
+    ///
+    /// - Parameters:
+    ///   - view: View that can be updated
+    ///   - content: Content for customization
+    open func willDisplay(_ view: View, _ content: ContentType) {}
 
     /// Determines if tableView should highligh cell with given content.
+    /// Default is `true`.
     ///
     /// - Parameter content: Content of cell that should be highlighted
     /// - Returns: True – highlight is enable; False – disabled highlight
     open func shouldHighligh(_ content: ContentType) -> Bool {
-        return false
+        return true
     }
-
 
     /// Notifies when user press cell.
     ///
@@ -103,7 +112,6 @@ open class AbstractFactory<ContentType, View: UIView>: BaseAbstractFactory {
     open func accessoryButtonTapped(_ content: ContentType) {
         fatalError("Not Implemented")
     }
-
 
     // MARK: internal
 
@@ -121,6 +129,10 @@ open class AbstractFactory<ContentType, View: UIView>: BaseAbstractFactory {
 
     override func setupInternal(_ view: UIView, _ content: Any) {
         setup(typedView(view)!, typedContent(content)!)
+    }
+
+    override func willDisplayInternal(_ view: UIView, _ content: Any) {
+        willDisplay(typedView(view)!, typedContent(content)!)
     }
 
     override func shouldHighlighInternal(_ content: Any) -> Bool {

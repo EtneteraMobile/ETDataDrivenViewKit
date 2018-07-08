@@ -107,6 +107,17 @@ public class TableAdapter: NSObject, UITableViewDelegate, UITableViewDataSource 
         }
         fatalError()
     }
+
+    public func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
+        let rowData = deliveredData[indexPath.section].rows[indexPath.row]
+        for provider in cellFactories {
+            if provider.shouldHandleInternal(rowData) {
+                let cell = tableView.dequeueReusableCell(withIdentifier: provider.reuseId)!
+                let rowData = deliveredData[indexPath.section].rows[indexPath.row]
+                willDisplay(cell, with: rowData, factories: cellFactories)
+            }
+        }
+    }
     
     public func tableView(_ tableView: UITableView, shouldHighlightRowAt indexPath: IndexPath) -> Bool {
         let rowData = deliveredData[indexPath.section].rows[indexPath.row]
@@ -165,6 +176,18 @@ public class TableAdapter: NSObject, UITableViewDelegate, UITableViewDataSource 
             for provider in factories {
                 if provider.shouldHandleInternal(content) {
                     provider.setupInternal(view, content)
+                    return
+                }
+            }
+            fatalError()
+        }
+    }
+
+    private func willDisplay(_ view: UIView, with content: Any?, factories: [BaseAbstractFactory]) {
+        if let content = content {
+            for provider in factories {
+                if provider.shouldHandleInternal(content) {
+                    provider.willDisplayInternal(view, content)
                     return
                 }
             }
