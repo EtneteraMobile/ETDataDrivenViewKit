@@ -57,6 +57,13 @@ class ViewController: UITableViewController {
     }
 
     class YellowCellFactory: AbstractCellFactory<YellowCellFactory.Content, UITableViewCell> {
+
+        init() {
+            super.init(registration: .customDequeue({ (tableView) -> AnyObject in
+                return UITableViewCell()
+            }))
+        }
+
         override func setup(_ view: UITableViewCell, _ content: Content) {
             view.textLabel?.numberOfLines = 0
             view.textLabel?.text = content.text

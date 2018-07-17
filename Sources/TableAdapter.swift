@@ -26,21 +26,27 @@ public class TableAdapter: NSObject, UITableViewDelegate, UITableViewDataSource 
     public var cellFactories: [BaseAbstractFactory] = [] {
         didSet {
             cellFactories.forEach { provider in
-                tableView.register(provider.viewClass, forCellReuseIdentifier: provider.reuseId)
+                if case .automatic = provider.reg {
+                    tableView.register(provider.viewClass, forCellReuseIdentifier: provider.reuseId)
+                }
             }
         }
     }
     public var headerFactories: [BaseAbstractFactory] = [] {
         didSet {
             headerFactories.forEach { provider in
-                tableView.register(provider.viewClass, forHeaderFooterViewReuseIdentifier: provider.reuseId)
+                if case .automatic = provider.reg {
+                    tableView.register(provider.viewClass, forHeaderFooterViewReuseIdentifier: provider.reuseId)
+                }
             }
         }
     }
     public var footerFactories: [BaseAbstractFactory] = [] {
         didSet {
             footerFactories.forEach { provider in
-                tableView.register(provider.viewClass, forHeaderFooterViewReuseIdentifier: provider.reuseId)
+                if case .automatic = provider.reg {
+                    tableView.register(provider.viewClass, forHeaderFooterViewReuseIdentifier: provider.reuseId)
+                }
             }
         }
     }
@@ -99,7 +105,16 @@ public class TableAdapter: NSObject, UITableViewDelegate, UITableViewDataSource 
         let rowData = deliveredData[indexPath.section].rows[indexPath.row]
         for provider in cellFactories {
             if provider.shouldHandleInternal(rowData) {
-                let cell = tableView.dequeueReusableCell(withIdentifier: provider.reuseId)!
+                let cell: UITableViewCell
+                switch provider.reg {
+                case .automatic:
+                    cell = tableView.dequeueReusableCell(withIdentifier: provider.reuseId)!
+                    break
+                case let .customDequeue(initClosure):
+                    cell = initClosure(tableView) as! UITableViewCell
+                    break
+                }
+
                 let rowData = deliveredData[indexPath.section].rows[indexPath.row]
                 setup(cell, with: rowData, factories: cellFactories)
                 return cell
@@ -112,7 +127,16 @@ public class TableAdapter: NSObject, UITableViewDelegate, UITableViewDataSource 
         let rowData = deliveredData[indexPath.section].rows[indexPath.row]
         for provider in cellFactories {
             if provider.shouldHandleInternal(rowData) {
-                let cell = tableView.dequeueReusableCell(withIdentifier: provider.reuseId)!
+                let cell: UITableViewCell
+                switch provider.reg {
+                case .automatic:
+                    cell = tableView.dequeueReusableCell(withIdentifier: provider.reuseId)!
+                    break
+                case let .customDequeue(initClosure):
+                    cell = initClosure(tableView) as! UITableViewCell
+                    break
+                }
+                
                 let rowData = deliveredData[indexPath.section].rows[indexPath.row]
                 willDisplay(cell, with: rowData, factories: cellFactories)
             }
@@ -199,7 +223,16 @@ public class TableAdapter: NSObject, UITableViewDelegate, UITableViewDataSource 
         if let content = content {
             for provider in factories {
                 if provider.shouldHandleInternal(content) {
-                    let view = tableView.dequeueReusableHeaderFooterView(withIdentifier: provider.reuseId)!
+                    let view: UITableViewHeaderFooterView
+                    switch provider.reg {
+                    case .automatic:
+                        view = tableView.dequeueReusableHeaderFooterView(withIdentifier: provider.reuseId)!
+                        break
+                    case let .customDequeue(initClosure):
+                        view = initClosure(tableView) as! UITableViewHeaderFooterView
+                        break
+                    }
+
                     return view
                 }
             }

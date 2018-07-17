@@ -9,6 +9,10 @@
 import Foundation
 import UIKit
 
+public enum Registration {
+    case automatic
+    case customDequeue((UITableView) -> AnyObject)
+}
 /// Base abstraction for view factory.
 /// - Warning: Do not inherit from this class, use `AbstractFactory` or `AbstractCellFactory` instead.
 open class BaseAbstractFactory {
@@ -20,9 +24,13 @@ open class BaseAbstractFactory {
         return _reuseId
     }
 
-    public init() {}
+    public init(registration: Registration = .automatic) {
+        reg = registration
+    }
 
     // MARK: internal
+
+    var reg: Registration
 
     var viewClass: AnyClass {
         fatalError("Not Implemented")
@@ -63,6 +71,7 @@ open class BaseAbstractFactory {
 
 /// Abstract factory for view (like Header/Footer)
 open class AbstractFactory<ContentType, View: UIView>: BaseAbstractFactory {
+    
     // MARK: public
 
     /// Calculates height of component for given content and width.
@@ -116,6 +125,9 @@ open class AbstractFactory<ContentType, View: UIView>: BaseAbstractFactory {
     // MARK: internal
 
     override var viewClass: AnyClass {
+        guard case .automatic = reg else {
+            preconditionFailure("cant call when u choose automatic registration")
+        }
         return View.self
     }
 
