@@ -18,9 +18,7 @@ class ViewController: UITableViewController {
 
         tableView.separatorStyle = .none
 
-        tableView.adapter.headerFactories = [HeaderFooterFactory()]
-        tableView.adapter.cellFactories = [GreenCellFactory(), YellowCellFactory()]
-        tableView.adapter.footerFactories = [HeaderFooterFactory()]
+        tableView.adapter.cellFactories = [GreenCellFactory(onPress: { self.viewModel.loadData() }), YellowCellFactory()]
 
         viewModel.didUpdateModel = { model in
             self.tableView.adapter.data = model
@@ -31,6 +29,12 @@ class ViewController: UITableViewController {
     // MARK: - Cell factories
 
     class GreenCellFactory: AbstractCellFactory<GreenCellFactory.Content, UITableViewCell> {
+        var onPress: (() -> Void)?
+
+        init(onPress: @escaping () -> Void) {
+            self.onPress = onPress
+        }
+
         override func height(for content: Content, width: CGFloat) -> CGFloat {
             let height = NSAttributedString(string: content.text, attributes: [NSAttributedStringKey.font: UIFont.systemFont(ofSize: 17)]).boundingRect(with: CGSize(width: CGFloat.greatestFiniteMagnitude, height: CGFloat.greatestFiniteMagnitude), options: .usesLineFragmentOrigin, context: nil).height
             return CGFloat(ceilf(Float(height))) + 20 // padding
@@ -45,13 +49,13 @@ class ViewController: UITableViewController {
             return true
         }
         override func didSelect(_ content: Content) {
-            print("didSelect")
+            onPress?()
         }
         override func accessoryButtonTapped(_ content: Content) {
             print("accessoryButtonTapped")
         }
 
-        struct Content {
+        struct Content: AutoIdentifiableType {
             let text: String
         }
     }
@@ -63,20 +67,8 @@ class ViewController: UITableViewController {
             view.backgroundColor = .yellow
         }
 
-        struct Content {
+        struct Content: AutoIdentifiableType {
             let text: String
         }
     }
-
-    // MARK: - Header/Footer factories
-
-    class HeaderFooterFactory: AbstractFactory<HeaderFooter, UITableViewHeaderFooterView> {
-        override func height(for content: HeaderFooter, width: CGFloat) -> CGFloat {
-            return 32.0
-        }
-        override func setup(_ view: UITableViewHeaderFooterView, _ content: HeaderFooter) {
-            view.textLabel?.text = content.text
-        }
-    }
 }
-

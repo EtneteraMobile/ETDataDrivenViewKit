@@ -76,7 +76,7 @@ public class TableAdapter: NSObject, UITableViewDelegate, UITableViewDataSource 
         }
         catch let error {
             #if DEBUG
-            print("Unable to deliver data with animation, error: \(error). Starts delivery without animation (`reloadData`)")
+            print("Unable to deliver data with animation, error: \(error). Starts delivery without animation (reloadData).")
             #endif
             // Fallback: reloads table view
             deliveredData = newSections
