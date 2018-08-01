@@ -11,12 +11,11 @@ import UIKit
 import Differentiator
 
 public class TableAdapter: NSObject, UITableViewDelegate, UITableViewDataSource {
-    public typealias Data = [TableSection]
-
     // MARK: - Variables
     // MARK: public
 
-    public var data: Data = [] {
+    /// Table sections content that will be delivered into `tableView` after assignment.
+    public var data: [TableSection] = [] {
         didSet {
             if Thread.isMainThread {
                 deliverData(oldValue, data)
@@ -28,6 +27,7 @@ public class TableAdapter: NSObject, UITableViewDelegate, UITableViewDataSource 
         }
     }
 
+    /// Factories that handles presentation of given content (`data`) into view.
     public var cellFactories: [BaseAbstractFactory] = [] {
         didSet {
             cellFactories.forEach { provider in
@@ -35,48 +35,35 @@ public class TableAdapter: NSObject, UITableViewDelegate, UITableViewDataSource 
             }
         }
     }
-    public var headerFactories: [BaseAbstractFactory] = [] {
-        didSet {
-            headerFactories.forEach { provider in
-                tableView.register(provider.viewClass, forHeaderFooterViewReuseIdentifier: provider.reuseId)
-            }
-        }
-    }
-    public var footerFactories: [BaseAbstractFactory] = [] {
-        didSet {
-            footerFactories.forEach { provider in
-                tableView.register(provider.viewClass, forHeaderFooterViewReuseIdentifier: provider.reuseId)
-            }
-        }
-    }
 
-    public var animationConfiguration: AnimationConfiguration
+    /// Animation configuration for `tableView` updates.
+    /// Defaults is `AnimationConfiguration(insertAnimation: .top, reloadAnimation: .fade, deleteAnimation: .bottom)`
+    public var animationConfiguration: AnimationConfiguration = AnimationConfiguration(insertAnimation: .top, reloadAnimation: .fade, deleteAnimation: .bottom)
 
     // MARK: private
 
     /// `data` that are delivered to tableView
-    private var deliveredData: Data = []
+    private var deliveredData: [TableSection] = []
 
     /// Managed tableView
     private let tableView: UITableView
 
     // MARK: - Initialization
 
-    init(tableView: UITableView, animationConfiguration: AnimationConfiguration = AnimationConfiguration(insertAnimation: .left, reloadAnimation: .middle, deleteAnimation: .right)) {
+    init(tableView: UITableView) {
         self.tableView = tableView
-        self.animationConfiguration = animationConfiguration
         super.init()
         self.tableView.delegate = self
         self.tableView.dataSource = self
 
         // Loads initial tableView state
-        tableView.reloadData()
+        self.tableView.reloadData()
     }
 
     // MARK: - Data Delivery
     // MARK: private
 
-    private func deliverData(_ oldSections: TableAdapter.Data, _ newSections: TableAdapter.Data) {
+    private func deliverData(_ oldSections: [TableSection], _ newSections: [TableSection]) {
         if #available(iOSApplicationExtension 10.0, *) {
             dispatchPrecondition(condition: .onQueue(DispatchQueue.main))
         }
@@ -101,20 +88,6 @@ public class TableAdapter: NSObject, UITableViewDelegate, UITableViewDataSource 
 
     public func numberOfSections(in tableView: UITableView) -> Int {
         return deliveredData.count
-    }
-
-    // MARK: Header
-
-    public func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
-        return height(for: deliveredData[section].header, factories: headerFactories, width: tableView.frame.width)
-    }
-
-    public func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
-        return headerFooterView(for: deliveredData[section].header, factories: headerFactories)
-    }
-
-    public func tableView(_ tableView: UITableView, willDisplayHeaderView view: UIView, forSection section: Int) {
-        setup(view, with: deliveredData[section].header, factories: headerFactories)
     }
 
     // MARK: Rows
@@ -166,20 +139,6 @@ public class TableAdapter: NSObject, UITableViewDelegate, UITableViewDataSource 
         selectCellProvider(for: rowData).accessoryButtonTappedInternal(rowData)
     }
 
-    // MARK: Footer
-
-    public func tableView(_ tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat {
-        return height(for: deliveredData[section].footer, factories: footerFactories, width: tableView.frame.width)
-    }
-
-    public func tableView(_ tableView: UITableView, viewForFooterInSection section: Int) -> UIView? {
-        return headerFooterView(for: deliveredData[section].footer, factories: footerFactories)
-    }
-
-    public func tableView(_ tableView: UITableView, willDisplayFooterView view: UIView, forSection section: Int) {
-        setup(view, with: deliveredData[section].footer, factories: footerFactories)
-    }
-
     // MARK: - General
 
     private func selectCellProvider(for content: Any) -> BaseAbstractFactory {
@@ -225,18 +184,5 @@ public class TableAdapter: NSObject, UITableViewDelegate, UITableViewDataSource 
             }
             fatalError()
         }
-    }
-
-    private func headerFooterView(for content: Any?, factories: [BaseAbstractFactory]) -> UIView? {
-        if let content = content {
-            for provider in factories {
-                if provider.shouldHandleInternal(content) {
-                    let view = tableView.dequeueReusableHeaderFooterView(withIdentifier: provider.reuseId)!
-                    return view
-                }
-            }
-            fatalError()
-        }
-        return nil
     }
 }

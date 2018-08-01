@@ -8,10 +8,12 @@
 
 import Foundation
 
+/// Identify current object for diffing algorithm.
 public protocol IdentifiableType {
     var identity: Int { get }
 }
 
+/// Identify current object for diffing algorithm with hashValue.
 public typealias AutoIdentifiableType = IdentifiableType & Hashable
 public extension IdentifiableType where Self: Hashable {
     var identity: Int {

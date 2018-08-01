@@ -9,8 +9,15 @@
 import Foundation
 import Differentiator
 
-/// `AnyContent` wraps generic content into non-generic one (Any)
-/// - Note: `AnyContent` is public, but could be used only internaly in `ETDataDrivenViewKit` module.
+/// `AnyContent` bridges `ETDataDrivenViewKit.IdentifiableType` to
+/// `Differentiator.IdentifiableType`.
+///
+/// - Note: There is need for this because `Differentiator.IdentifiableType` is
+///         self constrained protocol. `TableSection.items` mixes multiple types
+///         therefore there couldn't be used generic.
+///
+/// - Important: `AnyContent` is public, but could be used only internaly in
+///         `ETDataDrivenViewKit` module.
 public struct AnyContent: Differentiator.IdentifiableType, Equatable {
     public let identity: Int
     public let content: IdentifiableType
