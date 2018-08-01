@@ -29,25 +29,38 @@ class ViewModel: ViewModelType {
     typealias YellowRow = ViewController.YellowCellFactory.Content
 
     func loadData() {
-        let participants = TableSection(header: HeaderFooter(text: "First section"), rows: [
-            GreenRow(text: "1\twith calculated height dimension\n\tsecond line\n\tthird line\n\tfourth\n\tfifth"),
-            YellowRow(text: "2\twith automatic height dimension\n\tsecond line"),
-            GreenRow(text: "3\twith calculated height dimension\n\tsecond line"),
-            YellowRow(text: "4\twith automatic height dimension\n\tsecond line"),
-            GreenRow(text: "5\twith calculated height dimension\n\tsecond line"),
-            YellowRow(text: "6\twith automatic height dimension\n\tsecond line"),
-            GreenRow(text: "7\twith calculated height dimension\n\tsecond line"),
-            YellowRow(text: "8\twith automatic height dimension\n\tsecond line"),
-            GreenRow(text: "9\twith calculated height dimension\n\tsecond line"),
+        if model.isEmpty || model.count == 1 {
+            let participants = TableSection(identity: "Participants", rows: [
+                GreenRow(text: "1\twith calculated height dimension\n\tsecond line\n\tthird line\n\tfourth\n\tfifth"),
+                YellowRow(text: "2\twith automatic height dimension\n\tsecond line"),
+                GreenRow(text: "3\twith calculated height dimension\n\tsecond line"),
+                YellowRow(text: "4\twith automatic height dimension\n\tsecond line"),
+                GreenRow(text: "5\twith calculated height dimension\n\tsecond line"),
+                YellowRow(text: "6\twith automatic height dimension\n\tsecond line"),
+                GreenRow(text: "7\twith calculated height dimension\n\tsecond line"),
+                YellowRow(text: "8\twith automatic height dimension\n\tsecond line"),
+                GreenRow(text: "9\twith calculated height dimension\n\tsecond line"),
+                ])
 
-            ], footer: HeaderFooter(text: "First footer"))
-
-        let mentors = TableSection(header: HeaderFooter(text: "Second section"), rows: [
-            GreenRow(text: "1\twith calculated height dimension\n\tsecond line"),
-            YellowRow(text: "2\twith automatic height dimension\n\tsecond line"),
-            GreenRow(text: "3\twith calculated height dimension\n\tsecond line"),
-            YellowRow(text: "4\twith automatic height dimension\n\tsecond line"),
-            ], footer: HeaderFooter(text: "Second footer"))
-        model = [participants, mentors]
+            let mentors = TableSection(identity: "Mentors", rows: [
+                GreenRow(text: "2.1\twith calculated height dimension\n\tsecond line"),
+                YellowRow(text: "2.2\twith automatic height dimension\n\tsecond line"),
+                GreenRow(text: "2.3\twith calculated height dimension\n\tsecond line"),
+                YellowRow(text: "2.4\twith automatic height dimension\n\tsecond line"),
+                ])
+            model = [participants, mentors]
+        } else {
+            let participants = TableSection(identity: "Participants", rows: [
+                GreenRow(text: "1\twith calculated height dimension\n\tsecond line\n\tthird line\n\tfourth\n\tfifth"),
+                YellowRow(text: "4\twith automatic height dimension\n\tsecond line"),
+                GreenRow(text: "5\twith calculated height dimension\n\tsecond line"),
+                GreenRow(text: "7\twith calculated height dimension\n\tsecond line"),
+                YellowRow(text: "6\twith automatic height dimension\n\tsecond line"),
+                YellowRow(text: "8\twith automatic height dimension\n\tsecond line"),
+                GreenRow(text: "9\twith calculated height dimension\n\tsecond line"),
+                GreenRow(text: "10\twith calculated height dimension\n\tsecond line"),
+                ])
+            model = [participants]
+        }
     }
 }

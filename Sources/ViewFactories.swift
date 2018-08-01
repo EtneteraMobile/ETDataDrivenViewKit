@@ -102,16 +102,12 @@ open class AbstractFactory<ContentType, View: UIView>: BaseAbstractFactory {
     /// Notifies when user press cell.
     ///
     /// - Parameter content: Content of cell
-    open func didSelect(_ content: ContentType) {
-        fatalError("Not Implemented")
-    }
+    open func didSelect(_ content: ContentType) {}
 
     /// Notifies when user press accessory button of cell.
     ///
     /// - Parameter content: Content of cell
-    open func accessoryButtonTapped(_ content: ContentType) {
-        fatalError("Not Implemented")
-    }
+    open func accessoryButtonTapped(_ content: ContentType) {}
 
     // MARK: internal
 

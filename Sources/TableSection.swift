@@ -7,38 +7,30 @@
 //
 
 import Foundation
+import Differentiator
 
 /// Holds data for section. Every section has rows, optionaly header and footer.
-public struct TableSection {
-    public typealias HeaderContent = Any
-    public typealias RowContent = Any
-    public typealias FooterContent = Any
-
-    public let header: HeaderContent?
-    public let rows: [RowContent]
-    public let footer: FooterContent?
-
-    public init(rows: [RowContent]) {
-        self.header = nil
-        self.rows = rows
-        self.footer = nil
+public struct TableSection: AnimatableSectionModelType {
+    /// Identification of section for diffing algorithm.
+    public let identity: String
+    /// 
+    public let items: [AnyContent]
+    /// Rows content that was inserted in `init`.
+    /// - Attention: Getter only extracts content from `items`.
+    public var rows: [IdentifiableType] {
+        return items.map { $0.content }
     }
 
-    public init(header: HeaderContent, rows: [RowContent]) {
-        self.header = header
-        self.rows = rows
-        self.footer = nil
+    /// Initializes `TableSection` with given `identity` and `rows`.
+    public init(identity: String, rows: [IdentifiableType]) {
+        self.identity = identity
+        self.items = rows.map { AnyContent($0) }
     }
 
-    public init(rows: [RowContent], footer: FooterContent) {
-        self.header = nil
-        self.rows = rows
-        self.footer = footer
-    }
-
-    public init(header: HeaderContent, rows: [RowContent], footer: FooterContent) {
-        self.header = header
-        self.rows = rows
-        self.footer = footer
+    /// Initializes `TableSection` with `identity` from given original and given `rows`.
+    public init(original: TableSection, items: [AnyContent]) {
+        self.identity = original.identity
+        self.items = items
     }
 }
+

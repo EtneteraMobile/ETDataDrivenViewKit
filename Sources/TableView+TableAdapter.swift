@@ -12,6 +12,7 @@ import UIKit
 private var AssociatedTableAdapter: UInt8 = 0
 
 public extension UITableView {
+    /// `TableAdapter` that delivers data changes into `tableView`.
     public var adapter: TableAdapter {
         get {
             if let adapter = objc_getAssociatedObject(self, &AssociatedTableAdapter) as? TableAdapter {
