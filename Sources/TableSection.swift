@@ -7,38 +7,57 @@
 //
 
 import Foundation
+import Differentiator
 
 /// Holds data for section. Every section has rows, optionaly header and footer.
-public struct TableSection {
-    public typealias HeaderContent = Any
-    public typealias RowContent = Any
-    public typealias FooterContent = Any
+public struct TableSection: AnimatableSectionModelType {
+    public typealias HeaderType = Any
+    public typealias FooterType = Any
 
-    public let header: HeaderContent?
-    public let rows: [RowContent]
-    public let footer: FooterContent?
+    /// Identification of section for diffing algorithm.
+    public let identity: String
+    /// 
+    public let header: HeaderType?
+    public let items: [AnyContent]
+    public var rows: [IdentifiableType] {
+        return items.map { $0.content }
+    }
+    public let footer: FooterType?
 
-    public init(rows: [RowContent]) {
+
+    public init(identity: String, rows: [IdentifiableType]) {
+        self.identity = identity
         self.header = nil
-        self.rows = rows
+        self.items = rows.map { AnyContent($0) }
         self.footer = nil
     }
 
-    public init(header: HeaderContent, rows: [RowContent]) {
+    public init(identity: String, header: HeaderType, rows: [IdentifiableType]) {
+        self.identity = identity
         self.header = header
-        self.rows = rows
+        self.items = rows.map { AnyContent($0) }
         self.footer = nil
     }
 
-    public init(rows: [RowContent], footer: FooterContent) {
+    public init(identity: String, rows: [IdentifiableType], footer: FooterType) {
+        self.identity = identity
         self.header = nil
-        self.rows = rows
+        self.items = rows.map { AnyContent($0) }
         self.footer = footer
     }
 
-    public init(header: HeaderContent, rows: [RowContent], footer: FooterContent) {
+    public init(identity: String, header: HeaderType, rows: [IdentifiableType], footer: FooterType) {
+        self.identity = identity
         self.header = header
-        self.rows = rows
+        self.items = rows.map { AnyContent($0) }
         self.footer = footer
+    }
+
+    public init(original: TableSection, items: [AnyContent]) {
+        self.identity = original.identity
+        self.header = original.header
+        self.items = items
+        self.footer = original.footer
     }
 }
+
