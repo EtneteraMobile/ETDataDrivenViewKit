@@ -10,7 +10,23 @@ import Foundation
 import UIKit
 import Differentiator
 
-public class TableAdapter: NSObject, UITableViewDelegate, UITableViewDataSource {
+/// `TableAdapter` serves as `UITableView` **delegate and data source**.
+///
+/// After `data` assignment **advanced diffing algorithm** recognizes content
+/// changes and trigger `tableView` update.
+///
+/// **Changes** in tableView are **presented with animation** defined by
+/// `animationConfiguration`.
+///
+/// Every **cell is configured by factory** (from `cellFactories`). Factory is
+/// used for cell configuration only if **cell's content is same as generic**
+/// `AbstractFactory.ContentType`. There can be multiple factories with same
+/// ContentType but only the first will be used *everytime*.
+///
+/// - Attention: `TableAdapter` supports only cells (no header/footer).
+///               If you want to insert header/footer, it's recommended to use
+///               factory, that configures cell as header/footer.
+open class TableAdapter: NSObject, UITableViewDelegate, UITableViewDataSource {
     // MARK: - Variables
     // MARK: public
 

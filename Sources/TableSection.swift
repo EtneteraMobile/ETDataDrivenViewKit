@@ -15,15 +15,19 @@ public struct TableSection: AnimatableSectionModelType {
     public let identity: String
     /// 
     public let items: [AnyContent]
+    /// Rows content that was inserted in `init`.
+    /// - Attention: Getter only extracts content from `items`.
     public var rows: [IdentifiableType] {
         return items.map { $0.content }
     }
 
+    /// Initializes `TableSection` with given `identity` and `rows`.
     public init(identity: String, rows: [IdentifiableType]) {
         self.identity = identity
         self.items = rows.map { AnyContent($0) }
     }
 
+    /// Initializes `TableSection` with `identity` from given original and given `rows`.
     public init(original: TableSection, items: [AnyContent]) {
         self.identity = original.identity
         self.items = items
