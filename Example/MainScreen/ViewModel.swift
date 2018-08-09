@@ -31,34 +31,33 @@ class ViewModel: ViewModelType {
     func loadData() {
         if model.isEmpty || model.count == 1 {
             let participants = TableSection(identity: "Participants", rows: [
-                GreenRow(text: "1\twith calculated height dimension\n\tsecond line\n\tthird line\n\tfourth\n\tfifth"),
-                YellowRow(text: "2\twith automatic height dimension\n\tsecond line"),
-                GreenRow(text: "3\twith calculated height dimension\n\tsecond line"),
-                YellowRow(text: "4\twith automatic height dimension\n\tsecond line"),
-                GreenRow(text: "5\twith calculated height dimension\n\tsecond line"),
-                YellowRow(text: "6\twith automatic height dimension\n\tsecond line"),
-                GreenRow(text: "7\twith calculated height dimension\n\tsecond line"),
-                YellowRow(text: "8\twith automatic height dimension\n\tsecond line"),
-                GreenRow(text: "9\twith calculated height dimension\n\tsecond line"),
+                GreenRow(id: "green1", text: "1\twith calculated height dimension\n\tsecond line\n\tthird line\n\tfourth\n\tfifth"),
+                YellowRow(id: "yellow1", text: "2\twith automatic height dimension\n\tsecond line"),
+                GreenRow(id: "green2", text: "3\twith calculated height dimension\n\tsecond line"),
+                YellowRow(id: "yellow2", text: "4\twith automatic height dimension\n\tsecond line"),
+                GreenRow(id: "green3", text: "5\twith calculated height dimension\n\tsecond line"),
+                YellowRow(id: "yellow3", text: "6\twith automatic height dimension\n\tsecond line"),
+                GreenRow(id: "green4", text: "7\twith calculated height dimension\n\tsecond line"),
+                YellowRow(id: "yellow4", text: "8\twith automatic height dimension\n\tsecond line"),
+                GreenRow(id: "green5", text: "9\twith calculated height dimension\n\tsecond line"),
                 ])
 
             let mentors = TableSection(identity: "Mentors", rows: [
-                GreenRow(text: "2.1\twith calculated height dimension\n\tsecond line"),
-                YellowRow(text: "2.2\twith automatic height dimension\n\tsecond line"),
-                GreenRow(text: "2.3\twith calculated height dimension\n\tsecond line"),
-                YellowRow(text: "2.4\twith automatic height dimension\n\tsecond line"),
+                GreenRow(id: "green2.1", text: "2.1\twith calculated height dimension\n\tsecond line"),
+                YellowRow(id: "yellow2.1", text: "2.2\twith automatic height dimension\n\tsecond line"),
+                GreenRow(id: "green2.2", text: "2.3\twith calculated height dimension\n\tsecond line"),
+                YellowRow(id: "yellow2.2", text: "2.4\twith automatic height dimension\n\tsecond line"),
                 ])
             model = [participants, mentors]
         } else {
             let participants = TableSection(identity: "Participants", rows: [
-                GreenRow(text: "1\twith calculated height dimension\n\tsecond line\n\tthird line\n\tfourth\n\tfifth"),
-                YellowRow(text: "4\twith automatic height dimension\n\tsecond line"),
-                GreenRow(text: "5\twith calculated height dimension\n\tsecond line"),
-                GreenRow(text: "7\twith calculated height dimension\n\tsecond line"),
-                YellowRow(text: "6\twith automatic height dimension\n\tsecond line"),
-                YellowRow(text: "8\twith automatic height dimension\n\tsecond line"),
-                GreenRow(text: "9\twith calculated height dimension\n\tsecond line"),
-                GreenRow(text: "10\twith calculated height dimension\n\tsecond line"),
+                GreenRow(id: "green1", text: "1\twith calculated height dimension\n\tsecond line\n\tthird line\n\tfourth\n\tfifth\n\treloadded haha"),
+                YellowRow(id: "yellow1", text: "2\twith automatic height dimension\n\tsecond line"),
+                GreenRow(id: "green3", text: "5\twith calculated height dimension\n\tsecond line"),
+                YellowRow(id: "yellow2", text: "4\twith automatic height dimension\n\tsecond line"),
+                GreenRow(id: "green4", text: "7\twith calculated height dimension\n\tsecond line"),
+                YellowRow(id: "yellow3", text: "6\twith automatic height dimension\n\tsecond line"),
+                GreenRow(id: "green5", text: "9\twith calculated height dimension\n\tsecond line"),
                 ])
             model = [participants]
         }

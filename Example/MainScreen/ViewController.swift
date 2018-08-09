@@ -55,7 +55,10 @@ class ViewController: UITableViewController {
             print("accessoryButtonTapped")
         }
 
-        struct Content: AutoIdentifiableType {
+        struct Content: DiffableHashableType {
+            var identity: Int { return id.hashValue }
+
+            let id: String
             let text: String
         }
     }
@@ -67,7 +70,10 @@ class ViewController: UITableViewController {
             view.backgroundColor = .yellow
         }
 
-        struct Content: AutoIdentifiableType {
+        struct Content: DiffableHashableType {
+            var identity: Int { return id.hashValue }
+
+            let id: String
             let text: String
         }
     }

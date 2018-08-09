@@ -14,21 +14,21 @@ public struct TableSection: AnimatableSectionModelType {
     /// Identification of section for diffing algorithm.
     public let identity: String
     /// 
-    public let items: [AnyContent]
+    public let items: [DiffableRef]
     /// Rows content that was inserted in `init`.
     /// - Attention: Getter only extracts content from `items`.
-    public var rows: [IdentifiableType] {
-        return items.map { $0.content }
+    public var rows: [DiffableType] {
+        return items.map { $0.value }
     }
 
     /// Initializes `TableSection` with given `identity` and `rows`.
-    public init(identity: String, rows: [IdentifiableType]) {
+    public init(identity: String, rows: [DiffableType]) {
         self.identity = identity
-        self.items = rows.map { AnyContent($0) }
+        self.items = rows.map { DiffableRef($0) }
     }
 
     /// Initializes `TableSection` with `identity` from given original and given `rows`.
-    public init(original: TableSection, items: [AnyContent]) {
+    public init(original: TableSection, items: [DiffableRef]) {
         self.identity = original.identity
         self.items = items
     }

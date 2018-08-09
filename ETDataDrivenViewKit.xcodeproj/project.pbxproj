@@ -20,12 +20,12 @@
 		714F95E22073929800B01A93 /* TableSection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 714F95E12073929800B01A93 /* TableSection.swift */; };
 		714F95E52073972800B01A93 /* Model.swift in Sources */ = {isa = PBXBuildFile; fileRef = 714F95E32073972300B01A93 /* Model.swift */; };
 		7163330B20CFAD6A00C65728 /* TableView+TableAdapter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7163330A20CFAD6A00C65728 /* TableView+TableAdapter.swift */; };
-		71800BC321108C2B0092832F /* AnyContent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71800BC221108C2B0092832F /* AnyContent.swift */; };
+		71800BC321108C2B0092832F /* DiffableRef.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71800BC221108C2B0092832F /* DiffableRef.swift */; };
 		71800BC421108D560092832F /* Differentiator.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 71F502F42110394500D15E40 /* Differentiator.framework */; };
 		71800BC521108D560092832F /* Differentiator.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 71F502F42110394500D15E40 /* Differentiator.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		71800BD821117BE30092832F /* UI+SectionedViewType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71800BD721117BE30092832F /* UI+SectionedViewType.swift */; };
 		71800BDA21117C420092832F /* AnimationConfiguration.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71800BD921117C420092832F /* AnimationConfiguration.swift */; };
-		71800BDC211189870092832F /* IdentifiableType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71800BDB211189870092832F /* IdentifiableType.swift */; };
+		71800BDC211189870092832F /* DiffableType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71800BDB211189870092832F /* DiffableType.swift */; };
 		71F502F52110394500D15E40 /* Differentiator.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 71F502F42110394500D15E40 /* Differentiator.framework */; };
 		8933C7851EB5B820000D00A4 /* TableAdapter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8933C7841EB5B820000D00A4 /* TableAdapter.swift */; };
 		8933C7901EB5B82D000D00A4 /* ETDataDrivenViewKitTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8933C7891EB5B82A000D00A4 /* ETDataDrivenViewKitTests.swift */; };
@@ -78,10 +78,10 @@
 		714F95E12073929800B01A93 /* TableSection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TableSection.swift; sourceTree = "<group>"; };
 		714F95E32073972300B01A93 /* Model.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Model.swift; sourceTree = "<group>"; };
 		7163330A20CFAD6A00C65728 /* TableView+TableAdapter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "TableView+TableAdapter.swift"; sourceTree = "<group>"; };
-		71800BC221108C2B0092832F /* AnyContent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnyContent.swift; sourceTree = "<group>"; };
+		71800BC221108C2B0092832F /* DiffableRef.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DiffableRef.swift; sourceTree = "<group>"; };
 		71800BD721117BE30092832F /* UI+SectionedViewType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UI+SectionedViewType.swift"; sourceTree = "<group>"; };
 		71800BD921117C420092832F /* AnimationConfiguration.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AnimationConfiguration.swift; sourceTree = "<group>"; };
-		71800BDB211189870092832F /* IdentifiableType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IdentifiableType.swift; sourceTree = "<group>"; };
+		71800BDB211189870092832F /* DiffableType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DiffableType.swift; sourceTree = "<group>"; };
 		71800BE121118AB60092832F /* README.txt */ = {isa = PBXFileReference; lastKnownFileType = text; path = README.txt; sourceTree = "<group>"; };
 		71F502F42110394500D15E40 /* Differentiator.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Differentiator.framework; path = Carthage/Build/iOS/Differentiator.framework; sourceTree = SOURCE_ROOT; };
 		8933C7841EB5B820000D00A4 /* TableAdapter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TableAdapter.swift; sourceTree = "<group>"; };
@@ -197,8 +197,8 @@
 				714F95E12073929800B01A93 /* TableSection.swift */,
 				7163330A20CFAD6A00C65728 /* TableView+TableAdapter.swift */,
 				714F95DF2073905F00B01A93 /* ViewFactories.swift */,
-				71800BC221108C2B0092832F /* AnyContent.swift */,
-				71800BDB211189870092832F /* IdentifiableType.swift */,
+				71800BC221108C2B0092832F /* DiffableRef.swift */,
+				71800BDB211189870092832F /* DiffableType.swift */,
 				71800BD621117BC70092832F /* RxDataSources */,
 			);
 			path = Sources;
@@ -375,10 +375,10 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				71800BC321108C2B0092832F /* AnyContent.swift in Sources */,
+				71800BC321108C2B0092832F /* DiffableRef.swift in Sources */,
 				8933C7851EB5B820000D00A4 /* TableAdapter.swift in Sources */,
 				714F95E02073905F00B01A93 /* ViewFactories.swift in Sources */,
-				71800BDC211189870092832F /* IdentifiableType.swift in Sources */,
+				71800BDC211189870092832F /* DiffableType.swift in Sources */,
 				71800BD821117BE30092832F /* UI+SectionedViewType.swift in Sources */,
 				7163330B20CFAD6A00C65728 /* TableView+TableAdapter.swift in Sources */,
 				71800BDA21117C420092832F /* AnimationConfiguration.swift in Sources */,

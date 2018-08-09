@@ -101,7 +101,7 @@ open class TableAdapter: NSObject, UITableViewDelegate, UITableViewDataSource {
             let differences = try Diff.differencesForSectionedView(initialSections: oldSections, finalSections: newSections)
             for difference in differences {
                 deliveredData = difference.finalSections
-                tableView.performBatchUpdates(difference, animationConfiguration: self.animationConfiguration)
+                tableView.performBatchUpdates(difference, animationConfiguration: animationConfiguration)
             }
         }
         catch let error {
@@ -141,15 +141,15 @@ open class TableAdapter: NSObject, UITableViewDelegate, UITableViewDataSource {
     }
 
     public func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        return height(for: deliveredData[indexPath.section].items[indexPath.row].content, factories: cellFactories, width: tableView.frame.width)
+        return height(for: deliveredData[indexPath.section].items[indexPath.row].value, factories: cellFactories, width: tableView.frame.width)
     }
 
     public func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let rowData = deliveredData[indexPath.section].items[indexPath.row].content
+        let rowData = deliveredData[indexPath.section].items[indexPath.row].value
         for provider in cellFactories {
             if provider.shouldHandleInternal(rowData) {
                 let cell = tableView.dequeueReusableCell(withIdentifier: provider.reuseId)!
-                let rowData = deliveredData[indexPath.section].items[indexPath.row].content
+                let rowData = deliveredData[indexPath.section].items[indexPath.row].value
                 setup(cell, with: rowData, factories: cellFactories)
                 return cell
             }
@@ -158,28 +158,28 @@ open class TableAdapter: NSObject, UITableViewDelegate, UITableViewDataSource {
     }
 
     public func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
-        let rowData = deliveredData[indexPath.section].items[indexPath.row].content
+        let rowData = deliveredData[indexPath.section].items[indexPath.row].value
         for provider in cellFactories {
             if provider.shouldHandleInternal(rowData) {
                 let cell = tableView.dequeueReusableCell(withIdentifier: provider.reuseId)!
-                let rowData = deliveredData[indexPath.section].items[indexPath.row].content
+                let rowData = deliveredData[indexPath.section].items[indexPath.row].value
                 willDisplay(cell, with: rowData, factories: cellFactories)
             }
         }
     }
     
     public func tableView(_ tableView: UITableView, shouldHighlightRowAt indexPath: IndexPath) -> Bool {
-        let rowData = deliveredData[indexPath.section].items[indexPath.row].content
+        let rowData = deliveredData[indexPath.section].items[indexPath.row].value
         return selectCellProvider(for: rowData).shouldHighlighInternal(rowData)
     }
 
     public func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        let rowData = deliveredData[indexPath.section].items[indexPath.row].content
+        let rowData = deliveredData[indexPath.section].items[indexPath.row].value
         selectCellProvider(for: rowData).didSelectInternal(rowData)
     }
 
     public func tableView(_ tableView: UITableView, accessoryButtonTappedForRowWith indexPath: IndexPath) {
-        let rowData = deliveredData[indexPath.section].items[indexPath.row].content
+        let rowData = deliveredData[indexPath.section].items[indexPath.row].value
         selectCellProvider(for: rowData).accessoryButtonTappedInternal(rowData)
     }
 
