@@ -51,6 +51,20 @@ open class TableAdapter: NSObject, UITableViewDelegate, UITableViewDataSource {
             }
         }
     }
+    public var headerFactories: [BaseAbstractFactory] = [] {
+        didSet {
+            headerFactories.forEach { provider in
+                tableView.register(provider.viewClass, forHeaderFooterViewReuseIdentifier: provider.reuseId)
+            }
+        }
+    }
+    public var footerFactories: [BaseAbstractFactory] = [] {
+        didSet {
+            footerFactories.forEach { provider in
+                tableView.register(provider.viewClass, forHeaderFooterViewReuseIdentifier: provider.reuseId)
+            }
+        }
+    }
 
     /// Animation configuration for `tableView` updates.
     /// Defaults is `AnimationConfiguration(insertAnimation: .top, reloadAnimation: .fade, deleteAnimation: .bottom)`
@@ -106,6 +120,20 @@ open class TableAdapter: NSObject, UITableViewDelegate, UITableViewDataSource {
         return deliveredData.count
     }
 
+    // MARK: Header
+
+//    public func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
+//        return height(for: deliveredData[section].header, factories: headerFactories, width: tableView.frame.width)
+//    }
+//
+//    public func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
+//        return headerFooterView(for: deliveredData[section].header, factories: headerFactories)
+//    }
+//
+//    public func tableView(_ tableView: UITableView, willDisplayHeaderView view: UIView, forSection section: Int) {
+//        setup(view, with: deliveredData[section].header, factories: headerFactories)
+//    }
+
     // MARK: Rows
 
     public func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
@@ -155,6 +183,20 @@ open class TableAdapter: NSObject, UITableViewDelegate, UITableViewDataSource {
         selectCellProvider(for: rowData).accessoryButtonTappedInternal(rowData)
     }
 
+    // MARK: Footer
+
+//    public func tableView(_ tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat {
+//        return height(for: deliveredData[section].footer, factories: footerFactories, width: tableView.frame.width)
+//    }
+//
+//    public func tableView(_ tableView: UITableView, viewForFooterInSection section: Int) -> UIView? {
+//        return headerFooterView(for: deliveredData[section].footer, factories: footerFactories)
+//    }
+//
+//    public func tableView(_ tableView: UITableView, willDisplayFooterView view: UIView, forSection section: Int) {
+//        setup(view, with: deliveredData[section].footer, factories: footerFactories)
+//    }
+
     // MARK: - General
 
     private func selectCellProvider(for content: Any) -> BaseAbstractFactory {
@@ -200,5 +242,18 @@ open class TableAdapter: NSObject, UITableViewDelegate, UITableViewDataSource {
             }
             fatalError()
         }
+    }
+
+    private func headerFooterView(for content: Any?, factories: [BaseAbstractFactory]) -> UIView? {
+        if let content = content {
+            for provider in factories {
+                if provider.shouldHandleInternal(content) {
+                    let view = tableView.dequeueReusableHeaderFooterView(withIdentifier: provider.reuseId)!
+                    return view
+                }
+            }
+            fatalError()
+        }
+        return nil
     }
 }
