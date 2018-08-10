@@ -13,7 +13,7 @@ import Differentiator
 public struct TableSection: AnimatableSectionModelType {
     /// Identification of section for diffing algorithm.
     public let identity: String
-    /// 
+    /// Rows content wrapped in `DiffableRef`
     public let items: [DiffableRef]
     /// Rows content that was inserted in `init`.
     /// - Attention: Getter only extracts content from `items`.

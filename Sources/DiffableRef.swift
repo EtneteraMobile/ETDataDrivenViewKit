@@ -27,6 +27,6 @@ public class DiffableRef: IdentifiableType, Equatable {
     }
 
     public static func == (lhs: DiffableRef, rhs: DiffableRef) -> Bool {
-        return lhs.value.contentHash == rhs.value.contentHash
+        return lhs.value.value == rhs.value.value
     }
 }
