@@ -51,6 +51,20 @@ open class TableAdapter: NSObject, UITableViewDelegate, UITableViewDataSource {
             }
         }
     }
+    public var headerFactories: [BaseAbstractFactory] = [] {
+        didSet {
+            headerFactories.forEach { provider in
+                tableView.register(provider.viewClass, forHeaderFooterViewReuseIdentifier: provider.reuseId)
+            }
+        }
+    }
+    public var footerFactories: [BaseAbstractFactory] = [] {
+        didSet {
+            footerFactories.forEach { provider in
+                tableView.register(provider.viewClass, forHeaderFooterViewReuseIdentifier: provider.reuseId)
+            }
+        }
+    }
 
     /// Animation configuration for `tableView` updates.
     /// Defaults is `AnimationConfiguration(insertAnimation: .top, reloadAnimation: .fade, deleteAnimation: .bottom)`
@@ -87,8 +101,9 @@ open class TableAdapter: NSObject, UITableViewDelegate, UITableViewDataSource {
             let differences = try Diff.differencesForSectionedView(initialSections: oldSections, finalSections: newSections)
             for difference in differences {
                 deliveredData = difference.finalSections
-                tableView.performBatchUpdates(difference, animationConfiguration: self.animationConfiguration)
+                tableView.performBatchUpdates(difference, animationConfiguration: animationConfiguration)
             }
+            deliverHeaderFooterUpdates(oldSections, differences, newSections)
         }
         catch let error {
             #if DEBUG
@@ -100,10 +115,100 @@ open class TableAdapter: NSObject, UITableViewDelegate, UITableViewDataSource {
         }
     }
 
+    /// Updates headers/footers in tableView. `Diff` from `Differentiator`
+    /// delivers only insert/remove section and insert/reload/remove rows.
+    private func deliverHeaderFooterUpdates(_ oldSections: [TableSection], _ differences: [Changeset<TableSection>], _ newSections: [TableSection]) {
+        var old = oldSections
+
+        // Removes deleted sections
+        let allDeletedSections = differences.flatMap { $0.deletedSections }
+        allDeletedSections.sorted(by: >).forEach { deleteIdx in
+            old.remove(at: deleteIdx)
+        }
+
+        // Finds pairs (old, new) according section identity
+        let equalIdentityPairs: [(old: TableSection, new: TableSection, finalIdx: Int)] = old.compactMap { oldSection in
+            let newIdx = newSections.index { newSection in
+                return newSection.identity == oldSection.identity
+            }
+            if let newIdx = newIdx {
+                return (oldSection, newSections[newIdx], newIdx)
+            }
+            return nil
+        }
+
+        // Delivers update
+        var needUpdate = false
+        equalIdentityPairs.forEach { pair in
+            needUpdate = deliverHeaderFooterUpdate(pair)
+        }
+
+        // Animates the change in the row heights without reloading the cell
+        if needUpdate {
+            tableView.beginUpdates()
+            tableView.endUpdates()
+        }
+    }
+
+    private func deliverHeaderFooterUpdate(_ pair: (old: TableSection, new: TableSection, finalIdx: Int)) -> Bool {
+        let headerIdentAndValueEqual = pair.old.header === pair.new.header && pair.old.header == pair.new.header
+        let footerIdentAndValueEqual = pair.old.footer === pair.new.footer && pair.old.footer == pair.new.footer
+
+        if headerIdentAndValueEqual && footerIdentAndValueEqual {
+            return false
+        }
+
+        // Saves new header & footer
+        let orig = deliveredData[pair.finalIdx]
+        deliveredData[pair.finalIdx] = TableSection(identity: orig.identity, header: pair.new.header, rows: orig.rows, footer: pair.new.footer)
+
+        // Updates header
+        if headerIdentAndValueEqual == false {
+            if let view = self.tableView.headerView(forSection: pair.finalIdx) {
+                if let header = pair.new.header {
+                    setup(view, with: header, factories: headerFactories)
+                    view.layoutSubviews()
+                    view.isHidden = false
+                } else {
+                    view.isHidden = true
+                }
+            }
+        }
+
+        // Updates footer
+        if footerIdentAndValueEqual == false {
+            if let view = self.tableView.footerView(forSection: pair.finalIdx) {
+                if let footer = pair.new.footer {
+                    setup(view, with: footer, factories: headerFactories)
+                    view.layoutSubviews()
+                    view.isHidden = false
+                } else {
+                    view.isHidden = true
+                }
+            }
+        }
+
+        return true
+    }
+
     // MARK: - TableView Delegate & DataSource
 
     public func numberOfSections(in tableView: UITableView) -> Int {
         return deliveredData.count
+    }
+
+    // MARK: Header
+
+    public func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
+        return height(for: deliveredData[section].header, factories: headerFactories, width: tableView.frame.width)
+    }
+
+    public func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
+        return headerFooterView(for: deliveredData[section].header, factories: headerFactories)
+    }
+
+    public func tableView(_ tableView: UITableView, willDisplayHeaderView view: UIView, forSection section: Int) {
+        setup(view, with: deliveredData[section].header, factories: headerFactories)
     }
 
     // MARK: Rows
@@ -113,15 +218,15 @@ open class TableAdapter: NSObject, UITableViewDelegate, UITableViewDataSource {
     }
 
     public func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        return height(for: deliveredData[indexPath.section].items[indexPath.row].content, factories: cellFactories, width: tableView.frame.width)
+        return height(for: deliveredData[indexPath.section].items[indexPath.row].value, factories: cellFactories, width: tableView.frame.width)
     }
 
     public func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let rowData = deliveredData[indexPath.section].items[indexPath.row].content
+        let rowData = deliveredData[indexPath.section].items[indexPath.row].value
         for provider in cellFactories {
             if provider.shouldHandleInternal(rowData) {
                 let cell = tableView.dequeueReusableCell(withIdentifier: provider.reuseId)!
-                let rowData = deliveredData[indexPath.section].items[indexPath.row].content
+                let rowData = deliveredData[indexPath.section].items[indexPath.row].value
                 setup(cell, with: rowData, factories: cellFactories)
                 return cell
             }
@@ -130,29 +235,43 @@ open class TableAdapter: NSObject, UITableViewDelegate, UITableViewDataSource {
     }
 
     public func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
-        let rowData = deliveredData[indexPath.section].items[indexPath.row].content
+        let rowData = deliveredData[indexPath.section].items[indexPath.row].value
         for provider in cellFactories {
             if provider.shouldHandleInternal(rowData) {
                 let cell = tableView.dequeueReusableCell(withIdentifier: provider.reuseId)!
-                let rowData = deliveredData[indexPath.section].items[indexPath.row].content
+                let rowData = deliveredData[indexPath.section].items[indexPath.row].value
                 willDisplay(cell, with: rowData, factories: cellFactories)
             }
         }
     }
     
     public func tableView(_ tableView: UITableView, shouldHighlightRowAt indexPath: IndexPath) -> Bool {
-        let rowData = deliveredData[indexPath.section].items[indexPath.row].content
+        let rowData = deliveredData[indexPath.section].items[indexPath.row].value
         return selectCellProvider(for: rowData).shouldHighlighInternal(rowData)
     }
 
     public func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        let rowData = deliveredData[indexPath.section].items[indexPath.row].content
+        let rowData = deliveredData[indexPath.section].items[indexPath.row].value
         selectCellProvider(for: rowData).didSelectInternal(rowData)
     }
 
     public func tableView(_ tableView: UITableView, accessoryButtonTappedForRowWith indexPath: IndexPath) {
-        let rowData = deliveredData[indexPath.section].items[indexPath.row].content
+        let rowData = deliveredData[indexPath.section].items[indexPath.row].value
         selectCellProvider(for: rowData).accessoryButtonTappedInternal(rowData)
+    }
+
+    // MARK: Footer
+
+    public func tableView(_ tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat {
+        return height(for: deliveredData[section].footer, factories: footerFactories, width: tableView.frame.width)
+    }
+
+    public func tableView(_ tableView: UITableView, viewForFooterInSection section: Int) -> UIView? {
+        return headerFooterView(for: deliveredData[section].footer, factories: footerFactories)
+    }
+
+    public func tableView(_ tableView: UITableView, willDisplayFooterView view: UIView, forSection section: Int) {
+        setup(view, with: deliveredData[section].footer, factories: footerFactories)
     }
 
     // MARK: - General
@@ -200,5 +319,18 @@ open class TableAdapter: NSObject, UITableViewDelegate, UITableViewDataSource {
             }
             fatalError()
         }
+    }
+
+    private func headerFooterView(for content: Any?, factories: [BaseAbstractFactory]) -> UIView? {
+        if let content = content {
+            for provider in factories {
+                if provider.shouldHandleInternal(content) {
+                    let view = tableView.dequeueReusableHeaderFooterView(withIdentifier: provider.reuseId)!
+                    return view
+                }
+            }
+            fatalError()
+        }
+        return nil
     }
 }

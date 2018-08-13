@@ -13,24 +13,58 @@ import Differentiator
 public struct TableSection: AnimatableSectionModelType {
     /// Identification of section for diffing algorithm.
     public let identity: String
-    /// 
-    public let items: [AnyContent]
+    /// Content that represents header data
+    public let header: DiffableType?
+    /// Rows content wrapped in `DiffableRef`
+    public let items: [DiffableRef]
     /// Rows content that was inserted in `init`.
     /// - Attention: Getter only extracts content from `items`.
-    public var rows: [IdentifiableType] {
-        return items.map { $0.content }
+    public var rows: [DiffableType] {
+        return items.map { $0.value }
     }
+    /// Content that represents footer data
+    public let footer: DiffableType?
 
     /// Initializes `TableSection` with given `identity` and `rows`.
-    public init(identity: String, rows: [IdentifiableType]) {
+    public init(identity: String, rows: [DiffableType]) {
         self.identity = identity
-        self.items = rows.map { AnyContent($0) }
+        self.header = nil
+        self.items = rows.map { DiffableRef($0) }
+        self.footer = nil
+    }
+
+    /// Initializes `TableSection` with given `identity`, `header` and `rows`.
+    public init(identity: String, header: DiffableType, rows: [DiffableType]) {
+        self.identity = identity
+        self.header = header
+        self.items = rows.map { DiffableRef($0) }
+        self.footer = nil
+    }
+
+    /// Initializes `TableSection` with given `identity`, `rows` and `footer`.
+    public init(identity: String, rows: [DiffableType], footer: DiffableType) {
+        self.identity = identity
+        self.header = nil
+        self.items = rows.map { DiffableRef($0) }
+        self.footer = footer
+    }
+
+    /// Initializes `TableSection` with given `identity`, `header`, `rows` and `footer`.
+    public init(identity: String, header: DiffableType?, rows: [DiffableType], footer: DiffableType?) {
+        self.identity = identity
+        self.header = header
+        self.items = rows.map { DiffableRef($0) }
+        self.footer = footer
     }
 
     /// Initializes `TableSection` with `identity` from given original and given `rows`.
-    public init(original: TableSection, items: [AnyContent]) {
+    public init(original: TableSection, items: [DiffableRef]) {
         self.identity = original.identity
+        self.header = nil
         self.items = items
+        self.footer = nil
+        // `original` section contains old header and footer, new values will
+        // be set in `TableAdapter.deliverHeaderFooterUpdate`.
     }
 }
 
