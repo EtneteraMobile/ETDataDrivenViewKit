@@ -52,3 +52,19 @@ public extension DiffableType where Self: Hashable {
         return hashValue
     }
 }
+
+/// Compares `identity` of given arguments.
+public func ===(_ lhs: DiffableType?, _ rhs: DiffableType?) -> Bool {
+    guard let lhs = lhs, let rhs = rhs else {
+        return false
+    }
+    return lhs.identity == rhs.identity
+}
+
+/// Compares `value` of given arguments.
+public func ==(_ lhs: DiffableType?, _ rhs: DiffableType?) -> Bool {
+    guard let lhs = lhs, let rhs = rhs else {
+        return false
+    }
+    return lhs.value == rhs.value
+}

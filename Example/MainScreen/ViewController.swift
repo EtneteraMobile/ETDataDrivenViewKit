@@ -18,7 +18,9 @@ class ViewController: UITableViewController {
 
         tableView.separatorStyle = .none
 
+        tableView.adapter.headerFactories = [HeaderFooterFactory()]
         tableView.adapter.cellFactories = [GreenCellFactory(onPress: { self.viewModel.loadData() }), YellowCellFactory()]
+        tableView.adapter.footerFactories = [HeaderFooterFactory()]
 
         viewModel.didUpdateModel = { model in
             self.tableView.adapter.data = model
@@ -71,6 +73,24 @@ class ViewController: UITableViewController {
         }
 
         struct Content: DiffableHashableType {
+            var identity: Int { return id.hashValue }
+
+            let id: String
+            let text: String
+        }
+    }
+
+    // MARK: - Header/Footer factories
+
+    class HeaderFooterFactory: AbstractFactory<HeaderFooterFactory.HeaderFooter, UITableViewHeaderFooterView> {
+        override func height(for content: HeaderFooter, width: CGFloat) -> CGFloat {
+            return content.text.count < 25 ? 32 : 64
+        }
+        override func setup(_ view: UITableViewHeaderFooterView, _ content: HeaderFooter) {
+            view.textLabel?.text = content.text
+        }
+
+        struct HeaderFooter: DiffableHashableType {
             var identity: Int { return id.hashValue }
 
             let id: String

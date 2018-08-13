@@ -25,12 +25,13 @@ class ViewModel: ViewModelType {
     }
     var didUpdateModel: ((Model) -> Void)?
 
+    typealias HeaderFooter = ViewController.HeaderFooterFactory.HeaderFooter
     typealias GreenRow = ViewController.GreenCellFactory.Content
     typealias YellowRow = ViewController.YellowCellFactory.Content
 
     func loadData() {
         if model.isEmpty || model.count == 1 {
-            let participants = TableSection(identity: "Participants", rows: [
+            let participants = TableSection(identity: "Participants", header: HeaderFooter(id: "section1", text: "First section header"), rows: [
                 GreenRow(id: "green1", text: "1\twith calculated height dimension\n\tsecond line\n\tthird line\n\tfourth\n\tfifth"),
                 YellowRow(id: "yellow1", text: "2\twith automatic height dimension\n\tsecond line"),
                 GreenRow(id: "green2", text: "3\twith calculated height dimension\n\tsecond line"),
@@ -50,7 +51,7 @@ class ViewModel: ViewModelType {
                 ])
             model = [participants, mentors]
         } else {
-            let participants = TableSection(identity: "Participants", rows: [
+            let participants = TableSection(identity: "Participants", header: HeaderFooter(id: "section1header", text: "First section header\nwith second line"), rows: [
                 GreenRow(id: "green1", text: "1\twith calculated height dimension\n\tsecond line\n\tthird line\n\tfourth\n\tfifth\n\treloadded haha"),
                 YellowRow(id: "yellow1", text: "2\twith automatic height dimension\n\tsecond line"),
                 GreenRow(id: "green3", text: "5\twith calculated height dimension\n\tsecond line"),
@@ -58,7 +59,7 @@ class ViewModel: ViewModelType {
                 GreenRow(id: "green4", text: "7\twith calculated height dimension\n\tsecond line"),
                 YellowRow(id: "yellow3", text: "6\twith automatic height dimension\n\tsecond line"),
                 GreenRow(id: "green5", text: "9\twith calculated height dimension\n\tsecond line"),
-                ])
+                ], footer: HeaderFooter(id: "section1footer", text: "First section footer"))
             model = [participants]
         }
     }
