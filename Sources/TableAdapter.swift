@@ -22,10 +22,6 @@ import Differentiator
 /// used for cell configuration only if **cell's content is same as generic**
 /// `AbstractFactory.ContentType`. There can be multiple factories with same
 /// ContentType but only the first will be used *everytime*.
-///
-/// - Attention: `TableAdapter` supports only cells (no header/footer).
-///               If you want to insert header/footer, it's recommended to use
-///               factory, that configures cell as header/footer.
 open class TableAdapter: NSObject, UITableViewDelegate, UITableViewDataSource {
     // MARK: - Variables
     // MARK: public
