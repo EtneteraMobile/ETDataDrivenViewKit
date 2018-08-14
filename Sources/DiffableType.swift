@@ -54,17 +54,35 @@ public extension DiffableType where Self: Hashable {
 }
 
 /// Compares `identity` of given arguments.
+///
+/// - Parameters:
+///   - lhs: Left hand argument
+///   - rhs: Right hand argument
+/// - Returns: `true` if both arguments are nil or `identity` equals
+///            otherwise return `false`
 public func ===(_ lhs: DiffableType?, _ rhs: DiffableType?) -> Bool {
-    guard let lhs = lhs, let rhs = rhs else {
+    if case .none = lhs, case .none = rhs {
+        return true
+    } else if let lhs = lhs, let rhs = rhs {
+        return lhs.identity == rhs.identity
+    } else {
         return false
     }
-    return lhs.identity == rhs.identity
 }
 
 /// Compares `value` of given arguments.
+///
+/// - Parameters:
+///   - lhs: Left hand argument
+///   - rhs: Right hand argument
+/// - Returns: `true` if both arguments are nil or `value` equals
+///            otherwise return `false`
 public func ==(_ lhs: DiffableType?, _ rhs: DiffableType?) -> Bool {
-    guard let lhs = lhs, let rhs = rhs else {
+    if case .none = lhs, case .none = rhs {
+        return true
+    } else if let lhs = lhs, let rhs = rhs {
+        return lhs.value == rhs.value
+    } else {
         return false
     }
-    return lhs.value == rhs.value
 }
