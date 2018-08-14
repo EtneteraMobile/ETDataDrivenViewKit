@@ -60,9 +60,9 @@ public struct TableSection: AnimatableSectionModelType {
     /// Initializes `TableSection` with `identity` from given original and given `rows`.
     public init(original: TableSection, items: [DiffableRef]) {
         self.identity = original.identity
-        self.header = nil
+        self.header = original.header
         self.items = items
-        self.footer = nil
+        self.footer = original.footer
         // `original` section contains old header and footer, new values will
         // be set in `TableAdapter.deliverHeaderFooterUpdate`.
     }
