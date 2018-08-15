@@ -39,6 +39,9 @@ open class TableAdapter: NSObject, UITableViewDelegate, UITableViewDataSource {
         }
     }
 
+    /// `data` that are delivered to tableView
+    public var deliveredData: [TableSection] = []
+
     /// Factories that handles presentation of given content (`data`) into view.
     public var cellFactories: [BaseAbstractFactory] = [] {
         didSet {
@@ -68,15 +71,12 @@ open class TableAdapter: NSObject, UITableViewDelegate, UITableViewDataSource {
 
     // MARK: private
 
-    /// `data` that are delivered to tableView
-    private var deliveredData: [TableSection] = []
-
     /// Managed tableView
-    private let tableView: UITableView
+    private weak var tableView: UITableView!
 
     // MARK: - Initialization
 
-    init(tableView: UITableView) {
+    public init(tableView: UITableView) {
         self.tableView = tableView
         super.init()
         self.tableView.delegate = self
@@ -189,35 +189,35 @@ open class TableAdapter: NSObject, UITableViewDelegate, UITableViewDataSource {
 
     // MARK: - TableView Delegate & DataSource
 
-    public func numberOfSections(in tableView: UITableView) -> Int {
+    open func numberOfSections(in tableView: UITableView) -> Int {
         return deliveredData.count
     }
 
     // MARK: Header
 
-    public func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
+    open func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
         return height(for: deliveredData[section].header, factories: headerFactories, width: tableView.frame.width)
     }
 
-    public func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
+    open func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
         return headerFooterView(for: deliveredData[section].header, factories: headerFactories)
     }
 
-    public func tableView(_ tableView: UITableView, willDisplayHeaderView view: UIView, forSection section: Int) {
+    open func tableView(_ tableView: UITableView, willDisplayHeaderView view: UIView, forSection section: Int) {
         setup(view, with: deliveredData[section].header, factories: headerFactories)
     }
 
     // MARK: Rows
 
-    public func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+    open func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return deliveredData[section].items.count
     }
 
-    public func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+    open func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         return height(for: deliveredData[indexPath.section].items[indexPath.row].value, factories: cellFactories, width: tableView.frame.width)
     }
 
-    public func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+    open func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let rowData = deliveredData[indexPath.section].items[indexPath.row].value
         for provider in cellFactories {
             if provider.shouldHandleInternal(rowData) {
@@ -230,7 +230,7 @@ open class TableAdapter: NSObject, UITableViewDelegate, UITableViewDataSource {
         fatalError()
     }
 
-    public func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
+    open func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
         let rowData = deliveredData[indexPath.section].items[indexPath.row].value
         for provider in cellFactories {
             if provider.shouldHandleInternal(rowData) {
@@ -241,32 +241,32 @@ open class TableAdapter: NSObject, UITableViewDelegate, UITableViewDataSource {
         }
     }
     
-    public func tableView(_ tableView: UITableView, shouldHighlightRowAt indexPath: IndexPath) -> Bool {
+    open func tableView(_ tableView: UITableView, shouldHighlightRowAt indexPath: IndexPath) -> Bool {
         let rowData = deliveredData[indexPath.section].items[indexPath.row].value
         return selectCellProvider(for: rowData).shouldHighlighInternal(rowData)
     }
 
-    public func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+    open func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         let rowData = deliveredData[indexPath.section].items[indexPath.row].value
         selectCellProvider(for: rowData).didSelectInternal(rowData)
     }
 
-    public func tableView(_ tableView: UITableView, accessoryButtonTappedForRowWith indexPath: IndexPath) {
+    open func tableView(_ tableView: UITableView, accessoryButtonTappedForRowWith indexPath: IndexPath) {
         let rowData = deliveredData[indexPath.section].items[indexPath.row].value
         selectCellProvider(for: rowData).accessoryButtonTappedInternal(rowData)
     }
 
     // MARK: Footer
 
-    public func tableView(_ tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat {
+    open func tableView(_ tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat {
         return height(for: deliveredData[section].footer, factories: footerFactories, width: tableView.frame.width)
     }
 
-    public func tableView(_ tableView: UITableView, viewForFooterInSection section: Int) -> UIView? {
+    open func tableView(_ tableView: UITableView, viewForFooterInSection section: Int) -> UIView? {
         return headerFooterView(for: deliveredData[section].footer, factories: footerFactories)
     }
 
-    public func tableView(_ tableView: UITableView, willDisplayFooterView view: UIView, forSection section: Int) {
+    open func tableView(_ tableView: UITableView, willDisplayFooterView view: UIView, forSection section: Int) {
         setup(view, with: deliveredData[section].footer, factories: footerFactories)
     }
 

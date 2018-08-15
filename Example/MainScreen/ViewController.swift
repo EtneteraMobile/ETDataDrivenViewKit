@@ -19,11 +19,11 @@ class ViewController: UITableViewController {
         tableView.separatorStyle = .none
 
         tableView.adapter.headerFactories = [HeaderFooterFactory()]
-        tableView.adapter.cellFactories = [GreenCellFactory(onPress: { self.viewModel.loadData() }), YellowCellFactory()]
+        tableView.adapter.cellFactories = [GreenCellFactory(onPress: { [weak self] in self?.viewModel.loadData() }), YellowCellFactory()]
         tableView.adapter.footerFactories = [HeaderFooterFactory()]
 
-        viewModel.didUpdateModel = { model in
-            self.tableView.adapter.data = model
+        viewModel.didUpdateModel = { [weak tableView] model in
+            tableView?.adapter.data = model
         }
         viewModel.loadData()
     }
