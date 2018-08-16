@@ -19,7 +19,7 @@ class ViewController: UITableViewController {
         tableView.separatorStyle = .none
 
         tableView.adapter.headerFactories = [HeaderFooterFactory()]
-        tableView.adapter.cellFactories = [GreenCellFactory(onPress: { [weak self] in self?.viewModel.loadData() }), YellowCellFactory()]
+        tableView.adapter.cellFactories = [GreenCellFactory(onPress: { [weak self] in self?.viewModel.loadData() }, onSelect: { [weak self] in }, onDeselect: { [weak self] in }), YellowCellFactory()]
         tableView.adapter.footerFactories = [HeaderFooterFactory()]
 
         viewModel.didUpdateModel = { [weak tableView] model in
@@ -32,10 +32,17 @@ class ViewController: UITableViewController {
 
     class GreenCellFactory: AbstractCellFactory<GreenCellFactory.Content, UITableViewCell> {
         var onPress: (() -> Void)?
+        var onSelect: (() -> Void)?
+        var onDeselect: (() -> Void)?
 
-        init(onPress: @escaping () -> Void) {
+        init(onPress: @escaping () -> Void,
+             onSelect: @escaping () -> Void,
+             onDeselect: @escaping () -> Void) {
             self.onPress = onPress
+            self.onSelect = onSelect
+            self.onDeselect = onDeselect
         }
+        
 
         override func height(for content: Content, width: CGFloat) -> CGFloat {
             let height = NSAttributedString(string: content.text, attributes: [NSAttributedStringKey.font: UIFont.systemFont(ofSize: 17)]).boundingRect(with: CGSize(width: CGFloat.greatestFiniteMagnitude, height: CGFloat.greatestFiniteMagnitude), options: .usesLineFragmentOrigin, context: nil).height
@@ -50,8 +57,15 @@ class ViewController: UITableViewController {
         override func shouldHighligh(_ content: Content) -> Bool {
             return true
         }
-        override func didSelect(_ content: Content) {
-            onPress?()
+        override func didSelect(_ content: Content, isEditing: Bool) {
+            if isEditing {
+                onSelect?()
+            }else{
+                onPress?()
+            }
+        }
+        override func didDeselect(_ content: Content, isEditing: Bool) {
+            onDeselect?()
         }
         override func accessoryButtonTapped(_ content: Content) {
             print("accessoryButtonTapped")
