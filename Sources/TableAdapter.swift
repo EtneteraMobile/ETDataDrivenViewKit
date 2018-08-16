@@ -69,6 +69,21 @@ open class TableAdapter: NSObject, UITableViewDelegate, UITableViewDataSource {
     /// Defaults is `AnimationConfiguration(insertAnimation: .top, reloadAnimation: .fade, deleteAnimation: .bottom)`
     public var animationConfiguration: AnimationConfiguration = AnimationConfiguration(insertAnimation: .top, reloadAnimation: .fade, deleteAnimation: .bottom)
 
+    public var scrollViewDidScroll: ((_ scrollView: UIScrollView) -> Void)?
+    public var scrollViewDidScrollToTop: ((_ scrollView: UIScrollView) -> Void)?
+    public var scrollViewShouldScrollToTop: ((_ scrollView: UIScrollView) -> Bool)?
+    public var scrollViewDidEndDecelerating: ((_ scrollView: UIScrollView) -> Void)?
+    public var scrollViewWillBeginDecelerating: ((_ scrollView: UIScrollView) -> Void)?
+    public var scrollViewDidEndScrollingAnimation: ((_ scrollView: UIScrollView) -> Void)?
+    public var scrollViewDidChangeAdjustedContentInset: ((_ scrollView: UIScrollView) -> Void)?
+    public var scrollViewWillBeginDragging: ((_ scrollView: UIScrollView) -> Void)?
+    public var scrollViewDidEndDragging: ((_ scrollView: UIScrollView, _ willDecelerate: Bool) -> Void)?
+    public var scrollViewWillEndDragging: ((_ scrollView: UIScrollView, _ velocity: CGPoint, _ targetContentOffset: UnsafeMutablePointer<CGPoint>) -> Void)?
+    public var scrollViewWillBeginZooming: ((_ scrollView: UIScrollView, _ view: UIView?) -> Void)?
+    public var scrollViewDidEndZooming: ((_ scrollView: UIScrollView, _ view: UIView?, _ scale: CGFloat) -> Void)?
+    public var scrollViewDidZoom: ((_ scrollView: UIScrollView) -> Void)?
+    public var viewForZooming: ((_ scrollView: UIScrollView) -> UIView?)?
+    
     // MARK: private
 
     /// Managed tableView
@@ -328,5 +343,63 @@ open class TableAdapter: NSObject, UITableViewDelegate, UITableViewDataSource {
             fatalError()
         }
         return nil
+    }
+    
+    // MARK: - ScrollView Delegate
+    
+    open func scrollViewDidScroll(_ scrollView: UIScrollView) {
+        scrollViewDidScroll?(scrollView)
+    }
+    
+    open func scrollViewDidScrollToTop(_ scrollView: UIScrollView) {
+        scrollViewDidScrollToTop?(scrollView)
+    }
+    
+    open func scrollViewShouldScrollToTop(_ scrollView: UIScrollView) -> Bool {
+        return scrollViewShouldScrollToTop?(scrollView) ?? true
+    }
+    
+    open func scrollViewDidEndDecelerating(_ scrollView: UIScrollView) {
+        scrollViewDidEndDecelerating?(scrollView)
+    }
+    
+    open func scrollViewWillBeginDecelerating(_ scrollView: UIScrollView) {
+        scrollViewWillBeginDecelerating?(scrollView)
+    }
+    
+    open func scrollViewDidEndScrollingAnimation(_ scrollView: UIScrollView) {
+        scrollViewDidEndScrollingAnimation?(scrollView)
+    }
+    
+    open func scrollViewDidChangeAdjustedContentInset(_ scrollView: UIScrollView) {
+        scrollViewDidChangeAdjustedContentInset?(scrollView)
+    }
+    
+    open func scrollViewWillBeginDragging(_ scrollView: UIScrollView) {
+        scrollViewWillBeginDragging?(scrollView)
+    }
+    
+    open func scrollViewDidEndDragging(_ scrollView: UIScrollView, willDecelerate decelerate: Bool) {
+        scrollViewDidEndDragging?(scrollView, decelerate)
+    }
+    
+    open func scrollViewWillEndDragging(_ scrollView: UIScrollView, withVelocity velocity: CGPoint, targetContentOffset: UnsafeMutablePointer<CGPoint>) {
+        scrollViewWillEndDragging?(scrollView, velocity, targetContentOffset)
+    }
+    
+    open func scrollViewWillBeginZooming(_ scrollView: UIScrollView, with view: UIView?) {
+        scrollViewWillBeginZooming?(scrollView, view)
+    }
+    
+    open func scrollViewDidEndZooming(_ scrollView: UIScrollView, with view: UIView?, atScale scale: CGFloat) {
+        scrollViewDidEndZooming?(scrollView, view, scale)
+    }
+    
+    open func scrollViewDidZoom(_ scrollView: UIScrollView) {
+        scrollViewDidZoom?(scrollView)
+    }
+    
+    open func viewForZooming(in scrollView: UIScrollView) -> UIView? {
+        return viewForZooming?(scrollView) ?? nil
     }
 }
