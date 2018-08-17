@@ -48,7 +48,11 @@ open class BaseAbstractFactory {
         fatalError("Not Implemented")
     }
 
-    func didSelectInternal(_ content: Any) {
+    func didSelectInternal(_ content: Any, isEditing: Bool) {
+        fatalError("Not Implemented")
+    }
+    
+    func didDeselectInternal(_ content: Any, isEditing: Bool) {
         fatalError("Not Implemented")
     }
 
@@ -102,7 +106,12 @@ open class AbstractFactory<ContentType, View: UIView>: BaseAbstractFactory {
     /// Notifies when user press cell.
     ///
     /// - Parameter content: Content of cell
-    open func didSelect(_ content: ContentType) {}
+    open func didSelect(_ content: ContentType, isEditing: Bool) {}
+    
+    /// Notifies when user deselect cell.
+    ///
+    /// - Parameter content: Content of cell
+    open func didDeselect(_ content: ContentType, isEditing: Bool) {}
 
     /// Notifies when user press accessory button of cell.
     ///
@@ -135,8 +144,12 @@ open class AbstractFactory<ContentType, View: UIView>: BaseAbstractFactory {
         return shouldHighligh(typedContent(content)!)
     }
 
-    override func didSelectInternal(_ content: Any) {
-        didSelect(typedContent(content)!)
+    override func didSelectInternal(_ content: Any, isEditing: Bool) {
+        didSelect(typedContent(content)!, isEditing: isEditing)
+    }
+    
+    override func didDeselectInternal(_ content: Any, isEditing: Bool) {
+        didDeselect(typedContent(content)!, isEditing: isEditing)
     }
 
     override func accessoryButtonTappedInternal(_ content: Any) {

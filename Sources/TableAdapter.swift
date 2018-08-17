@@ -263,9 +263,14 @@ open class TableAdapter: NSObject, UITableViewDelegate, UITableViewDataSource {
 
     open func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         let rowData = deliveredData[indexPath.section].items[indexPath.row].value
-        selectCellProvider(for: rowData).didSelectInternal(rowData)
+        selectCellProvider(for: rowData).didSelectInternal(rowData, isEditing: tableView.isEditing)
     }
-
+    
+    open func tableView(_ tableView: UITableView, didDeselectRowAt indexPath: IndexPath) {
+        let rowData = deliveredData[indexPath.section].items[indexPath.row].value
+        selectCellProvider(for: rowData).didDeselectInternal(rowData, isEditing: tableView.isEditing)
+    }
+    
     open func tableView(_ tableView: UITableView, accessoryButtonTappedForRowWith indexPath: IndexPath) {
         let rowData = deliveredData[indexPath.section].items[indexPath.row].value
         selectCellProvider(for: rowData).accessoryButtonTappedInternal(rowData)
