@@ -43,21 +43,21 @@ open class TableAdapter: NSObject, UITableViewDelegate, UITableViewDataSource {
     public var deliveredData: [TableSection] = []
 
     /// Factories that handles presentation of given content (`data`) into view.
-    public var cellFactories: [BaseAbstractFactory] = [] {
+    public var cellFactories: [_BaseAbstractFactory] = [] {
         didSet {
             cellFactories.forEach { provider in
                 tableView.register(provider.viewClass, forCellReuseIdentifier: provider.reuseId)
             }
         }
     }
-    public var headerFactories: [BaseAbstractFactory] = [] {
+    public var headerFactories: [_BaseAbstractFactory] = [] {
         didSet {
             headerFactories.forEach { provider in
                 tableView.register(provider.viewClass, forHeaderFooterViewReuseIdentifier: provider.reuseId)
             }
         }
     }
-    public var footerFactories: [BaseAbstractFactory] = [] {
+    public var footerFactories: [_BaseAbstractFactory] = [] {
         didSet {
             footerFactories.forEach { provider in
                 tableView.register(provider.viewClass, forHeaderFooterViewReuseIdentifier: provider.reuseId)
@@ -69,21 +69,9 @@ open class TableAdapter: NSObject, UITableViewDelegate, UITableViewDataSource {
     /// Defaults is `AnimationConfiguration(insertAnimation: .top, reloadAnimation: .fade, deleteAnimation: .bottom)`
     public var animationConfiguration: AnimationConfiguration = AnimationConfiguration(insertAnimation: .top, reloadAnimation: .fade, deleteAnimation: .bottom)
 
-    public var scrollViewDidScroll: ((_ scrollView: UIScrollView) -> Void)?
-    public var scrollViewDidScrollToTop: ((_ scrollView: UIScrollView) -> Void)?
-    public var scrollViewShouldScrollToTop: ((_ scrollView: UIScrollView) -> Bool)?
-    public var scrollViewDidEndDecelerating: ((_ scrollView: UIScrollView) -> Void)?
-    public var scrollViewWillBeginDecelerating: ((_ scrollView: UIScrollView) -> Void)?
-    public var scrollViewDidEndScrollingAnimation: ((_ scrollView: UIScrollView) -> Void)?
-    public var scrollViewDidChangeAdjustedContentInset: ((_ scrollView: UIScrollView) -> Void)?
-    public var scrollViewWillBeginDragging: ((_ scrollView: UIScrollView) -> Void)?
-    public var scrollViewDidEndDragging: ((_ scrollView: UIScrollView, _ willDecelerate: Bool) -> Void)?
-    public var scrollViewWillEndDragging: ((_ scrollView: UIScrollView, _ velocity: CGPoint, _ targetContentOffset: UnsafeMutablePointer<CGPoint>) -> Void)?
-    public var scrollViewWillBeginZooming: ((_ scrollView: UIScrollView, _ view: UIView?) -> Void)?
-    public var scrollViewDidEndZooming: ((_ scrollView: UIScrollView, _ view: UIView?, _ scale: CGFloat) -> Void)?
-    public var scrollViewDidZoom: ((_ scrollView: UIScrollView) -> Void)?
-    public var viewForZooming: ((_ scrollView: UIScrollView) -> UIView?)?
-    
+    /// ScrollView delegate that bridges events to closures
+    public let scrollDelegate = ScrollViewDelegate()
+
     // MARK: private
 
     /// Managed tableView
@@ -292,7 +280,7 @@ open class TableAdapter: NSObject, UITableViewDelegate, UITableViewDataSource {
 
     // MARK: - General
 
-    private func selectCellProvider(for content: Any) -> BaseAbstractFactory {
+    private func selectCellProvider(for content: Any) -> _BaseAbstractFactory {
         for provider in cellFactories {
             if provider.shouldHandleInternal(content) {
                 return provider
@@ -301,7 +289,7 @@ open class TableAdapter: NSObject, UITableViewDelegate, UITableViewDataSource {
         fatalError()
     }
 
-    private func height(for content: Any?, factories: [BaseAbstractFactory], width: CGFloat) -> CGFloat {
+    private func height(for content: Any?, factories: [_BaseAbstractFactory], width: CGFloat) -> CGFloat {
         if let content = content {
             for provider in factories {
                 if provider.shouldHandleInternal(content) {
@@ -313,7 +301,7 @@ open class TableAdapter: NSObject, UITableViewDelegate, UITableViewDataSource {
         return 0.0
     }
 
-    private func setup(_ view: UIView, with content: Any?, factories: [BaseAbstractFactory]) {
+    private func setup(_ view: UIView, with content: Any?, factories: [_BaseAbstractFactory]) {
         if let content = content {
             for provider in factories {
                 if provider.shouldHandleInternal(content) {
@@ -325,7 +313,7 @@ open class TableAdapter: NSObject, UITableViewDelegate, UITableViewDataSource {
         }
     }
 
-    private func willDisplay(_ view: UIView, with content: Any?, factories: [BaseAbstractFactory]) {
+    private func willDisplay(_ view: UIView, with content: Any?, factories: [_BaseAbstractFactory]) {
         if let content = content {
             for provider in factories {
                 if provider.shouldHandleInternal(content) {
@@ -337,7 +325,7 @@ open class TableAdapter: NSObject, UITableViewDelegate, UITableViewDataSource {
         }
     }
 
-    private func headerFooterView(for content: Any?, factories: [BaseAbstractFactory]) -> UIView? {
+    private func headerFooterView(for content: Any?, factories: [_BaseAbstractFactory]) -> UIView? {
         if let content = content {
             for provider in factories {
                 if provider.shouldHandleInternal(content) {
@@ -348,63 +336,5 @@ open class TableAdapter: NSObject, UITableViewDelegate, UITableViewDataSource {
             fatalError()
         }
         return nil
-    }
-    
-    // MARK: - ScrollView Delegate
-    
-    open func scrollViewDidScroll(_ scrollView: UIScrollView) {
-        scrollViewDidScroll?(scrollView)
-    }
-    
-    open func scrollViewDidScrollToTop(_ scrollView: UIScrollView) {
-        scrollViewDidScrollToTop?(scrollView)
-    }
-    
-    open func scrollViewShouldScrollToTop(_ scrollView: UIScrollView) -> Bool {
-        return scrollViewShouldScrollToTop?(scrollView) ?? true
-    }
-    
-    open func scrollViewDidEndDecelerating(_ scrollView: UIScrollView) {
-        scrollViewDidEndDecelerating?(scrollView)
-    }
-    
-    open func scrollViewWillBeginDecelerating(_ scrollView: UIScrollView) {
-        scrollViewWillBeginDecelerating?(scrollView)
-    }
-    
-    open func scrollViewDidEndScrollingAnimation(_ scrollView: UIScrollView) {
-        scrollViewDidEndScrollingAnimation?(scrollView)
-    }
-    
-    open func scrollViewDidChangeAdjustedContentInset(_ scrollView: UIScrollView) {
-        scrollViewDidChangeAdjustedContentInset?(scrollView)
-    }
-    
-    open func scrollViewWillBeginDragging(_ scrollView: UIScrollView) {
-        scrollViewWillBeginDragging?(scrollView)
-    }
-    
-    open func scrollViewDidEndDragging(_ scrollView: UIScrollView, willDecelerate decelerate: Bool) {
-        scrollViewDidEndDragging?(scrollView, decelerate)
-    }
-    
-    open func scrollViewWillEndDragging(_ scrollView: UIScrollView, withVelocity velocity: CGPoint, targetContentOffset: UnsafeMutablePointer<CGPoint>) {
-        scrollViewWillEndDragging?(scrollView, velocity, targetContentOffset)
-    }
-    
-    open func scrollViewWillBeginZooming(_ scrollView: UIScrollView, with view: UIView?) {
-        scrollViewWillBeginZooming?(scrollView, view)
-    }
-    
-    open func scrollViewDidEndZooming(_ scrollView: UIScrollView, with view: UIView?, atScale scale: CGFloat) {
-        scrollViewDidEndZooming?(scrollView, view, scale)
-    }
-    
-    open func scrollViewDidZoom(_ scrollView: UIScrollView) {
-        scrollViewDidZoom?(scrollView)
-    }
-    
-    open func viewForZooming(in scrollView: UIScrollView) -> UIView? {
-        return viewForZooming?(scrollView) ?? nil
     }
 }

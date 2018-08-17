@@ -11,7 +11,7 @@ import UIKit
 
 /// Base abstraction for view factory.
 /// - Warning: Do not inherit from this class, use `AbstractFactory` or `AbstractCellFactory` instead.
-open class BaseAbstractFactory {
+open class _BaseAbstractFactory {
     // MARK: public
 
     /// Reuse identifier used by tableView to recognize cell
@@ -66,7 +66,7 @@ open class BaseAbstractFactory {
 }
 
 /// Abstract factory for view (like Header/Footer)
-open class AbstractFactory<ContentType, View: UIView>: BaseAbstractFactory {
+open class AbstractFactory<ContentType, View: UIView>: _BaseAbstractFactory {
     // MARK: public
 
     /// Calculates height of component for given content and width.
