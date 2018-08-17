@@ -22,7 +22,7 @@ import Differentiator
 /// used for cell configuration only if **cell's content is same as generic**
 /// `AbstractFactory.ContentType`. There can be multiple factories with same
 /// ContentType but only the first will be used *everytime*.
-open class TableAdapter: NSObject, UITableViewDelegate, UITableViewDataSource {
+open class TableAdapter: NSObject  {
     // MARK: - Variables
     // MARK: public
 
@@ -165,7 +165,7 @@ open class TableAdapter: NSObject, UITableViewDelegate, UITableViewDataSource {
         if headerIdentAndValueEqual == false {
             if let view = self.tableView.headerView(forSection: pair.finalIdx) {
                 if let header = pair.new.header {
-                    setup(view, with: header, factories: headerFactories)
+                    selectHeaderFactory(for: pair.finalIdx)?.setupInternal(view, header)
                     view.layoutSubviews()
                     view.isHidden = false
                 } else {
@@ -178,7 +178,7 @@ open class TableAdapter: NSObject, UITableViewDelegate, UITableViewDataSource {
         if footerIdentAndValueEqual == false {
             if let view = self.tableView.footerView(forSection: pair.finalIdx) {
                 if let footer = pair.new.footer {
-                    setup(view, with: footer, factories: headerFactories)
+                    selectFooterFactory(for: pair.finalIdx)?.setupInternal(view, footer)
                     view.layoutSubviews()
                     view.isHidden = false
                 } else {
@@ -190,151 +190,302 @@ open class TableAdapter: NSObject, UITableViewDelegate, UITableViewDataSource {
         return true
     }
 
-    // MARK: - TableView Delegate & DataSource
-
-    open func numberOfSections(in tableView: UITableView) -> Int {
-        return deliveredData.count
-    }
-
-    // MARK: Header
-
-    open func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
-        return height(for: deliveredData[section].header, factories: headerFactories, width: tableView.frame.width)
-    }
-
-    open func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
-        return headerFooterView(for: deliveredData[section].header, factories: headerFactories)
-    }
-
-    open func tableView(_ tableView: UITableView, willDisplayHeaderView view: UIView, forSection section: Int) {
-        setup(view, with: deliveredData[section].header, factories: headerFactories)
-    }
-
-    // MARK: Rows
-
-    open func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return deliveredData[section].items.count
-    }
-
-    open func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        return height(for: deliveredData[indexPath.section].items[indexPath.row].value, factories: cellFactories, width: tableView.frame.width)
-    }
-
-    open func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let rowData = deliveredData[indexPath.section].items[indexPath.row].value
-        for provider in cellFactories {
-            if provider.shouldHandleInternal(rowData) {
-                let cell = tableView.dequeueReusableCell(withIdentifier: provider.reuseId)!
-                let rowData = deliveredData[indexPath.section].items[indexPath.row].value
-                setup(cell, with: rowData, factories: cellFactories)
-                return cell
-            }
-        }
-        fatalError()
-    }
-
-    open func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
-        let rowData = deliveredData[indexPath.section].items[indexPath.row].value
-        for provider in cellFactories {
-            if provider.shouldHandleInternal(rowData) {
-                let cell = tableView.dequeueReusableCell(withIdentifier: provider.reuseId)!
-                let rowData = deliveredData[indexPath.section].items[indexPath.row].value
-                willDisplay(cell, with: rowData, factories: cellFactories)
-            }
-        }
-    }
-    
-    open func tableView(_ tableView: UITableView, shouldHighlightRowAt indexPath: IndexPath) -> Bool {
-        let rowData = deliveredData[indexPath.section].items[indexPath.row].value
-        return selectCellProvider(for: rowData).shouldHighlighInternal(rowData)
-    }
-
-    open func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        let rowData = deliveredData[indexPath.section].items[indexPath.row].value
-        selectCellProvider(for: rowData).didSelectInternal(rowData, isEditing: tableView.isEditing)
-    }
-    
-    open func tableView(_ tableView: UITableView, didDeselectRowAt indexPath: IndexPath) {
-        let rowData = deliveredData[indexPath.section].items[indexPath.row].value
-        selectCellProvider(for: rowData).didDeselectInternal(rowData, isEditing: tableView.isEditing)
-    }
-    
-    open func tableView(_ tableView: UITableView, accessoryButtonTappedForRowWith indexPath: IndexPath) {
-        let rowData = deliveredData[indexPath.section].items[indexPath.row].value
-        selectCellProvider(for: rowData).accessoryButtonTappedInternal(rowData)
-    }
-
-    // MARK: Footer
-
-    open func tableView(_ tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat {
-        return height(for: deliveredData[section].footer, factories: footerFactories, width: tableView.frame.width)
-    }
-
-    open func tableView(_ tableView: UITableView, viewForFooterInSection section: Int) -> UIView? {
-        return headerFooterView(for: deliveredData[section].footer, factories: footerFactories)
-    }
-
-    open func tableView(_ tableView: UITableView, willDisplayFooterView view: UIView, forSection section: Int) {
-        setup(view, with: deliveredData[section].footer, factories: footerFactories)
-    }
-
     // MARK: - General
 
-    private func selectCellProvider(for content: Any) -> _BaseAbstractFactory {
-        for provider in cellFactories {
+    private func selectCellFactory(for indexPath: IndexPath) -> _BaseAbstractFactory {
+        let content = deliveredData[indexPath.section].items[indexPath.row].value
+        return selectFactory(for: content, from: cellFactories)
+    }
+
+    private func selectHeaderFactory(for section: Int) -> _BaseAbstractFactory? {
+        if let content = deliveredData[section].header {
+            return selectFactory(for: content, from: headerFactories)
+        }
+        return nil
+    }
+
+    private func selectFooterFactory(for section: Int) -> _BaseAbstractFactory? {
+        if let content = deliveredData[section].footer {
+            return selectFactory(for: content, from: footerFactories)
+        }
+        return nil
+    }
+
+    private func selectFactory(for content: Any, from factories: [_BaseAbstractFactory]) -> _BaseAbstractFactory {
+        // NOTE: Performance optimization with caching [IndexPath: Factory]
+        for provider in factories {
             if provider.shouldHandleInternal(content) {
                 return provider
             }
         }
         fatalError()
     }
+}
 
-    private func height(for content: Any?, factories: [_BaseAbstractFactory], width: CGFloat) -> CGFloat {
-        if let content = content {
-            for provider in factories {
-                if provider.shouldHandleInternal(content) {
-                    return provider.heightInternal(for: content, width: width)
-                }
-            }
-            fatalError("Missing Factory for content: \(content)")
-        }
-        return 0.0
+// MARK: - TableView
+// MARK: DataSource
+
+extension TableAdapter: UITableViewDataSource {
+    open func numberOfSections(in tableView: UITableView) -> Int {
+        return deliveredData.count
     }
 
-    private func setup(_ view: UIView, with content: Any?, factories: [_BaseAbstractFactory]) {
-        if let content = content {
-            for provider in factories {
-                if provider.shouldHandleInternal(content) {
-                    provider.setupInternal(view, content)
-                    return
-                }
-            }
-            fatalError()
+    open func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        return deliveredData[section].items.count
+    }
+
+    open func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        let provider = selectCellFactory(for: indexPath)
+        let cell = tableView.dequeueReusableCell(withIdentifier: provider.reuseId)!
+        let content = deliveredData[indexPath.section].items[indexPath.row].value
+        provider.setupInternal(cell, content)
+        return cell
+    }
+
+    open func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
+        let content = deliveredData[indexPath.section].items[indexPath.row].value
+        return selectCellFactory(for: indexPath).canEditInternal(content)
+    }
+
+    open func tableView(_ tableView: UITableView, canMoveRowAt indexPath: IndexPath) -> Bool {
+        let content = deliveredData[indexPath.section].items[indexPath.row].value
+        return selectCellFactory(for: indexPath).canMoveInternal(content)
+    }
+
+    open func tableView(_ tableView: UITableView, moveRowAt sourceIndexPath: IndexPath, to destinationIndexPath: IndexPath) {
+        selectCellFactory(for: sourceIndexPath).moveInternal(from: sourceIndexPath, to: destinationIndexPath)
+    }
+
+    open func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCellEditingStyle, forRowAt indexPath: IndexPath) {
+        let content = deliveredData[indexPath.section].items[indexPath.row].value
+        return selectCellFactory(for: indexPath).commitInternal(editingStyle: editingStyle, for: content)
+    }
+}
+
+// MARK: Delegate
+
+extension TableAdapter: UITableViewDelegate {
+    // Display customization
+
+    open func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
+        let content = deliveredData[indexPath.section].items[indexPath.row].value
+        selectCellFactory(for: indexPath).willDisplayInternal(cell, content)
+    }
+
+    open func tableView(_ tableView: UITableView, willDisplayHeaderView view: UIView, forSection section: Int) {
+        if let content = deliveredData[section].header {
+            selectHeaderFactory(for: section)?.willDisplayInternal(view, content)
         }
     }
 
-    private func willDisplay(_ view: UIView, with content: Any?, factories: [_BaseAbstractFactory]) {
-        if let content = content {
-            for provider in factories {
-                if provider.shouldHandleInternal(content) {
-                    provider.willDisplayInternal(view, content)
-                    return
-                }
-            }
-            fatalError()
+    open func tableView(_ tableView: UITableView, willDisplayFooterView view: UIView, forSection section: Int) {
+        if let content = deliveredData[section].footer {
+            selectFooterFactory(for: section)?.willDisplayInternal(view, content)
         }
     }
 
-    private func headerFooterView(for content: Any?, factories: [_BaseAbstractFactory]) -> UIView? {
-        if let content = content {
-            for provider in factories {
-                if provider.shouldHandleInternal(content) {
-                    let view = tableView.dequeueReusableHeaderFooterView(withIdentifier: provider.reuseId)!
-                    return view
-                }
-            }
-            fatalError()
+    public func tableView(_ tableView: UITableView, didEndDisplaying cell: UITableViewCell, forRowAt indexPath: IndexPath) {
+        let content = deliveredData[indexPath.section].items[indexPath.row].value
+        selectCellFactory(for: indexPath).didEndDisplayingInternal(cell, content)
+    }
+
+    public func tableView(_ tableView: UITableView, didEndDisplayingHeaderView view: UIView, forSection section: Int) {
+        if let content = deliveredData[section].header {
+            selectHeaderFactory(for: section)?.didEndDisplayingInternal(view, content)
         }
-        return nil
+    }
+
+    public func tableView(_ tableView: UITableView, didEndDisplayingFooterView view: UIView, forSection section: Int) {
+        if let content = deliveredData[section].footer {
+            selectFooterFactory(for: section)?.didEndDisplayingInternal(view, content)
+        }
+    }
+
+    // Variable height support
+
+    open func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+        let content = deliveredData[indexPath.section].items[indexPath.row].value
+        return selectCellFactory(for: indexPath).heightInternal(for: content, width: tableView.frame.width)
+    }
+
+    open func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
+        if let content = deliveredData[section].header, let factory = selectHeaderFactory(for: section) {
+            return factory.heightInternal(for: content, width: tableView.frame.width)
+        } else {
+            return 0
+        }
+    }
+
+    open func tableView(_ tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat {
+        if let content = deliveredData[section].footer, let factory = selectFooterFactory(for: section) {
+            return factory.heightInternal(for: content, width: tableView.frame.width)
+        } else {
+            return 0
+        }
+    }
+
+    public func tableView(_ tableView: UITableView, estimatedHeightForRowAt indexPath: IndexPath) -> CGFloat {
+        let content = deliveredData[indexPath.section].items[indexPath.row].value
+        return selectCellFactory(for: indexPath).estimatedHeightInternal(for: content, width: tableView.frame.width)
+    }
+
+    public func tableView(_ tableView: UITableView, estimatedHeightForHeaderInSection section: Int) -> CGFloat {
+        if let content = deliveredData[section].header, let factory = selectHeaderFactory(for: section) {
+            return factory.estimatedHeightInternal(for: content, width: tableView.frame.width)
+        } else {
+            return 0
+        }
+    }
+
+    public func tableView(_ tableView: UITableView, estimatedHeightForFooterInSection section: Int) -> CGFloat {
+        if let content = deliveredData[section].footer, let factory = selectFooterFactory(for: section) {
+            return factory.estimatedHeightInternal(for: content, width: tableView.frame.width)
+        } else {
+            return 0
+        }
+    }
+
+    // Section header & footer information
+
+    open func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
+        if let content = deliveredData[section].header, let provider = selectHeaderFactory(for: section) {
+            let view = tableView.dequeueReusableHeaderFooterView(withIdentifier: provider.reuseId)!
+            provider.setupInternal(view, content)
+            return view
+        } else {
+            return nil
+        }
+    }
+
+    open func tableView(_ tableView: UITableView, viewForFooterInSection section: Int) -> UIView? {
+        if let content = deliveredData[section].footer, let provider = selectFooterFactory(for: section) {
+            let view = tableView.dequeueReusableHeaderFooterView(withIdentifier: provider.reuseId)!
+            provider.setupInternal(view, content)
+            return view
+        } else {
+            return nil
+        }
+    }
+
+    // Accessories (disclosures).
+
+    open func tableView(_ tableView: UITableView, accessoryButtonTappedForRowWith indexPath: IndexPath) {
+        let content = deliveredData[indexPath.section].items[indexPath.row].value
+        selectCellFactory(for: indexPath).accessoryButtonTappedInternal(content)
+    }
+
+    // Selection
+
+    open func tableView(_ tableView: UITableView, shouldHighlightRowAt indexPath: IndexPath) -> Bool {
+        let content = deliveredData[indexPath.section].items[indexPath.row].value
+        return selectCellFactory(for: indexPath).shouldHighlighInternal(content)
+    }
+
+    public func tableView(_ tableView: UITableView, didHighlightRowAt indexPath: IndexPath) {
+        let content = deliveredData[indexPath.section].items[indexPath.row].value
+        selectCellFactory(for: indexPath).didHighlighInternal(content)
+    }
+
+    public func tableView(_ tableView: UITableView, didUnhighlightRowAt indexPath: IndexPath) {
+        let content = deliveredData[indexPath.section].items[indexPath.row].value
+        selectCellFactory(for: indexPath).didUnhighlighInternal(content)
+    }
+
+    public func tableView(_ tableView: UITableView, willSelectRowAt indexPath: IndexPath) -> IndexPath? {
+        let content = deliveredData[indexPath.section].items[indexPath.row].value
+        return selectCellFactory(for: indexPath).willSelectInternal(content, indexPath, isEditing: tableView.isEditing)
+    }
+
+    public func tableView(_ tableView: UITableView, willDeselectRowAt indexPath: IndexPath) -> IndexPath? {
+        let content = deliveredData[indexPath.section].items[indexPath.row].value
+        return selectCellFactory(for: indexPath).willDeselectInternal(content, indexPath, isEditing: tableView.isEditing)
+    }
+
+    open func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        let content = deliveredData[indexPath.section].items[indexPath.row].value
+        selectCellFactory(for: indexPath).didSelectInternal(content, isEditing: tableView.isEditing)
+    }
+
+    open func tableView(_ tableView: UITableView, didDeselectRowAt indexPath: IndexPath) {
+        let content = deliveredData[indexPath.section].items[indexPath.row].value
+        selectCellFactory(for: indexPath).didDeselectInternal(content, isEditing: tableView.isEditing)
+    }
+
+    // Editing
+
+    public func tableView(_ tableView: UITableView, editingStyleForRowAt indexPath: IndexPath) -> UITableViewCellEditingStyle {
+        let content = deliveredData[indexPath.section].items[indexPath.row].value
+        return selectCellFactory(for: indexPath).editingStyleInternal(content)
+    }
+
+    public func tableView(_ tableView: UITableView, titleForDeleteConfirmationButtonForRowAt indexPath: IndexPath) -> String? {
+        let content = deliveredData[indexPath.section].items[indexPath.row].value
+        return selectCellFactory(for: indexPath).titleForDeleteConfirmationButtonInternal(content)
+    }
+
+    public func tableView(_ tableView: UITableView, editActionsForRowAt indexPath: IndexPath) -> [UITableViewRowAction]? {
+        let content = deliveredData[indexPath.section].items[indexPath.row].value
+        return selectCellFactory(for: indexPath).editActionsInternal(content)
+    }
+
+    // Swipe actions
+
+    @available(iOSApplicationExtension 11.0, *)
+    public func tableView(_ tableView: UITableView, leadingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
+        let content = deliveredData[indexPath.section].items[indexPath.row].value
+        return selectCellFactory(for: indexPath).leadingSwipeActionsConfigurationInternal(content)
+    }
+
+    @available(iOSApplicationExtension 11.0, *)
+    public func tableView(_ tableView: UITableView, trailingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
+        let content = deliveredData[indexPath.section].items[indexPath.row].value
+        return selectCellFactory(for: indexPath).trailingSwipeActionsConfigurationInternal(content)
+    }
+
+    public func tableView(_ tableView: UITableView, shouldIndentWhileEditingRowAt indexPath: IndexPath) -> Bool {
+        let content = deliveredData[indexPath.section].items[indexPath.row].value
+        return selectCellFactory(for: indexPath).shouldIndentWhileEditingInternal(content)
+    }
+
+    public func tableView(_ tableView: UITableView, willBeginEditingRowAt indexPath: IndexPath) {
+        let content = deliveredData[indexPath.section].items[indexPath.row].value
+        selectCellFactory(for: indexPath).willBeginEditingInternal(content)
+    }
+
+    public func tableView(_ tableView: UITableView, didEndEditingRowAt indexPath: IndexPath?) {
+        if let indexPath = indexPath {
+            let content = deliveredData[indexPath.section].items[indexPath.row].value
+            selectCellFactory(for: indexPath).didEndEditingInternal(content)
+        }
+    }
+
+    // Moving/reordering
+
+    public func tableView(_ tableView: UITableView, targetIndexPathForMoveFromRowAt sourceIndexPath: IndexPath, toProposedIndexPath proposedDestinationIndexPath: IndexPath) -> IndexPath {
+        return selectCellFactory(for: sourceIndexPath).targetIndexPathForMoveInternal(from: sourceIndexPath, toProposedIndexPath: proposedDestinationIndexPath)
+    }
+
+    // Indentation
+
+    public func tableView(_ tableView: UITableView, indentationLevelForRowAt indexPath: IndexPath) -> Int {
+        let content = deliveredData[indexPath.section].items[indexPath.row].value
+        return selectCellFactory(for: indexPath).indentationLevelInternal(content)
+    }
+
+    // Copy/Paste
+
+    public func tableView(_ tableView: UITableView, shouldShowMenuForRowAt indexPath: IndexPath) -> Bool {
+        let content = deliveredData[indexPath.section].items[indexPath.row].value
+        return selectCellFactory(for: indexPath).shouldShowMenuInternal(content)
+    }
+
+    public func tableView(_ tableView: UITableView, canPerformAction action: Selector, forRowAt indexPath: IndexPath, withSender sender: Any?) -> Bool {
+        let content = deliveredData[indexPath.section].items[indexPath.row].value
+        return selectCellFactory(for: indexPath).canPerformActionInternal(action: action, for: content, withSender: sender)
+    }
+
+    public func tableView(_ tableView: UITableView, performAction action: Selector, forRowAt indexPath: IndexPath, withSender sender: Any?) {
+        let content = deliveredData[indexPath.section].items[indexPath.row].value
+        selectCellFactory(for: indexPath).performActionInternal(action: action, for: content, withSender: sender)
     }
 }
