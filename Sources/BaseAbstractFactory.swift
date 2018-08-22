@@ -57,15 +57,7 @@ open class _BaseAbstractFactory {
         fatalError("Not Implemented")
     }
 
-    func didEndDisplayingInternal(_ view: UIView, _ content: Any) {
-        fatalError("Not Implemented")
-    }
-
     func heightInternal(for content: Any, width: CGFloat) -> CGFloat {
-        fatalError("Not Implemented")
-    }
-
-    func estimatedHeightInternal(for content: Any, width: CGFloat) -> CGFloat {
         fatalError("Not Implemented")
     }
 

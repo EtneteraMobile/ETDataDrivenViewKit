@@ -80,12 +80,6 @@ open class AbstractFactory<ContentType, View: UIView>: _BaseAbstractFactory {
         willDisplay(typedView(view)!, typedContent(content)!)
     }
 
-    open func didEndDisplaying(_ view: View, _ content: ContentType) {}
-
-    override func didEndDisplayingInternal(_ view: UIView, _ content: Any) {
-        didEndDisplaying(typedView(view)!, typedContent(content)!)
-    }
-
     /// Calculates height of component for given content and width.
     /// Default is UITableViewAutomaticDimension
     ///
@@ -99,15 +93,6 @@ open class AbstractFactory<ContentType, View: UIView>: _BaseAbstractFactory {
 
     override func heightInternal(for content: Any, width: CGFloat) -> CGFloat {
         return height(for: typedContent(content)!, width: width)
-    }
-
-    /// Default is UITableViewAutomaticDimension
-    open func estimatedHeight(for content: ContentType, width: CGFloat) -> CGFloat {
-        return UITableViewAutomaticDimension
-    }
-
-    override func estimatedHeightInternal(for content: Any, width: CGFloat) -> CGFloat {
-        return estimatedHeight(for: typedContent(content)!, width: width)
     }
 
     /// Notifies when user press accessory button of cell.

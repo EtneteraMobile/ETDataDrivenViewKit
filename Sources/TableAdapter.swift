@@ -284,23 +284,6 @@ extension TableAdapter: UITableViewDelegate {
         }
     }
 
-    public func tableView(_ tableView: UITableView, didEndDisplaying cell: UITableViewCell, forRowAt indexPath: IndexPath) {
-        let content = deliveredData[indexPath.section].items[indexPath.row].value
-        selectCellFactory(for: indexPath).didEndDisplayingInternal(cell, content)
-    }
-
-    public func tableView(_ tableView: UITableView, didEndDisplayingHeaderView view: UIView, forSection section: Int) {
-        if let content = deliveredData[section].header {
-            selectHeaderFactory(for: section)?.didEndDisplayingInternal(view, content)
-        }
-    }
-
-    public func tableView(_ tableView: UITableView, didEndDisplayingFooterView view: UIView, forSection section: Int) {
-        if let content = deliveredData[section].footer {
-            selectFooterFactory(for: section)?.didEndDisplayingInternal(view, content)
-        }
-    }
-
     // Variable height support
 
     open func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
@@ -319,27 +302,6 @@ extension TableAdapter: UITableViewDelegate {
     open func tableView(_ tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat {
         if let content = deliveredData[section].footer, let factory = selectFooterFactory(for: section) {
             return factory.heightInternal(for: content, width: tableView.frame.width)
-        } else {
-            return 0
-        }
-    }
-
-    public func tableView(_ tableView: UITableView, estimatedHeightForRowAt indexPath: IndexPath) -> CGFloat {
-        let content = deliveredData[indexPath.section].items[indexPath.row].value
-        return selectCellFactory(for: indexPath).estimatedHeightInternal(for: content, width: tableView.frame.width)
-    }
-
-    public func tableView(_ tableView: UITableView, estimatedHeightForHeaderInSection section: Int) -> CGFloat {
-        if let content = deliveredData[section].header, let factory = selectHeaderFactory(for: section) {
-            return factory.estimatedHeightInternal(for: content, width: tableView.frame.width)
-        } else {
-            return 0
-        }
-    }
-
-    public func tableView(_ tableView: UITableView, estimatedHeightForFooterInSection section: Int) -> CGFloat {
-        if let content = deliveredData[section].footer, let factory = selectFooterFactory(for: section) {
-            return factory.estimatedHeightInternal(for: content, width: tableView.frame.width)
         } else {
             return 0
         }
