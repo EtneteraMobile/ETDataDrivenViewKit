@@ -54,9 +54,6 @@ class ViewController: UITableViewController {
             view.backgroundColor = .green
             view.accessoryType = .detailButton
         }
-        override func shouldHighligh(_ content: Content) -> Bool {
-            return true
-        }
         override func didSelect(_ content: Content, isEditing: Bool) {
             if isEditing {
                 onSelect?()

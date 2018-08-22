@@ -181,7 +181,6 @@
 			children = (
 				71800BE121118AB60092832F /* README.txt */,
 				71800BD921117C420092832F /* AnimationConfiguration.swift */,
-				71800BD721117BE30092832F /* UI+SectionedViewType.swift */,
 			);
 			path = RxDataSources;
 			sourceTree = "<group>";
@@ -205,6 +204,7 @@
 				71800BDB211189870092832F /* DiffableType.swift */,
 				71704ACD212712DE005A1E42 /* ScrollViewDelegate.swift */,
 				71704ACF21271362005A1E42 /* TableAdapter+ScrollViewDelegate.swift */,
+				71800BD721117BE30092832F /* UI+SectionedViewType.swift */,
 				71800BD621117BC70092832F /* RxDataSources */,
 			);
 			path = Sources;
@@ -668,7 +668,7 @@
 				);
 				GCC_C_LANGUAGE_STANDARD = gnu11;
 				INFOPLIST_FILE = example/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 11.3;
+				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = cz.etnetera.ETDataDrivenViewKit.example;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -699,7 +699,7 @@
 				);
 				GCC_C_LANGUAGE_STANDARD = gnu11;
 				INFOPLIST_FILE = example/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 11.3;
+				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = cz.etnetera.ETDataDrivenViewKit.example;
 				PRODUCT_NAME = "$(TARGET_NAME)";
