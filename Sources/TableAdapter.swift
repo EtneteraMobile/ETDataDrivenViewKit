@@ -72,6 +72,23 @@ open class TableAdapter: NSObject  {
     /// ScrollView delegate that bridges events to closures
     public let scrollDelegate = ScrollViewDelegate()
 
+    /// If is enabled it adjusts `tableView.contentOffset` to maintain scroll
+    /// position between updates.
+    ///
+    /// - Precondition: UITableViewAutomaticDimension isn't supported.
+    ///
+    /// - Warning: This feature is experimental. **Supports only insertation and
+    /// deletion of rows and sections.**
+    ///
+    /// By default `tableView` changes `contentOffset` if row is
+    /// inserted/removed above visible rows. Visible rows moves down/up and new
+    /// rows appears on top.
+    ///
+    /// Defaults is `false`.
+    ///
+    /// Related in different library. [IGListKit: Add option to maintain scroll position when performing updates](https://github.com/Instagram/IGListKit/issues/242)
+    public var maintainScrollPosition = false
+
     // MARK: private
 
     /// Managed tableView
@@ -99,8 +116,9 @@ open class TableAdapter: NSObject  {
         do {
             let differences = try Diff.differencesForSectionedView(initialSections: oldSections, finalSections: newSections)
             for difference in differences {
-                deliveredData = difference.finalSections
-                tableView.performBatchUpdates(difference, animationConfiguration: animationConfiguration)
+                tableView.performBatchUpdates(difference, maintainScrollPosition: maintainScrollPosition, animationConfiguration: animationConfiguration, deliverData: {
+                    deliveredData = difference.finalSections
+                })
             }
             deliverHeaderFooterUpdates(oldSections, differences, newSections)
         }
