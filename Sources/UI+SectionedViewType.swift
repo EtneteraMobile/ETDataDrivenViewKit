@@ -87,7 +87,7 @@ extension UITableView {
             CATransaction.begin()
             CATransaction.setDisableActions(true)
         }
-        
+
         beginUpdates()
         deleteSections(changes.deletedSections, animationStyle: animationConfiguration.deleteAnimation)
         // Updated sections doesn't mean reload entire section, somebody needs to update the section view manually
