@@ -212,9 +212,9 @@ open class AbstractFactory<ContentType, View: UIView>: _BaseAbstractFactory {
         return trailingSwipeActionsConfiguration(typedContent(content)!)
     }
 
-    /// Defaults is false
+    /// Defaults is true
     open func shouldIndentWhileEditing(_ content: Any) -> Bool {
-        return false
+        return true
     }
 
     override func shouldIndentWhileEditingInternal(_ content: Any) -> Bool {
