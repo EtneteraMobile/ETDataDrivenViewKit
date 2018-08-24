@@ -11,13 +11,16 @@ import ETDataDrivenViewKit
 
 class ViewController: UITableViewController {
 
+    @IBOutlet var editBarButtonItem: UIBarButtonItem?
+    
     let viewModel: ViewModelType = ViewModel()
 
     override func viewDidLoad() {
         super.viewDidLoad()
 
         tableView.separatorStyle = .none
-
+        tableView.allowsMultipleSelectionDuringEditing = true
+        
         tableView.adapter.headerFactories = [HeaderFooterFactory()]
         tableView.adapter.cellFactories = [GreenCellFactory(onPress: { [weak self] in self?.viewModel.loadData() }, onSelect: { [weak self] in }, onDeselect: { [weak self] in }), YellowCellFactory()]
         tableView.adapter.footerFactories = [HeaderFooterFactory()]
@@ -27,6 +30,11 @@ class ViewController: UITableViewController {
         }
         viewModel.loadData()
     }
+    
+    @IBAction func editBarButtonItemAction(_ sender: Any) {
+        tableView.setEditing( !tableView.isEditing, animated: true)
+    }
+    
 
     // MARK: - Cell factories
 
