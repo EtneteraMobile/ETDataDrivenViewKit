@@ -38,7 +38,7 @@ open class AbstractFactory<ContentType, View: UIView>: _BaseAbstractFactory {
     }
 
     /// Default is true
-    open func canEdit(_ content: Any) -> Bool {
+    open func canEdit(_ content: ContentType) -> Bool {
         return true
     }
 
@@ -47,7 +47,7 @@ open class AbstractFactory<ContentType, View: UIView>: _BaseAbstractFactory {
     }
 
     /// Defaults is false
-    open func canMove(_ content: Any) -> Bool {
+    open func canMove(_ content: ContentType) -> Bool {
         return false
     }
 
@@ -61,7 +61,7 @@ open class AbstractFactory<ContentType, View: UIView>: _BaseAbstractFactory {
         move(from: sourceIndexPath, to: destinationIndexPath)
     }
 
-    open func commit(editingStyle: UITableViewCellEditingStyle, for content: Any) {}
+    open func commit(editingStyle: UITableViewCellEditingStyle, for content: ContentType) {}
 
     override func commitInternal(editingStyle: UITableViewCellEditingStyle, for content: Any) {
         commit(editingStyle: editingStyle, for: typedContent(content)!)
@@ -163,9 +163,9 @@ open class AbstractFactory<ContentType, View: UIView>: _BaseAbstractFactory {
         didDeselect(typedContent(content)!, isEditing: isEditing)
     }
 
-    /// Default is delete
-    open func editingStyle(_ content: Any) -> UITableViewCellEditingStyle {
-        return .delete
+    /// Default is none
+    open func editingStyle(_ content: ContentType) -> UITableViewCellEditingStyle {
+        return .none
     }
 
     override func editingStyleInternal(_ content: Any) -> UITableViewCellEditingStyle {
@@ -173,7 +173,7 @@ open class AbstractFactory<ContentType, View: UIView>: _BaseAbstractFactory {
     }
 
     /// Default is nil
-    open func titleForDeleteConfirmationButton(_ content: Any) -> String? {
+    open func titleForDeleteConfirmationButton(_ content: ContentType) -> String? {
         return "Localize me"
     }
 
@@ -182,7 +182,7 @@ open class AbstractFactory<ContentType, View: UIView>: _BaseAbstractFactory {
     }
 
     /// Defaults is nil
-    open func editActions(_ content: Any) -> [UITableViewRowAction]? {
+    open func editActions(_ content: ContentType) -> [UITableViewRowAction]? {
         return nil
     }
 
@@ -192,7 +192,7 @@ open class AbstractFactory<ContentType, View: UIView>: _BaseAbstractFactory {
 
     /// Default is nil
     @available(iOSApplicationExtension 11.0, *)
-    open func leadingSwipeActionsConfiguration(_ content: Any) -> UISwipeActionsConfiguration? {
+    open func leadingSwipeActionsConfiguration(_ content: ContentType) -> UISwipeActionsConfiguration? {
         return nil
     }
 
@@ -203,7 +203,7 @@ open class AbstractFactory<ContentType, View: UIView>: _BaseAbstractFactory {
 
     /// Defaults is nil
     @available(iOSApplicationExtension 11.0, *)
-    open func trailingSwipeActionsConfiguration(_ content: Any) -> UISwipeActionsConfiguration? {
+    open func trailingSwipeActionsConfiguration(_ content: ContentType) -> UISwipeActionsConfiguration? {
         return nil
     }
 
@@ -213,7 +213,7 @@ open class AbstractFactory<ContentType, View: UIView>: _BaseAbstractFactory {
     }
 
     /// Defaults is true
-    open func shouldIndentWhileEditing(_ content: Any) -> Bool {
+    open func shouldIndentWhileEditing(_ content: ContentType) -> Bool {
         return true
     }
 
@@ -221,13 +221,13 @@ open class AbstractFactory<ContentType, View: UIView>: _BaseAbstractFactory {
         return shouldIndentWhileEditing(typedContent(content)!)
     }
 
-    open func willBeginEditing(_ content: Any) {}
+    open func willBeginEditing(_ content: ContentType) {}
 
     override func willBeginEditingInternal(_ content: Any) {
         willBeginEditing(typedContent(content)!)
     }
 
-    open func didEndEditing(_ content: Any) {}
+    open func didEndEditing(_ content: ContentType) {}
 
     override func didEndEditingInternal(_ content: Any) {
         didEndEditing(typedContent(content)!)
@@ -243,7 +243,7 @@ open class AbstractFactory<ContentType, View: UIView>: _BaseAbstractFactory {
     }
 
     /// Default is 0
-    open func indentationLevel(_ content: Any) -> Int {
+    open func indentationLevel(_ content: ContentType) -> Int {
         return 0
     }
 
@@ -252,7 +252,7 @@ open class AbstractFactory<ContentType, View: UIView>: _BaseAbstractFactory {
     }
 
     /// Default is false
-    open func shouldShowMenu(_ content: Any) -> Bool {
+    open func shouldShowMenu(_ content: ContentType) -> Bool {
         return false
     }
 
@@ -261,7 +261,7 @@ open class AbstractFactory<ContentType, View: UIView>: _BaseAbstractFactory {
     }
 
     /// Default is false
-    open func canPerformAction(action: Selector, for content: Any, withSender sender: Any?) -> Bool {
+    open func canPerformAction(action: Selector, for content: ContentType, withSender sender: Any?) -> Bool {
         return false
     }
 
@@ -269,7 +269,7 @@ open class AbstractFactory<ContentType, View: UIView>: _BaseAbstractFactory {
         return canPerformAction(action: action, for: typedContent(content)!, withSender: sender)
     }
 
-    open func performAction(action: Selector, for content: Any, withSender sender: Any?) {}
+    open func performAction(action: Selector, for content: ContentType, withSender sender: Any?) {}
 
     override func performActionInternal(action: Selector, for content: Any, withSender sender: Any?) {
         performAction(action: action, for: typedContent(content)!, withSender: sender)

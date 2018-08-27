@@ -230,7 +230,7 @@ open class TableAdapter: NSObject  {
     }
 
     private func selectFactory(for content: Any, from factories: [_BaseAbstractFactory]) -> _BaseAbstractFactory {
-        // NOTE: Performance optimization with caching [IndexPath: Factory]
+        // NOTE: Performance optimization with caching [TypeOfContent: Factory]
         for provider in factories {
             if provider.shouldHandleInternal(content) {
                 return provider
@@ -254,7 +254,7 @@ extension TableAdapter: UITableViewDataSource {
 
     open func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let provider = selectCellFactory(for: indexPath)
-        let cell = tableView.dequeueReusableCell(withIdentifier: provider.reuseId)!
+        let cell = tableView.dequeueReusableCell(withIdentifier: provider.reuseId, for: indexPath)
         let content = deliveredData[indexPath.section].items[indexPath.row].value
         provider.setupInternal(cell, content)
         return cell
