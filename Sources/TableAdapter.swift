@@ -328,6 +328,7 @@ extension TableAdapter: UITableViewDelegate {
     open func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
         if let content = deliveredData[section].header, let provider = selectHeaderFactory(for: section) {
             let view = tableView.dequeueReusableHeaderFooterView(withIdentifier: provider.reuseId)!
+            view.isHidden = false
             provider.setupInternal(view, content)
             return view
         } else {
@@ -338,6 +339,7 @@ extension TableAdapter: UITableViewDelegate {
     open func tableView(_ tableView: UITableView, viewForFooterInSection section: Int) -> UIView? {
         if let content = deliveredData[section].footer, let provider = selectFooterFactory(for: section) {
             let view = tableView.dequeueReusableHeaderFooterView(withIdentifier: provider.reuseId)!
+            view.isHidden = false
             provider.setupInternal(view, content)
             return view
         } else {
