@@ -25,32 +25,8 @@ public struct TableSection: AnimatableSectionModelType {
     /// Content that represents footer data
     public let footer: DiffableType?
 
-    /// Initializes `TableSection` with given `identity` and `rows`.
-    public init(identity: String, rows: [DiffableType]) {
-        self.identity = identity
-        self.header = nil
-        self.items = rows.map { DiffableRef($0) }
-        self.footer = nil
-    }
-
-    /// Initializes `TableSection` with given `identity`, `header` and `rows`.
-    public init(identity: String, header: DiffableType, rows: [DiffableType]) {
-        self.identity = identity
-        self.header = header
-        self.items = rows.map { DiffableRef($0) }
-        self.footer = nil
-    }
-
-    /// Initializes `TableSection` with given `identity`, `rows` and `footer`.
-    public init(identity: String, rows: [DiffableType], footer: DiffableType) {
-        self.identity = identity
-        self.header = nil
-        self.items = rows.map { DiffableRef($0) }
-        self.footer = footer
-    }
-
     /// Initializes `TableSection` with given `identity`, `header`, `rows` and `footer`.
-    public init(identity: String, header: DiffableType?, rows: [DiffableType], footer: DiffableType?) {
+    public init(identity: String, header: DiffableType? = nil, rows: [DiffableType], footer: DiffableType? = nil) {
         self.identity = identity
         self.header = header
         self.items = rows.map { DiffableRef($0) }
