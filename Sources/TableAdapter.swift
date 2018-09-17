@@ -23,6 +23,14 @@ import Differentiator
 /// `AbstractFactory.ContentType`. There can be multiple factories with same
 /// ContentType but only the first will be used *everytime*.
 open class TableAdapter: NSObject  {
+    /// Result of rows diff.
+    ///
+    /// - Attention: `import Differentiator`
+    public enum DiffResult {
+        case diff([Changeset<TableSection>])
+        case error(Error)
+    }
+
     // MARK: - Variables
     // MARK: public
 
@@ -89,6 +97,11 @@ open class TableAdapter: NSObject  {
     /// Related in different library. [IGListKit: Add option to maintain scroll position when performing updates](https://github.com/Instagram/IGListKit/issues/242)
     public var maintainScrollPosition = false
 
+    /// Triggered after rows diff. This observer is for DEBUG purpose.
+    ///
+    /// - Attention: `import Differentiator`
+    public var rowsDiffResult: ((DiffResult) -> Void)?
+
     // MARK: private
 
     /// Managed tableView
@@ -115,6 +128,7 @@ open class TableAdapter: NSObject  {
         }
         do {
             let differences = try Diff.differencesForSectionedView(initialSections: oldSections, finalSections: newSections)
+            rowsDiffResult?(.diff(differences))
             for difference in differences {
                 tableView.performBatchUpdates(difference, maintainScrollPosition: maintainScrollPosition, animationConfiguration: animationConfiguration, deliverData: {
                     deliveredData = difference.finalSections
@@ -124,6 +138,7 @@ open class TableAdapter: NSObject  {
         }
         catch let error {
             assertionFailure("Unable to deliver data with animation, error: \(error). Starts delivery without animation (reloadData).")
+            rowsDiffResult?(.error(error))
             // Fallback: reloads table view
             deliveredData = newSections
             tableView.reloadData()
