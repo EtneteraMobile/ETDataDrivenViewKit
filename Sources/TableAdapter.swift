@@ -287,7 +287,7 @@ extension TableAdapter: UITableViewDataSource {
         selectCellFactory(for: sourceIndexPath).moveInternal(from: sourceIndexPath, to: destinationIndexPath)
     }
 
-    open func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCellEditingStyle, forRowAt indexPath: IndexPath) {
+    open func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
         let content = deliveredData[indexPath.section].items[indexPath.row].value
         return selectCellFactory(for: indexPath).commitInternal(editingStyle: editingStyle, for: content)
     }
@@ -408,7 +408,7 @@ extension TableAdapter: UITableViewDelegate {
 
     // Editing
 
-    public func tableView(_ tableView: UITableView, editingStyleForRowAt indexPath: IndexPath) -> UITableViewCellEditingStyle {
+    public func tableView(_ tableView: UITableView, editingStyleForRowAt indexPath: IndexPath) -> UITableViewCell.EditingStyle {
         let content = deliveredData[indexPath.section].items[indexPath.row].value
         return selectCellFactory(for: indexPath).editingStyleInternal(content)
     }

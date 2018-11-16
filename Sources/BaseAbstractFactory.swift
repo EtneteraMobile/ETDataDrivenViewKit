@@ -47,7 +47,7 @@ open class _BaseAbstractFactory {
     func moveInternal(from sourceIndexPath: IndexPath, to destinationIndexPath: IndexPath) {
         fatalError("Not Implemented")
     }
-    func commitInternal(editingStyle: UITableViewCellEditingStyle, for content: Any) {
+    func commitInternal(editingStyle: UITableViewCell.EditingStyle, for content: Any) {
         fatalError("Not Implemented")
     }
 
@@ -93,7 +93,7 @@ open class _BaseAbstractFactory {
         fatalError("Not Implemented")
     }
 
-    func editingStyleInternal(_ content: Any) -> UITableViewCellEditingStyle {
+    func editingStyleInternal(_ content: Any) -> UITableViewCell.EditingStyle {
         fatalError("Not Implemented")
     }
 

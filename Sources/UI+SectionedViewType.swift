@@ -20,11 +20,11 @@ func indexSet(_ values: [Int]) -> IndexSet {
 
 extension UITableView {
 
-    public func insertItemsAtIndexPaths(_ paths: [IndexPath], animationStyle: UITableViewRowAnimation) {
+    public func insertItemsAtIndexPaths(_ paths: [IndexPath], animationStyle: UITableView.RowAnimation) {
         self.insertRows(at: paths, with: animationStyle)
     }
 
-    public func deleteItemsAtIndexPaths(_ paths: [IndexPath], animationStyle: UITableViewRowAnimation) {
+    public func deleteItemsAtIndexPaths(_ paths: [IndexPath], animationStyle: UITableView.RowAnimation) {
         self.deleteRows(at: paths, with: animationStyle)
     }
 
@@ -32,15 +32,15 @@ extension UITableView {
         self.moveRow(at: from, to: to)
     }
 
-    public func reloadItemsAtIndexPaths(_ paths: [IndexPath], animationStyle: UITableViewRowAnimation) {
+    public func reloadItemsAtIndexPaths(_ paths: [IndexPath], animationStyle: UITableView.RowAnimation) {
         self.reloadRows(at: paths, with: animationStyle)
     }
 
-    public func insertSections(_ sections: [Int], animationStyle: UITableViewRowAnimation) {
+    public func insertSections(_ sections: [Int], animationStyle: UITableView.RowAnimation) {
         self.insertSections(indexSet(sections), with: animationStyle)
     }
 
-    public func deleteSections(_ sections: [Int], animationStyle: UITableViewRowAnimation) {
+    public func deleteSections(_ sections: [Int], animationStyle: UITableView.RowAnimation) {
         self.deleteSections(indexSet(sections), with: animationStyle)
     }
 
@@ -48,7 +48,7 @@ extension UITableView {
         self.moveSection(from, toSection: to)
     }
 
-    public func reloadSections(_ sections: [Int], animationStyle: UITableViewRowAnimation) {
+    public func reloadSections(_ sections: [Int], animationStyle: UITableView.RowAnimation) {
         self.reloadSections(indexSet(sections), with: animationStyle)
     }
 
@@ -129,7 +129,7 @@ extension UITableView {
 
     private func rowHeight(_ indexPath: IndexPath) -> CGFloat {
         if let rVal = delegate?.tableView?(self, heightForRowAt: indexPath) {
-            precondition(rVal != UITableViewAutomaticDimension, "TableAdapter has set maintainScrollPosition = true but it doesn't support UITableViewAutomaticDimension that is used somewhere.")
+            precondition(rVal != UITableView.automaticDimension, "TableAdapter has set maintainScrollPosition = true but it doesn't support UITableViewAutomaticDimension that is used somewhere.")
             return rVal
         }
         return 0.0
