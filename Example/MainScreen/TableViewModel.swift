@@ -9,7 +9,7 @@
 import Foundation
 import ETDataDrivenViewKit
 
-protocol ViewModelType: class {
+protocol TableViewModelType: class {
     typealias Model = [TableSection]
 
     var model: Model { get }
@@ -17,7 +17,7 @@ protocol ViewModelType: class {
     func loadData()
 }
 
-class ViewModel: ViewModelType {
+class TableViewModel: TableViewModelType {
     private(set) var model: [TableSection] = [] {
         didSet {
             didUpdateModel?(model)
@@ -25,9 +25,9 @@ class ViewModel: ViewModelType {
     }
     var didUpdateModel: ((Model) -> Void)?
 
-    typealias HeaderFooter = ViewController.HeaderFooterFactory.HeaderFooter
-    typealias GreenRow = ViewController.GreenCellFactory.Content
-    typealias YellowRow = ViewController.YellowCellFactory.Content
+    typealias HeaderFooter = TableViewController.HeaderFooterFactory.HeaderFooter
+    typealias GreenRow = TableViewController.GreenCellFactory.Content
+    typealias YellowRow = TableViewController.YellowCellFactory.Content
 
     func loadData() {
         if model.isEmpty || model.count == 1 {

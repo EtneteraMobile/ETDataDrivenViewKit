@@ -9,11 +9,11 @@
 import UIKit
 import ETDataDrivenViewKit
 
-class ViewController: UITableViewController {
+class TableViewController: UITableViewController {
 
     @IBOutlet var editBarButtonItem: UIBarButtonItem?
     
-    let viewModel: ViewModelType = ViewModel()
+    let viewModel: TableViewModelType = TableViewModel()
 
     override func viewDidLoad() {
         super.viewDidLoad()
