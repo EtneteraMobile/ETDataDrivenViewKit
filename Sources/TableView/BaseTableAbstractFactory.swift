@@ -9,11 +9,8 @@
 import Foundation
 import UIKit
 
-/// Abstract factory for cell
-open class AbstractCellFactory<ContentType, View: UITableViewCell>: AbstractFactory<ContentType, View> {}
-
 /// Abstract factory for view (like Header/Footer)
-open class AbstractFactory<ContentType, View: UIView>: _BaseAbstractFactory {
+open class BaseTableAbstractFactory<ContentType, View: UIView>: _BaseTableAbstractFactory {
     override var viewClass: AnyClass {
         return View.self
     }

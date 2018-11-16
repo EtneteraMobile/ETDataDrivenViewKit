@@ -38,7 +38,7 @@ class ViewController: UITableViewController {
 
     // MARK: - Cell factories
 
-    class GreenCellFactory: AbstractCellFactory<GreenCellFactory.Content, UITableViewCell> {
+    class GreenCellFactory: AbstractTableCellFactory<GreenCellFactory.Content, UITableViewCell> {
         var onPress: (() -> Void)?
         var onSelect: (() -> Void)?
         var onDeselect: (() -> Void)?
@@ -84,7 +84,7 @@ class ViewController: UITableViewController {
         }
     }
 
-    class YellowCellFactory: AbstractCellFactory<YellowCellFactory.Content, UITableViewCell> {
+    class YellowCellFactory: AbstractTableCellFactory<YellowCellFactory.Content, UITableViewCell> {
         override func setup(_ view: UITableViewCell, _ content: Content) {
             view.textLabel?.numberOfLines = 0
             view.textLabel?.text = content.text
@@ -101,7 +101,7 @@ class ViewController: UITableViewController {
 
     // MARK: - Header/Footer factories
 
-    class HeaderFooterFactory: AbstractFactory<HeaderFooterFactory.HeaderFooter, UITableViewHeaderFooterView> {
+    class HeaderFooterFactory: BaseTableAbstractFactory<HeaderFooterFactory.HeaderFooter, UITableViewHeaderFooterView> {
         override func height(for content: HeaderFooter, width: CGFloat) -> CGFloat {
             return content.text.count < 25 ? 32 : 64
         }

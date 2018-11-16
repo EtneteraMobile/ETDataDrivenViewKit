@@ -51,21 +51,21 @@ open class TableAdapter: NSObject  {
     public var deliveredData: [TableSection] = []
 
     /// Factories that handles presentation of given content (`data`) into view.
-    public var cellFactories: [_BaseAbstractFactory] = [] {
+    public var cellFactories: [_BaseTableAbstractFactory] = [] {
         didSet {
             cellFactories.forEach { provider in
                 tableView.register(provider.viewClass, forCellReuseIdentifier: provider.reuseId)
             }
         }
     }
-    public var headerFactories: [_BaseAbstractFactory] = [] {
+    public var headerFactories: [_BaseTableAbstractFactory] = [] {
         didSet {
             headerFactories.forEach { provider in
                 tableView.register(provider.viewClass, forHeaderFooterViewReuseIdentifier: provider.reuseId)
             }
         }
     }
-    public var footerFactories: [_BaseAbstractFactory] = [] {
+    public var footerFactories: [_BaseTableAbstractFactory] = [] {
         didSet {
             footerFactories.forEach { provider in
                 tableView.register(provider.viewClass, forHeaderFooterViewReuseIdentifier: provider.reuseId)
@@ -223,26 +223,26 @@ open class TableAdapter: NSObject  {
 
     // MARK: - General
 
-    private func selectCellFactory(for indexPath: IndexPath) -> _BaseAbstractFactory {
+    private func selectCellFactory(for indexPath: IndexPath) -> _BaseTableAbstractFactory {
         let content = deliveredData[indexPath.section].items[indexPath.row].value
         return selectFactory(for: content, from: cellFactories)
     }
 
-    private func selectHeaderFactory(for section: Int) -> _BaseAbstractFactory? {
+    private func selectHeaderFactory(for section: Int) -> _BaseTableAbstractFactory? {
         if let content = deliveredData[section].header {
             return selectFactory(for: content, from: headerFactories)
         }
         return nil
     }
 
-    private func selectFooterFactory(for section: Int) -> _BaseAbstractFactory? {
+    private func selectFooterFactory(for section: Int) -> _BaseTableAbstractFactory? {
         if let content = deliveredData[section].footer {
             return selectFactory(for: content, from: footerFactories)
         }
         return nil
     }
 
-    private func selectFactory(for content: Any, from factories: [_BaseAbstractFactory]) -> _BaseAbstractFactory {
+    private func selectFactory(for content: Any, from factories: [_BaseTableAbstractFactory]) -> _BaseTableAbstractFactory {
         // NOTE: Performance optimization with caching [TypeOfContent: Factory]
         for provider in factories {
             if provider.shouldHandleInternal(content) {
