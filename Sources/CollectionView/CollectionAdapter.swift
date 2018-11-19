@@ -16,7 +16,7 @@ open class CollectionAdapter: NSObject {
     
     public var data: [DiffableType] = [] {
         didSet {
-            //TODO:
+            //TODO: deliver only diff. It is OK like this for now.
             collectionView.reloadData()
         }
     }
