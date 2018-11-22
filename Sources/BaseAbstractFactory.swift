@@ -9,8 +9,9 @@
 import Foundation
 import UIKit
 
-/// Base abstraction for view factory.
-/// - Warning: Do not inherit from this class, use `AbstractFactory` or `AbstractCellFactory` instead.
+/// Base abstraction for view factory that share code for Table and Collection.
+/// - Warning: Do not inherit from this class, use `AbstractTableCellFactory`,
+/// `AbstractTableHeaderFooterFactory` or `AbstractCollectionCellFactory` instead.
 open class _BaseAbstractFactory {
     // MARK: public
 

@@ -9,6 +9,9 @@
 import Foundation
 import UIKit
 
+// As mentioned in [Swift: UIScrollViewDelegate extension](https://stackoverflow.com/questions/31271849/swift-uiscrollviewdelegate-extension)
+// this implementation couldn't be shared with `TableAdapter`.
+
 public extension CollectionAdapter {
     public func scrollViewDidScroll(_ scrollView: UIScrollView) {
         scrollDelegate.didScroll?(scrollView)

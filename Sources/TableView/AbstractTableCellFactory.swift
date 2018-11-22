@@ -9,12 +9,7 @@
 import Foundation
 import UIKit
 
-/// Abstract factory for cell
-open class AbstractTableCellFactory<ContentType, View: UITableViewCell>: BaseTableAbstractFactory<ContentType, View> {
-    
-}
+/// Abstract factory for Table cell
+open class AbstractTableCellFactory<ContentType, View: UITableViewCell>: BaseTableAbstractFactory<ContentType, View> {}
 
-/// Abstract factory for cell
-open class AbstractTableHeaderFooterFactory<ContentType, View: UITableViewHeaderFooterView>: BaseTableAbstractFactory<ContentType, View> {
-    
-}
+

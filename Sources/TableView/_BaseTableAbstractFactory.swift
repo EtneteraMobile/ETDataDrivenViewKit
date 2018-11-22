@@ -9,6 +9,9 @@
 import Foundation
 import UIKit
 
+/// Base abstraction for Table factory.
+/// - Warning: Do not inherit from this class, use `AbstractTableCellFactory`,
+/// `AbstractTableHeaderFooterFactory` instead.
 open class _BaseTableAbstractFactory: _BaseAbstractFactory {
     
     func canEditInternal(_ content: Any) -> Bool {

@@ -9,7 +9,7 @@
 import Foundation
 import UIKit
 
-/// Abstract factory for cell
+/// Abstract factory for Collection cell
 open class AbstractCollectionCellFactory<ContentType, View: UICollectionViewCell>: _BaseCollectionAbstractFactory {
     override var viewClass: AnyClass {
         return View.self

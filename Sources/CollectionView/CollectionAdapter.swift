@@ -9,17 +9,35 @@
 import Foundation
 import UIKit
 
+/// `CollectionAdapter` serves as `UICollectionView` **delegate and data source**.
+///
+/// After `data` assignment adapter call `reloadData` on managed `collectionView`.
+///
+/// Every **cell is configured by factory** (from `cellFactories`). Factory is
+/// used for cell configuration only if **cell's content is same as generic**
+/// `AbstractFactory.ContentType`. There can be multiple factories with same
+/// ContentType but only the first will be used *everytime*.
 open class CollectionAdapter: NSObject {
     
     // MARK: - Variables
     // MARK: public
-    
+
+    /// Collection items content that will be delivered into `collectionView`
+    /// after assignment.
     public var data: [DiffableType] = [] {
         didSet {
-            //TODO: deliver only diff. It is OK like this for now.
-            collectionView.reloadData()
+            if Thread.isMainThread {
+                deliverData(oldValue, data)
+            } else {
+                DispatchQueue.main.async {
+                    self.deliverData(oldValue, self.data)
+                }
+            }
         }
     }
+
+    /// `data` that are delivered to collectionView
+    public var deliveredData: [DiffableType] = []
     
     /// Factories that handles presentation of given content (`data`) into view.
     public var cellFactories: [_BaseCollectionAbstractFactory] = [] {
@@ -32,9 +50,16 @@ open class CollectionAdapter: NSObject {
     
     /// ScrollView delegate that bridges events to closures
     public let scrollDelegate = ScrollViewDelegate()
+
+    /// Disables delivery animation when collectionView doesn't contain any items
+    /// before the update.
+    ///
+    /// - Attention: Default is `true`
+    public var isAnimationDisabledForDeliveryFromEmptyState = true
     
     // MARK: private
-    
+
+    /// Managed collectionView
     private weak var collectionView: UICollectionView!
     
     // MARK: - Initializer
@@ -48,17 +73,36 @@ open class CollectionAdapter: NSObject {
         // Loads initial collectionView state
         self.collectionView.reloadData()
     }
+
+    // MARK: - Data Delivery
+    // MARK: private
+
+    private func deliverData(_ old: [DiffableType], _ new: [DiffableType]) {
+        if #available(iOSApplicationExtension 10.0, *) {
+            dispatchPrecondition(condition: .onQueue(DispatchQueue.main))
+        }
+        if isAnimationDisabledForDeliveryFromEmptyState && deliveredData.isEmpty {
+            // Delivers without animation
+            deliveredData = new
+            collectionView.reloadData()
+        } else {
+            // Tries to deliver with animation
+            // TODO: Update collection with animation according Diff (https://github.com/EtneteraMobile/ETDataDrivenViewKit/issues/10)
+            deliveredData = new
+            collectionView.reloadData()
+        }
+    }
     
     // MARK: - General
     
     private func selectCellFactory(for indexPath: IndexPath) -> _BaseCollectionAbstractFactory {
-        let content = data[indexPath.row]
-        return selectFactory(for: content, from: cellFactories)
+        return selectFactory(for: content(at: indexPath), from: cellFactories)
     }
     
     private func selectFactory(for content: Any, from factories: [_BaseCollectionAbstractFactory]) -> _BaseCollectionAbstractFactory {
         // NOTE: Performance optimization with caching [TypeOfContent: Factory]
-        for provider in factories {
+        for idx in 0..<factories.count {
+            let provider = factories[idx]
             if provider.shouldHandleInternal(content) {
                 return provider
             }
@@ -67,7 +111,7 @@ open class CollectionAdapter: NSObject {
     }
     
     private func content(at indexPath: IndexPath) -> DiffableType {
-        return data[indexPath.row]
+        return deliveredData[indexPath.row]
     }
 }
 
@@ -80,7 +124,7 @@ extension CollectionAdapter: UICollectionViewDataSource {
     }
     
     public func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return data.count
+        return deliveredData.count
     }
     
     public func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {

@@ -13,11 +13,12 @@
 		67BAACC1219EE46300B05528 /* CollectionAdapter+ScrollViewDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 67BAACC0219EE46300B05528 /* CollectionAdapter+ScrollViewDelegate.swift */; };
 		67BAACC3219EE5A000B05528 /* AbstractTableCellFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = 67BAACC2219EE5A000B05528 /* AbstractTableCellFactory.swift */; };
 		67BAACC5219EE5CA00B05528 /* AbstractCollectionCellFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = 67BAACC4219EE5CA00B05528 /* AbstractCollectionCellFactory.swift */; };
-		67BAACC9219EED2400B05528 /* BaseCollectionAbstractFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = 67BAACC8219EED2400B05528 /* BaseCollectionAbstractFactory.swift */; };
+		67BAACC9219EED2400B05528 /* _BaseCollectionAbstractFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = 67BAACC8219EED2400B05528 /* _BaseCollectionAbstractFactory.swift */; };
 		67BAACCB219EF16300B05528 /* _BaseTableAbstractFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = 67BAACCA219EF16300B05528 /* _BaseTableAbstractFactory.swift */; };
 		67BAACCE219EF53D00B05528 /* TableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 67BAACCC219EF50600B05528 /* TableViewController.swift */; };
 		67BAACD3219EF83C00B05528 /* CollectionViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 67BAACD1219EF78B00B05528 /* CollectionViewModel.swift */; };
 		67BAACD4219EF84000B05528 /* CollectionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 67BAACCF219EF76400B05528 /* CollectionViewController.swift */; };
+		713E3B7A21A6DE9A00269DFB /* AbstractTableHeaderFooterFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = 713E3B7921A6DE9A00269DFB /* AbstractTableHeaderFooterFactory.swift */; };
 		71437E7B2073796000A8CC96 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71437E7A2073796000A8CC96 /* AppDelegate.swift */; };
 		71437E802073796000A8CC96 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 71437E7E2073796000A8CC96 /* Main.storyboard */; };
 		71437E822073796200A8CC96 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 71437E812073796200A8CC96 /* Assets.xcassets */; };
@@ -27,7 +28,7 @@
 		71437E9520737DDC00A8CC96 /* TableViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71437E9420737DDB00A8CC96 /* TableViewModel.swift */; };
 		714F95E02073905F00B01A93 /* BaseTableAbstractFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = 714F95DF2073905F00B01A93 /* BaseTableAbstractFactory.swift */; };
 		714F95E22073929800B01A93 /* TableSection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 714F95E12073929800B01A93 /* TableSection.swift */; };
-		7163330B20CFAD6A00C65728 /* TableView+TableAdapter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7163330A20CFAD6A00C65728 /* TableView+TableAdapter.swift */; };
+		7163330B20CFAD6A00C65728 /* TableView+Adapter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7163330A20CFAD6A00C65728 /* TableView+Adapter.swift */; };
 		71704ACE212712DE005A1E42 /* ScrollViewDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71704ACD212712DE005A1E42 /* ScrollViewDelegate.swift */; };
 		71704AD021271362005A1E42 /* TableAdapter+ScrollViewDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71704ACF21271362005A1E42 /* TableAdapter+ScrollViewDelegate.swift */; };
 		71704AD221272B44005A1E42 /* BaseAbstractFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71704AD121272B44005A1E42 /* BaseAbstractFactory.swift */; };
@@ -82,11 +83,12 @@
 		67BAACC0219EE46300B05528 /* CollectionAdapter+ScrollViewDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CollectionAdapter+ScrollViewDelegate.swift"; sourceTree = "<group>"; };
 		67BAACC2219EE5A000B05528 /* AbstractTableCellFactory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AbstractTableCellFactory.swift; sourceTree = "<group>"; };
 		67BAACC4219EE5CA00B05528 /* AbstractCollectionCellFactory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AbstractCollectionCellFactory.swift; sourceTree = "<group>"; };
-		67BAACC8219EED2400B05528 /* BaseCollectionAbstractFactory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BaseCollectionAbstractFactory.swift; sourceTree = "<group>"; };
+		67BAACC8219EED2400B05528 /* _BaseCollectionAbstractFactory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = _BaseCollectionAbstractFactory.swift; sourceTree = "<group>"; };
 		67BAACCA219EF16300B05528 /* _BaseTableAbstractFactory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = _BaseTableAbstractFactory.swift; sourceTree = "<group>"; };
 		67BAACCC219EF50600B05528 /* TableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TableViewController.swift; sourceTree = "<group>"; };
 		67BAACCF219EF76400B05528 /* CollectionViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CollectionViewController.swift; sourceTree = "<group>"; };
 		67BAACD1219EF78B00B05528 /* CollectionViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CollectionViewModel.swift; sourceTree = "<group>"; };
+		713E3B7921A6DE9A00269DFB /* AbstractTableHeaderFooterFactory.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AbstractTableHeaderFooterFactory.swift; sourceTree = "<group>"; };
 		71437E782073796000A8CC96 /* example.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = example.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		71437E7A2073796000A8CC96 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		71437E7F2073796000A8CC96 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
@@ -96,7 +98,7 @@
 		71437E9420737DDB00A8CC96 /* TableViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TableViewModel.swift; sourceTree = "<group>"; };
 		714F95DF2073905F00B01A93 /* BaseTableAbstractFactory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BaseTableAbstractFactory.swift; sourceTree = "<group>"; };
 		714F95E12073929800B01A93 /* TableSection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TableSection.swift; sourceTree = "<group>"; };
-		7163330A20CFAD6A00C65728 /* TableView+TableAdapter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "TableView+TableAdapter.swift"; sourceTree = "<group>"; };
+		7163330A20CFAD6A00C65728 /* TableView+Adapter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "TableView+Adapter.swift"; sourceTree = "<group>"; };
 		71704ACD212712DE005A1E42 /* ScrollViewDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScrollViewDelegate.swift; sourceTree = "<group>"; };
 		71704ACF21271362005A1E42 /* TableAdapter+ScrollViewDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "TableAdapter+ScrollViewDelegate.swift"; sourceTree = "<group>"; };
 		71704AD121272B44005A1E42 /* BaseAbstractFactory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BaseAbstractFactory.swift; sourceTree = "<group>"; };
@@ -177,11 +179,12 @@
 			children = (
 				67BAACCA219EF16300B05528 /* _BaseTableAbstractFactory.swift */,
 				67BAACC2219EE5A000B05528 /* AbstractTableCellFactory.swift */,
+				713E3B7921A6DE9A00269DFB /* AbstractTableHeaderFooterFactory.swift */,
 				714F95DF2073905F00B01A93 /* BaseTableAbstractFactory.swift */,
 				8933C7841EB5B820000D00A4 /* TableAdapter.swift */,
 				71704ACF21271362005A1E42 /* TableAdapter+ScrollViewDelegate.swift */,
 				714F95E12073929800B01A93 /* TableSection.swift */,
-				7163330A20CFAD6A00C65728 /* TableView+TableAdapter.swift */,
+				7163330A20CFAD6A00C65728 /* TableView+Adapter.swift */,
 				71800BD721117BE30092832F /* UI+SectionedViewType.swift */,
 			);
 			path = TableView;
@@ -190,8 +193,8 @@
 		67BAACBB219EE2D600B05528 /* CollectionView */ = {
 			isa = PBXGroup;
 			children = (
+				67BAACC8219EED2400B05528 /* _BaseCollectionAbstractFactory.swift */,
 				67BAACC4219EE5CA00B05528 /* AbstractCollectionCellFactory.swift */,
-				67BAACC8219EED2400B05528 /* BaseCollectionAbstractFactory.swift */,
 				67BAACBC219EE30B00B05528 /* CollectionAdapter.swift */,
 				67BAACC0219EE46300B05528 /* CollectionAdapter+ScrollViewDelegate.swift */,
 				67BAACBE219EE32700B05528 /* UICollectionView+Adapter.swift */,
@@ -432,14 +435,15 @@
 				71800BDC211189870092832F /* DiffableType.swift in Sources */,
 				71704ACE212712DE005A1E42 /* ScrollViewDelegate.swift in Sources */,
 				67BAACC1219EE46300B05528 /* CollectionAdapter+ScrollViewDelegate.swift in Sources */,
+				713E3B7A21A6DE9A00269DFB /* AbstractTableHeaderFooterFactory.swift in Sources */,
 				67BAACCB219EF16300B05528 /* _BaseTableAbstractFactory.swift in Sources */,
 				71704AD021271362005A1E42 /* TableAdapter+ScrollViewDelegate.swift in Sources */,
 				71800BD821117BE30092832F /* UI+SectionedViewType.swift in Sources */,
 				67BAACBD219EE30B00B05528 /* CollectionAdapter.swift in Sources */,
-				7163330B20CFAD6A00C65728 /* TableView+TableAdapter.swift in Sources */,
+				7163330B20CFAD6A00C65728 /* TableView+Adapter.swift in Sources */,
 				71800BDA21117C420092832F /* AnimationConfiguration.swift in Sources */,
 				67BAACC3219EE5A000B05528 /* AbstractTableCellFactory.swift in Sources */,
-				67BAACC9219EED2400B05528 /* BaseCollectionAbstractFactory.swift in Sources */,
+				67BAACC9219EED2400B05528 /* _BaseCollectionAbstractFactory.swift in Sources */,
 				71704AD221272B44005A1E42 /* BaseAbstractFactory.swift in Sources */,
 				714F95E22073929800B01A93 /* TableSection.swift in Sources */,
 			);

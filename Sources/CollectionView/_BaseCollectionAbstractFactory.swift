@@ -9,6 +9,9 @@
 import Foundation
 import UIKit
 
+/// Base abstraction for Collection factory.
+/// - Warning: Do not inherit from this class, use
+/// `AbstractCollectionCellFactory` instead.
 open class _BaseCollectionAbstractFactory: _BaseAbstractFactory {
     
     func sizeForContentInternal(_ content: Any) -> CGSize {

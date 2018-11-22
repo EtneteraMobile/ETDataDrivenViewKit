@@ -9,7 +9,7 @@
 import Foundation
 import UIKit
 
-private var AssociatedTableAdapter: UInt8 = 0
+private var AssociatedTableAdapter: String = "AssociatedTableAdapter"
 
 public extension UITableView {
     /// `TableAdapter` that delivers data changes into `tableView`.
