@@ -9,11 +9,8 @@
 import Foundation
 import UIKit
 
-/// Abstract factory for cell
-open class AbstractCellFactory<ContentType, View: UITableViewCell>: AbstractFactory<ContentType, View> {}
-
 /// Abstract factory for view (like Header/Footer)
-open class AbstractFactory<ContentType, View: UIView>: _BaseAbstractFactory {
+open class BaseTableAbstractFactory<ContentType, View: UIView>: _BaseTableAbstractFactory {
     override var viewClass: AnyClass {
         return View.self
     }
@@ -61,9 +58,9 @@ open class AbstractFactory<ContentType, View: UIView>: _BaseAbstractFactory {
         move(from: sourceIndexPath, to: destinationIndexPath)
     }
 
-    open func commit(editingStyle: UITableViewCellEditingStyle, for content: ContentType) {}
+    open func commit(editingStyle: UITableViewCell.EditingStyle, for content: ContentType) {}
 
-    override func commitInternal(editingStyle: UITableViewCellEditingStyle, for content: Any) {
+    override func commitInternal(editingStyle: UITableViewCell.EditingStyle, for content: Any) {
         commit(editingStyle: editingStyle, for: typedContent(content)!)
     }
 
@@ -88,7 +85,7 @@ open class AbstractFactory<ContentType, View: UIView>: _BaseAbstractFactory {
     ///   - width: Max width of layouted component
     /// - Returns: Height of component.
     open func height(for content: ContentType, width: CGFloat) -> CGFloat {
-        return UITableViewAutomaticDimension
+        return UITableView.automaticDimension
     }
 
     override func heightInternal(for content: Any, width: CGFloat) -> CGFloat {
@@ -164,11 +161,11 @@ open class AbstractFactory<ContentType, View: UIView>: _BaseAbstractFactory {
     }
 
     /// Default is none
-    open func editingStyle(_ content: ContentType) -> UITableViewCellEditingStyle {
+    open func editingStyle(_ content: ContentType) -> UITableViewCell.EditingStyle {
         return .none
     }
 
-    override func editingStyleInternal(_ content: Any) -> UITableViewCellEditingStyle {
+    override func editingStyleInternal(_ content: Any) -> UITableViewCell.EditingStyle {
         return editingStyle(typedContent(content)!)
     }
 

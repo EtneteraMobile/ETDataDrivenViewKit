@@ -9,6 +9,7 @@
 import Foundation
 import UIKit
 
+/// Class to which is delegated all `UIScrollViewDelegate` actions.
 public class ScrollViewDelegate {
     public var didScroll: ((_ scrollView: UIScrollView) -> Void)?
     public var didScrollToTop: ((_ scrollView: UIScrollView) -> Void)?

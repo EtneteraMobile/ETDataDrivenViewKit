@@ -9,11 +9,11 @@
 import UIKit
 import ETDataDrivenViewKit
 
-class ViewController: UITableViewController {
+class TableViewController: UITableViewController {
 
     @IBOutlet var editBarButtonItem: UIBarButtonItem?
     
-    let viewModel: ViewModelType = ViewModel()
+    let viewModel: TableViewModelType = TableViewModel()
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -53,7 +53,7 @@ class ViewController: UITableViewController {
         
 
         override func height(for content: Content, width: CGFloat) -> CGFloat {
-            let height = NSAttributedString(string: content.text, attributes: [NSAttributedStringKey.font: UIFont.systemFont(ofSize: 17)]).boundingRect(with: CGSize(width: CGFloat.greatestFiniteMagnitude, height: CGFloat.greatestFiniteMagnitude), options: .usesLineFragmentOrigin, context: nil).height
+            let height = NSAttributedString(string: content.text, attributes: [NSAttributedString.Key.font: UIFont.systemFont(ofSize: 17)]).boundingRect(with: CGSize(width: CGFloat.greatestFiniteMagnitude, height: CGFloat.greatestFiniteMagnitude), options: .usesLineFragmentOrigin, context: nil).height
             return CGFloat(ceilf(Float(height))) + 20 // padding
         }
         override func setup(_ view: UITableViewCell, _ content: Content) {
