@@ -25,29 +25,61 @@ class CollectionViewModel: CollectionViewModelType  {
     }
     
     var didUpdateModel: ((Model) -> Void)?
+
+    private var counter = 0
     
     func loadData() {
         var data: [DiffableType] = []
-        
-        for i in 0..<99 {
-            if i % 2 == 0 {
-                data.append(GreenCell())
-            } else {
-                data.append(RedCell())
-            }
+
+        if counter % 2 == 0 {
+            data = [
+                RedCell(index: 0),
+                GreenCell(index: 1),
+                RedCell(index: 2),
+                RedCell(index: 3),
+                GreenCell(index: 4),
+                RedCell(index: 5),
+                GreenCell(index: 6),
+                RedCell(index: 7),
+                GreenCell(index: 8),
+                RedCell(index: 9),
+                GreenCell(index: 10),
+                RedCell(index: 11),
+            ]
+        } else {
+            data = [
+                GreenCell(index: 1),
+                RedCell(index: 2),
+                RedCell(index: 3),
+                GreenCell(index: 4),
+                RedCell(index: 5),
+                GreenCell(index: 6),
+                RedCell(index: 7),
+                GreenCell(index: 8),
+                RedCell(index: 9),
+                GreenCell(index: 10),
+                RedCell(index: 11),
+                RedCell(index: 12),
+            ]
         }
         
         model = data
+
+        counter += 1
     }
 }
 
 struct GreenCell: DiffableHashableType {
+    let index: Int
+
     var identity: Int {
         return hashValue
     }
 }
 
 struct RedCell: DiffableHashableType {
+    let index: Int
+
     var identity: Int {
         return hashValue
     }

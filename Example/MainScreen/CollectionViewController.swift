@@ -12,6 +12,8 @@ import ETDataDrivenViewKit
 
 class CollectionViewController: UICollectionViewController {
     
+    @IBOutlet var reloadBarButton: UIBarButtonItem?
+    
     lazy var viewModel: CollectionViewModelType = CollectionViewModel()
     
     override func viewDidLoad() {
@@ -25,7 +27,10 @@ class CollectionViewController: UICollectionViewController {
         viewModel.loadData()
     }
     
-    
+    @IBAction func reloadBarButtonTapped(_ sender: UIBarButtonItem) {
+        viewModel.loadData()
+    }
+
     class GreenCellFactory: AbstractCollectionCellFactory<GreenCell, UICollectionViewCell> {
         
         override func setup(_ view: UICollectionViewCell, _ content: GreenCell) {

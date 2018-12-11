@@ -8,6 +8,8 @@
 
 import Foundation
 import UIKit
+import Differentiator
+
 
 /// `CollectionAdapter` serves as `UICollectionView` **delegate and data source**.
 ///
@@ -18,7 +20,15 @@ import UIKit
 /// `AbstractFactory.ContentType`. There can be multiple factories with same
 /// ContentType but only the first will be used *everytime*.
 open class CollectionAdapter: NSObject {
-    
+
+    /// Result of rows diff.
+    ///
+    /// - Attention: `import Differentiator`
+    public enum DiffResult {
+        case diff([Changeset<SectionModel>])
+        case error(Error)
+    }
+
     // MARK: - Variables
     // MARK: public
 
@@ -37,7 +47,7 @@ open class CollectionAdapter: NSObject {
     }
 
     /// `data` that are delivered to collectionView
-    public var deliveredData: [DiffableType] = []
+    public var deliveredData: [SectionModel] = []
     
     /// Factories that handles presentation of given content (`data`) into view.
     public var cellFactories: [_BaseCollectionAbstractFactory] = [] {
@@ -56,7 +66,12 @@ open class CollectionAdapter: NSObject {
     ///
     /// - Attention: Default is `true`
     public var isAnimationDisabledForDeliveryFromEmptyState = true
-    
+
+    /// Triggered after rows diff. This observer is for DEBUG purpose.
+    ///
+    /// - Attention: `import Differentiator`
+    public var rowsDiffResult: ((DiffResult) -> Void)?
+
     // MARK: private
 
     /// Managed collectionView
@@ -78,18 +93,35 @@ open class CollectionAdapter: NSObject {
     // MARK: private
 
     private func deliverData(_ old: [DiffableType], _ new: [DiffableType]) {
+        let oldSection = [SectionModel(identity: "\(type(of: self))", rows: old)]
+        let newSection = [SectionModel(identity: "\(type(of: self))", rows: new)]
+
         if #available(iOSApplicationExtension 10.0, *) {
             dispatchPrecondition(condition: .onQueue(DispatchQueue.main))
         }
         if isAnimationDisabledForDeliveryFromEmptyState && deliveredData.isEmpty {
             // Delivers without animation
-            deliveredData = new
+            deliveredData = newSection
+
             collectionView.reloadData()
         } else {
             // Tries to deliver with animation
-            // TODO: Update collection with animation according Diff (https://github.com/EtneteraMobile/ETDataDrivenViewKit/issues/10)
-            deliveredData = new
-            collectionView.reloadData()
+            do {
+                let differences = try Diff.differencesForSectionedView(initialSections: oldSection, finalSections: newSection)
+                rowsDiffResult?(.diff(differences))
+                for difference in differences {
+                    collectionView.performBatchUpdates(difference, deliverData: {
+                        deliveredData = difference.finalSections
+                    })
+                }
+            }
+            catch let error {
+                assertionFailure("Unable to deliver data with animation, error: \(error). Starts delivery without animation (reloadData).")
+                rowsDiffResult?(.error(error))
+                // Fallback: reloads collection view
+                deliveredData = newSection
+                collectionView.reloadData()
+            }
         }
     }
     
@@ -111,7 +143,7 @@ open class CollectionAdapter: NSObject {
     }
     
     private func content(at indexPath: IndexPath) -> DiffableType {
-        return deliveredData[indexPath.row]
+        return deliveredData[indexPath.section].rows[indexPath.row]
     }
 }
 
@@ -120,11 +152,11 @@ open class CollectionAdapter: NSObject {
 extension CollectionAdapter: UICollectionViewDataSource {
     
     public func numberOfSections(in collectionView: UICollectionView) -> Int {
-        return 1
+        return deliveredData.count
     }
     
     public func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return deliveredData.count
+        return deliveredData[section].rows.count
     }
     
     public func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
