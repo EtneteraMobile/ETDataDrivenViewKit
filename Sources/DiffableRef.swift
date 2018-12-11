@@ -13,7 +13,7 @@ import Differentiator
 /// `Differentiator.IdentifiableType & Equatable`.
 ///
 /// - Note: There is need for this because `Differentiator.IdentifiableType & Equatable` is
-///         self constrained protocol. `TableSection.items` mixes multiple types
+///         self constrained protocol. `SectionModel.items` mixes multiple types
 ///         therefore there couldn't be used generic.
 ///
 /// - Important: `DiffableRef` is public, but could be used only internaly in

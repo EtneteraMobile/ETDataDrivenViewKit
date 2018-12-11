@@ -1,5 +1,5 @@
 //
-//  TableSection.swift
+//  SectionModel.swift
 //  ETDataDrivenViewKit-iOS
 //
 //  Created by Jan Čislinský on 03. 04. 2018.
@@ -10,7 +10,7 @@ import Foundation
 import Differentiator
 
 /// Holds data for section. Every section has rows, optionaly header and footer.
-public struct TableSection: AnimatableSectionModelType {
+public struct SectionModel: AnimatableSectionModelType {
     /// Identification of section for diffing algorithm.
     public let identity: String
     /// Content that represents header data
@@ -25,7 +25,7 @@ public struct TableSection: AnimatableSectionModelType {
     /// Content that represents footer data
     public let footer: DiffableType?
 
-    /// Initializes `TableSection` with given `identity`, `header`, `rows` and `footer`.
+    /// Initializes `SectionModel` with given `identity`, `header`, `rows` and `footer`.
     public init(identity: String, header: DiffableType? = nil, rows: [DiffableType], footer: DiffableType? = nil) {
         self.identity = identity
         self.header = header
@@ -33,8 +33,8 @@ public struct TableSection: AnimatableSectionModelType {
         self.footer = footer
     }
 
-    /// Initializes `TableSection` with `identity` from given original and given `rows`.
-    public init(original: TableSection, items: [DiffableRef]) {
+    /// Initializes `SectionModel` with `identity` from given original and given `rows`.
+    public init(original: SectionModel, items: [DiffableRef]) {
         self.identity = original.identity
         self.header = original.header
         self.items = items

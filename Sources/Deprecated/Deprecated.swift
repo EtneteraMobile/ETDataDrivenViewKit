@@ -14,3 +14,5 @@ public typealias AbstractCellFactory = AbstractTableCellFactory
 @available(*, deprecated, message: "Please, use BaseTableAbstractFactory instead.")
 public typealias AbstractFactory = BaseTableAbstractFactory
 
+@available(*, deprecated, message: "Please, use SectionModel instead.")
+public typealias TableSection = SectionModel
