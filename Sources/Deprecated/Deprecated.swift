@@ -13,4 +13,3 @@ public typealias AbstractCellFactory = AbstractTableCellFactory
 
 @available(*, deprecated, message: "Please, use BaseTableAbstractFactory instead.")
 public typealias AbstractFactory = BaseTableAbstractFactory
-
