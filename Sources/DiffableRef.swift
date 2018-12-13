@@ -13,8 +13,8 @@ import Differentiator
 /// `Differentiator.IdentifiableType & Equatable`.
 ///
 /// - Note: There is need for this because `Differentiator.IdentifiableType & Equatable` is
-///         self constrained protocol. `SectionModel.items` mixes multiple types
-///         therefore there couldn't be used generic.
+///         self constrained protocol. `TableSection.items` and `CollectionSection.items`
+///         mixes multiple types therefore there couldn't be used generic.
 ///
 /// - Important: `DiffableRef` is public, but could be used only internaly in
 ///         `ETDataDrivenViewKit` module.

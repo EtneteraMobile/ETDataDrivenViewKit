@@ -10,7 +10,6 @@ import Foundation
 import UIKit
 import Differentiator
 
-
 /// `CollectionAdapter` serves as `UICollectionView` **delegate and data source**.
 ///
 /// After `data` assignment adapter call `reloadData` on managed `collectionView`.
@@ -25,7 +24,7 @@ open class CollectionAdapter: NSObject {
     ///
     /// - Attention: `import Differentiator`
     public enum DiffResult {
-        case diff([Changeset<SectionModel>])
+        case diff([Changeset<CollectionSection>])
         case error(Error)
     }
 
@@ -46,8 +45,8 @@ open class CollectionAdapter: NSObject {
         }
     }
 
-    /// `data` that are delivered to collectionView
-    public var deliveredData: [SectionModel] = []
+    /// `data` that are delivered to collectionView (wrapped in section)
+    public var deliveredData: [CollectionSection] = []
     
     /// Factories that handles presentation of given content (`data`) into view.
     public var cellFactories: [_BaseCollectionAbstractFactory] = [] {
@@ -93,8 +92,8 @@ open class CollectionAdapter: NSObject {
     // MARK: private
 
     private func deliverData(_ old: [DiffableType], _ new: [DiffableType]) {
-        let oldSection = [SectionModel(identity: "\(type(of: self))", rows: old)]
-        let newSection = [SectionModel(identity: "\(type(of: self))", rows: new)]
+        let oldSection = [CollectionSection(identity: "dataWrapper", rows: old)]
+        let newSection = [CollectionSection(identity: "dataWrapper", rows: new)]
 
         if #available(iOSApplicationExtension 10.0, *) {
             dispatchPrecondition(condition: .onQueue(DispatchQueue.main))

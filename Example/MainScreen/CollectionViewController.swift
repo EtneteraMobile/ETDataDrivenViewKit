@@ -20,7 +20,9 @@ class CollectionViewController: UICollectionViewController {
         super.viewDidLoad()
         
         collectionView.adapter.cellFactories = [GreenCellFactory(), RedCellFactory()]
-
+        collectionView.adapter.rowsDiffResult = { diff in
+            print(diff)
+        }
         viewModel.didUpdateModel = { [weak collectionView] model in
             collectionView?.adapter.data = model
         }

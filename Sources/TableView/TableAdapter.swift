@@ -27,7 +27,7 @@ open class TableAdapter: NSObject  {
     ///
     /// - Attention: `import Differentiator`
     public enum DiffResult {
-        case diff([Changeset<SectionModel>])
+        case diff([Changeset<TableSection>])
         case error(Error)
     }
 
@@ -35,7 +35,7 @@ open class TableAdapter: NSObject  {
     // MARK: public
 
     /// Table sections content that will be delivered into `tableView` after assignment.
-    public var data: [SectionModel] = [] {
+    public var data: [TableSection] = [] {
         didSet {
             if Thread.isMainThread {
                 deliverData(oldValue, data)
@@ -48,7 +48,7 @@ open class TableAdapter: NSObject  {
     }
 
     /// `data` that are delivered to tableView
-    public var deliveredData: [SectionModel] = []
+    public var deliveredData: [TableSection] = []
 
     /// Factories that handles presentation of given **cell** content (`data`) into view.
     public var cellFactories: [_BaseTableAbstractFactory] = [] {
@@ -130,7 +130,7 @@ open class TableAdapter: NSObject  {
     // MARK: - Data Delivery
     // MARK: private
 
-    private func deliverData(_ oldSections: [SectionModel], _ newSections: [SectionModel]) {
+    private func deliverData(_ oldSections: [TableSection], _ newSections: [TableSection]) {
         if #available(iOSApplicationExtension 10.0, *) {
             dispatchPrecondition(condition: .onQueue(DispatchQueue.main))
         }
@@ -162,7 +162,7 @@ open class TableAdapter: NSObject  {
 
     /// Updates headers/footers in tableView. `Diff` from `Differentiator`
     /// delivers only insert/remove section and insert/reload/remove rows.
-    private func deliverHeaderFooterUpdates(_ oldSections: [SectionModel], _ differences: [Changeset<SectionModel>], _ newSections: [SectionModel]) {
+    private func deliverHeaderFooterUpdates(_ oldSections: [TableSection], _ differences: [Changeset<TableSection>], _ newSections: [TableSection]) {
         var old = oldSections
 
         // Removes deleted sections
@@ -172,7 +172,7 @@ open class TableAdapter: NSObject  {
         }
 
         // Finds pairs (old, new) according section identity
-        let equalIdentityPairs: [(old: SectionModel, new: SectionModel, finalIdx: Int)] = old.compactMap { oldSection in
+        let equalIdentityPairs: [(old: TableSection, new: TableSection, finalIdx: Int)] = old.compactMap { oldSection in
             let newIdx = newSections.index { newSection in
                 return newSection.identity == oldSection.identity
             }
@@ -195,7 +195,7 @@ open class TableAdapter: NSObject  {
         }
     }
 
-    private func deliverHeaderFooterUpdate(_ pair: (old: SectionModel, new: SectionModel, finalIdx: Int)) -> Bool {
+    private func deliverHeaderFooterUpdate(_ pair: (old: TableSection, new: TableSection, finalIdx: Int)) -> Bool {
         let headerIdentAndValueEqual = pair.old.header === pair.new.header && pair.old.header == pair.new.header
         let footerIdentAndValueEqual = pair.old.footer === pair.new.footer && pair.old.footer == pair.new.footer
 
@@ -205,7 +205,7 @@ open class TableAdapter: NSObject  {
 
         // Saves new header & footer
         let orig = deliveredData[pair.finalIdx]
-        deliveredData[pair.finalIdx] = SectionModel(identity: orig.identity, header: pair.new.header, rows: orig.rows, footer: pair.new.footer)
+        deliveredData[pair.finalIdx] = TableSection(identity: orig.identity, header: pair.new.header, rows: orig.rows, footer: pair.new.footer)
 
         // Updates header
         if headerIdentAndValueEqual == false {

@@ -52,8 +52,8 @@ class CollectionViewModel: CollectionViewModelType  {
                 RedCell(index: 2),
                 RedCell(index: 3),
                 GreenCell(index: 4),
-                RedCell(index: 5),
                 GreenCell(index: 6),
+                RedCell(index: 5),
                 RedCell(index: 7),
                 GreenCell(index: 8),
                 RedCell(index: 9),
@@ -73,7 +73,7 @@ struct GreenCell: DiffableHashableType {
     let index: Int
 
     var identity: Int {
-        return hashValue
+        return String(reflecting: type(of: self)).hashValue ^ hashValue
     }
 }
 
@@ -81,6 +81,6 @@ struct RedCell: DiffableHashableType {
     let index: Int
 
     var identity: Int {
-        return hashValue
+        return String(reflecting: type(of: self)).hashValue ^ hashValue
     }
 }

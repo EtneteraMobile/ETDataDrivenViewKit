@@ -14,7 +14,6 @@ extension UICollectionView {
 
     public func performBatchUpdates<S>(_ changes: Changeset<S>, deliverData: () -> Void) {
         deliverData()
-
         performBatchUpdates({
             deleteSections(IndexSet(changes.deletedSections))
             // Updated sections doesn't mean reload entire section, somebody needs to update the section view manually
@@ -34,6 +33,6 @@ extension UICollectionView {
             for (from, to) in changes.movedItems {
                 moveItem(at: IndexPath(item: from.itemIndex, section: from.sectionIndex), to: IndexPath(item: to.itemIndex, section: to.sectionIndex))
             }
-        },completion: nil)
+        }, completion: nil)
     }
 }
