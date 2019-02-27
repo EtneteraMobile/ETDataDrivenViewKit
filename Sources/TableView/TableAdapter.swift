@@ -264,7 +264,7 @@ open class TableAdapter: NSObject  {
                 return provider
             }
         }
-        fatalError()
+        fatalError("Factory was not found for content: \(String(reflecting: type(of:content)))")
     }
 
     private func content(at indexPath: IndexPath) -> DiffableType {
