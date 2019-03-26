@@ -26,9 +26,16 @@ open class TableAdapter: NSObject  {
     /// Result of rows diff.
     ///
     /// - Attention: `import Differentiator`
-    public enum DiffResult {
+    public enum DiffResult: CustomStringConvertible {
         case diff([Changeset<TableSection>])
         case error(Error)
+
+        public var description: String {
+            switch self {
+            case .diff(let diff): return "\(diff)"
+            case .error(let error): return error.duplicateItemDescription() ?? "\(error)"
+            }
+        }
     }
 
     // MARK: - Variables
@@ -173,7 +180,7 @@ open class TableAdapter: NSObject  {
 
         // Finds pairs (old, new) according section identity
         let equalIdentityPairs: [(old: TableSection, new: TableSection, finalIdx: Int)] = old.compactMap { oldSection in
-            let newIdx = newSections.index { newSection in
+            let newIdx = newSections.firstIndex { newSection in
                 return newSection.identity == oldSection.identity
             }
             if let newIdx = newIdx {

@@ -23,10 +23,19 @@ open class CollectionAdapter: NSObject {
     /// Result of rows diff.
     ///
     /// - Attention: `import Differentiator`
-    public enum DiffResult {
+    public enum DiffResult: CustomStringConvertible {
         case diff([Changeset<CollectionSection>])
         case error(Error)
+
+        public var description: String {
+            switch self {
+            case .diff(let diff): return "\(diff)"
+            case .error(let error): return error.duplicateItemDescription() ?? "\(error)"
+            }
+        }
     }
+
+
 
     // MARK: - Variables
     // MARK: public

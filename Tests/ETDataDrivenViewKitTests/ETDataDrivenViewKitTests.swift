@@ -30,7 +30,7 @@ class ETDataDrivenViewKitTests: XCTestCase {
     func testPerformance1() {
         measure {
             objects.forEach {
-                let t = $0.text
+                _ = $0.text
             }
         }
     }
@@ -38,7 +38,7 @@ class ETDataDrivenViewKitTests: XCTestCase {
     func testPerformance2() {
         measure {
             objectsAny.forEach {
-                let t = ($0 as! TestClass).text
+                _ = ($0 as! TestClass).text
             }
         }
     }

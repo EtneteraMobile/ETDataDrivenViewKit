@@ -13,7 +13,7 @@ private var AssociatedTableAdapter: String = "AssociatedTableAdapter"
 
 public extension UITableView {
     /// `TableAdapter` that delivers data changes into `tableView`.
-    public var adapter: TableAdapter {
+    var adapter: TableAdapter {
         get {
             if let adapter = objc_getAssociatedObject(self, &AssociatedTableAdapter) as? TableAdapter {
                 return adapter

@@ -41,6 +41,7 @@
 		71800BD821117BE30092832F /* UI+SectionedViewType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71800BD721117BE30092832F /* UI+SectionedViewType.swift */; };
 		71800BDA21117C420092832F /* AnimationConfiguration.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71800BD921117C420092832F /* AnimationConfiguration.swift */; };
 		71800BDC211189870092832F /* DiffableType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71800BDB211189870092832F /* DiffableType.swift */; };
+		71AC629F224A26D300A605E8 /* Error+DDVK.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71AC629E224A26D300A605E8 /* Error+DDVK.swift */; };
 		71F502F52110394500D15E40 /* Differentiator.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 71F502F42110394500D15E40 /* Differentiator.framework */; };
 		8933C7851EB5B820000D00A4 /* TableAdapter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8933C7841EB5B820000D00A4 /* TableAdapter.swift */; };
 		8933C7901EB5B82D000D00A4 /* ETDataDrivenViewKitTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8933C7891EB5B82A000D00A4 /* ETDataDrivenViewKitTests.swift */; };
@@ -113,6 +114,7 @@
 		71800BD921117C420092832F /* AnimationConfiguration.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AnimationConfiguration.swift; sourceTree = "<group>"; };
 		71800BDB211189870092832F /* DiffableType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DiffableType.swift; sourceTree = "<group>"; };
 		71800BE121118AB60092832F /* README.txt */ = {isa = PBXFileReference; lastKnownFileType = text; path = README.txt; sourceTree = "<group>"; };
+		71AC629E224A26D300A605E8 /* Error+DDVK.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Error+DDVK.swift"; sourceTree = "<group>"; };
 		71F502F42110394500D15E40 /* Differentiator.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Differentiator.framework; path = Carthage/Build/iOS/Differentiator.framework; sourceTree = SOURCE_ROOT; };
 		8933C7841EB5B820000D00A4 /* TableAdapter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TableAdapter.swift; sourceTree = "<group>"; };
 		8933C7891EB5B82A000D00A4 /* ETDataDrivenViewKitTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ETDataDrivenViewKitTests.swift; sourceTree = "<group>"; };
@@ -269,6 +271,7 @@
 				71800BDB211189870092832F /* DiffableType.swift */,
 				71704ACD212712DE005A1E42 /* ScrollViewDelegate.swift */,
 				71800BD621117BC70092832F /* RxDataSources */,
+				71AC629E224A26D300A605E8 /* Error+DDVK.swift */,
 			);
 			path = Sources;
 			sourceTree = "<group>";
@@ -374,17 +377,17 @@
 			isa = PBXProject;
 			attributes = {
 				LastSwiftUpdateCheck = 0930;
-				LastUpgradeCheck = 0940;
+				LastUpgradeCheck = 1020;
 				ORGANIZATIONNAME = "Etnetera a. s.";
 				TargetAttributes = {
 					52D6D97B1BEFF229002C0205 = {
 						CreatedOnToolsVersion = 7.1;
-						LastSwiftMigration = 0800;
+						LastSwiftMigration = 1020;
 						ProvisioningStyle = Automatic;
 					};
 					52D6D9851BEFF229002C0205 = {
 						CreatedOnToolsVersion = 7.1;
-						LastSwiftMigration = 0800;
+						LastSwiftMigration = 1020;
 					};
 					71437E772073796000A8CC96 = {
 						CreatedOnToolsVersion = 9.3;
@@ -394,7 +397,7 @@
 			};
 			buildConfigurationList = 52D6D9761BEFF229002C0205 /* Build configuration list for PBXProject "ETDataDrivenViewKit" */;
 			compatibilityVersion = "Xcode 6.3";
-			developmentRegion = English;
+			developmentRegion = en;
 			hasScannedForEncodings = 0;
 			knownRegions = (
 				en,
@@ -445,6 +448,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				67BAACC5219EE5CA00B05528 /* AbstractCollectionCellFactory.swift in Sources */,
+				71AC629F224A26D300A605E8 /* Error+DDVK.swift in Sources */,
 				67BAACBF219EE32700B05528 /* UICollectionView+Adapter.swift in Sources */,
 				71800BC321108C2B0092832F /* DiffableRef.swift in Sources */,
 				8933C7851EB5B820000D00A4 /* TableAdapter.swift in Sources */,
@@ -528,6 +532,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_LOCALIZABILITY_NONLOCALIZED = YES;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
 				CLANG_CXX_LIBRARY = "libc++";
 				CLANG_ENABLE_MODULES = YES;
@@ -588,6 +593,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_LOCALIZABILITY_NONLOCALIZED = YES;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
 				CLANG_CXX_LIBRARY = "libc++";
 				CLANG_ENABLE_MODULES = YES;
@@ -663,7 +669,7 @@
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				SKIP_INSTALL = YES;
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
-				SWIFT_VERSION = 4.2;
+				SWIFT_VERSION = 5.0;
 			};
 			name = Debug;
 		};
@@ -693,7 +699,7 @@
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				SKIP_INSTALL = YES;
 				SWIFT_OPTIMIZATION_LEVEL = "-Owholemodule";
-				SWIFT_VERSION = 4.2;
+				SWIFT_VERSION = 5.0;
 			};
 			name = Release;
 		};
@@ -707,7 +713,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = "com.ETDataDrivenViewKit.ETDataDrivenViewKit-iOS-Tests";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
-				SWIFT_VERSION = 4.2;
+				SWIFT_VERSION = 5.0;
 			};
 			name = Debug;
 		};
@@ -721,7 +727,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = "com.ETDataDrivenViewKit.ETDataDrivenViewKit-iOS-Tests";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_OPTIMIZATION_LEVEL = "-Owholemodule";
-				SWIFT_VERSION = 4.2;
+				SWIFT_VERSION = 5.0;
 			};
 			name = Release;
 		};

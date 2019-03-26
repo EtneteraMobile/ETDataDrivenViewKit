@@ -13,7 +13,7 @@ private var AssociatedCollectionAdapter: String = "AssociatedCollectionAdapter"
 
 public extension UICollectionView {
     /// `CollectionAdapter` that delivers data changes into `collectionView`.
-    public var adapter: CollectionAdapter {
+    var adapter: CollectionAdapter {
         get {
             if let adapter = objc_getAssociatedObject(self, &AssociatedCollectionAdapter) as? CollectionAdapter {
                 return adapter
