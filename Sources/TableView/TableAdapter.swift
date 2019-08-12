@@ -156,6 +156,7 @@ open class TableAdapter: NSObject  {
                     })
                 }
                 deliverHeaderFooterUpdates(oldSections, differences, newSections)
+                logChanges(differences)
             }
             catch let error {
                 assertionFailure("Unable to deliver data with animation, error: \(error). Starts delivery without animation (reloadData).")
@@ -163,6 +164,11 @@ open class TableAdapter: NSObject  {
                 // Fallback: reloads table view
                 deliveredData = newSections
                 tableView.reloadData()
+                if let errorDescription = error.duplicateItemDescription() {
+                    Logger.error(errorDescription)
+                } else {
+                    Logger.error("[Diff failed] Error: \(error)")
+                }
             }
         }
     }
@@ -221,8 +227,10 @@ open class TableAdapter: NSObject  {
                     selectHeaderFactory(for: pair.finalIdx)?.setupInternal(view, header)
                     view.layoutSubviews()
                     view.isHidden = false
+                    Logger.log("Inserted/updated section header at index \(pair.finalIdx)")
                 } else {
                     view.isHidden = true
+                    Logger.log("Deleted section header at index \(pair.finalIdx)")
                 }
             }
         }
@@ -234,13 +242,37 @@ open class TableAdapter: NSObject  {
                     selectFooterFactory(for: pair.finalIdx)?.setupInternal(view, footer)
                     view.layoutSubviews()
                     view.isHidden = false
+                    Logger.log("Inserted/updated section footer at index \(pair.finalIdx)")
                 } else {
                     view.isHidden = true
+                    Logger.log("Deleted section footer at index \(pair.finalIdx)")
                 }
             }
         }
 
         return true
+    }
+    
+    private func logChanges(_ differences: [Changeset<TableSection>]) {
+        for difference in differences {
+            if difference.insertedSections.count > 0 {
+                Logger.log("Inserted \(difference.insertedSections.count) sections at \(difference.insertedSections)")
+            } else if difference.deletedSections.count > 0 {
+                Logger.log("Deleted \(difference.deletedSections.count) sections at \(difference.deletedSections)")
+            } else if difference.movedSections.count > 0 {
+                Logger.log("Moved \(difference.movedSections.count) sections \(difference.movedSections)")
+            } else if difference.updatedSections.count > 0 {
+                Logger.log("Updated \(difference.updatedSections.count) sections at \(difference.updatedSections)")
+            } else if difference.insertedItems.count > 0 {
+                Logger.log("Inserted \(difference.insertedItems.count) items at \(difference.insertedItems)")
+            } else if difference.deletedItems.count > 0 {
+                Logger.log("Deleted \(difference.deletedItems.count) items at \(difference.deletedItems)")
+            } else if difference.movedItems.count > 0 {
+                Logger.log("Moved \(difference.movedItems.count) items \(difference.movedItems)")
+            } else if difference.updatedItems.count > 0{
+                Logger.log("Updated \(difference.updatedItems.count) items at \(difference.updatedItems)")
+            }
+        }
     }
 
     // MARK: - General
