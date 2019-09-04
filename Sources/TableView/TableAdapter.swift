@@ -198,7 +198,7 @@ open class TableAdapter: NSObject  {
         // Delivers update
         var needUpdate = false
         equalIdentityPairs.forEach { pair in
-            needUpdate = deliverHeaderFooterUpdate(pair)
+            needUpdate = needUpdate || deliverHeaderFooterUpdate(pair)
         }
 
         // Animates the change in the row heights without reloading the cell
