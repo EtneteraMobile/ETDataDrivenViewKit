@@ -476,11 +476,13 @@ extension TableAdapter: UITableViewDelegate {
 
     @available(iOSApplicationExtension 11.0, *)
     public func tableView(_ tableView: UITableView, leadingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
+        guard  indexPath.indices.count > 0 else { return nil }
         return selectCellFactory(for: indexPath).leadingSwipeActionsConfigurationInternal(content(at: indexPath))
     }
 
     @available(iOSApplicationExtension 11.0, *)
     public func tableView(_ tableView: UITableView, trailingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
+        guard  indexPath.indices.count > 0 else { return nil }
         return selectCellFactory(for: indexPath).trailingSwipeActionsConfigurationInternal(content(at: indexPath))
     }
 
