@@ -138,7 +138,7 @@ open class TableAdapter: NSObject  {
     // MARK: private
 
     private func deliverData(_ oldSections: [TableSection], _ newSections: [TableSection]) {
-        if #available(iOSApplicationExtension 10.0, *) {
+        if #available(iOSApplicationExtension 10.0, iOS 10.0, *) {
             dispatchPrecondition(condition: .onQueue(DispatchQueue.main))
         }
         if isAnimationDisabledForDeliveryFromEmptyState && deliveredData.isEmpty {
@@ -474,13 +474,13 @@ extension TableAdapter: UITableViewDelegate {
 
     // Swipe actions
 
-    @available(iOSApplicationExtension 11.0, *)
+    @available(iOSApplicationExtension 11.0, iOS 11.0, *)
     public func tableView(_ tableView: UITableView, leadingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
         guard !indexPath.isEmpty else { return nil }
         return selectCellFactory(for: indexPath).leadingSwipeActionsConfigurationInternal(content(at: indexPath))
     }
 
-    @available(iOSApplicationExtension 11.0, *)
+    @available(iOSApplicationExtension 11.0, iOS 11.0, *)
     public func tableView(_ tableView: UITableView, trailingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
         guard !indexPath.isEmpty else { return nil }
         return selectCellFactory(for: indexPath).trailingSwipeActionsConfigurationInternal(content(at: indexPath))

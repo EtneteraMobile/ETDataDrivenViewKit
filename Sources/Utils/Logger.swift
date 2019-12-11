@@ -37,7 +37,7 @@ final class Logger {
     /// output without a configuration change.
     class func debug(_ message: String, _ file: String = #file, _ function: String = #function, line: Int = #line) {
         let l = Log("✅", message, fn: function, line: line, file: file)
-        if #available(iOSApplicationExtension 10.0, *) {
+        if #available(iOSApplicationExtension 10.0, iOS 10.0, *) {
             os_log("%@", log: OSLog(subsystem: subsystem, category: l.fileName), type: .debug, l.description)
         }
     }
@@ -46,7 +46,7 @@ final class Logger {
     /// these logs in memory and moves them to disk when it reaches a limit.
     class func log(_ message: String, _ file: String = #file, _ function: String = #function, line: Int = #line) {
         let l = Log("👉🏻", message, fn: function, line: line, file: file)
-        if #available(iOSApplicationExtension 10.0, *) {
+        if #available(iOSApplicationExtension 10.0, iOS 10.0, *) {
             os_log("%@", log: OSLog(subsystem: subsystem, category: l.fileName), type: .default, l.description)
         }
     }
@@ -56,7 +56,7 @@ final class Logger {
     /// A Fault-level log will cause Info-level logs to move to disk.
     class func info(_ message: String, _ file: String = #file, _ function: String = #function, line: Int = #line) {
         let l = Log("ℹ️", message, fn: function, line: line, file: file)
-        if #available(iOSApplicationExtension 10.0, *) {
+        if #available(iOSApplicationExtension 10.0, iOS 10.0, *) {
             os_log("%@", log: OSLog(subsystem: subsystem, category: l.fileName), type: .info, l.description)
         }
     }
@@ -65,7 +65,7 @@ final class Logger {
     /// system always saves these logs to disk.
     class func error(_ message: String, _ file: String = #file, _ function: String = #function, line: Int = #line) {
         let l = Log("‼️", message, fn: function, line: line, file: file)
-        if #available(iOSApplicationExtension 10.0, *) {
+        if #available(iOSApplicationExtension 10.0, iOS 10.0, *) {
             os_log("%@", log: OSLog(subsystem: subsystem, category: l.fileName), type: .error, l.description)
         }
     }
@@ -74,7 +74,7 @@ final class Logger {
     /// as a device running out of storage. This level is always saved to disk.
     class func fault(_ message: String, _ file: String = #file, _ function: String = #function, line: Int = #line) {
         let l = Log("🛑", message, fn: function, line: line, file: file)
-        if #available(iOSApplicationExtension 10.0, *) {
+        if #available(iOSApplicationExtension 10.0, iOS 10.0, *) {
             os_log("%@", log: OSLog(subsystem: subsystem, category: l.fileName), type: .fault, l.description)
         }
     }

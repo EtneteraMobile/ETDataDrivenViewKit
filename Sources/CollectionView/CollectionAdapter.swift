@@ -104,7 +104,7 @@ open class CollectionAdapter: NSObject {
         let oldSection = [CollectionSection(identity: "dataWrapper", rows: old)]
         let newSection = [CollectionSection(identity: "dataWrapper", rows: new)]
 
-        if #available(iOSApplicationExtension 10.0, *) {
+        if #available(iOSApplicationExtension 10.0, iOS 10.0, *) {
             dispatchPrecondition(condition: .onQueue(DispatchQueue.main))
         }
         if isAnimationDisabledForDeliveryFromEmptyState && deliveredData.isEmpty {

@@ -62,12 +62,12 @@ open class _BaseTableAbstractFactory: _BaseAbstractFactory {
         fatalError("Not Implemented")
     }
     
-    @available(iOSApplicationExtension 11.0, *)
+    @available(iOSApplicationExtension 11.0, iOS 11.0, *)
     func leadingSwipeActionsConfigurationInternal(_ content: Any) -> UISwipeActionsConfiguration? {
         fatalError("Not Implemented")
     }
     
-    @available(iOSApplicationExtension 11.0, *)
+    @available(iOSApplicationExtension 11.0, iOS 11.0, *)
     func trailingSwipeActionsConfigurationInternal(_ content: Any) -> UISwipeActionsConfiguration? {
         fatalError("Not Implemented")
     }

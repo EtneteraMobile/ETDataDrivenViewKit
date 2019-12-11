@@ -188,23 +188,23 @@ open class BaseTableAbstractFactory<ContentType, View: UIView>: _BaseTableAbstra
     }
 
     /// Default is nil
-    @available(iOSApplicationExtension 11.0, *)
+    @available(iOSApplicationExtension 11.0, iOS 11.0, *)
     open func leadingSwipeActionsConfiguration(_ content: ContentType) -> UISwipeActionsConfiguration? {
         return nil
     }
 
-    @available(iOSApplicationExtension 11.0, *)
+    @available(iOSApplicationExtension 11.0, iOS 11.0, *)
     override func leadingSwipeActionsConfigurationInternal(_ content: Any) -> UISwipeActionsConfiguration? {
         return leadingSwipeActionsConfiguration(typedContent(content)!)
     }
 
     /// Defaults is nil
-    @available(iOSApplicationExtension 11.0, *)
+    @available(iOSApplicationExtension 11.0, iOS 11.0, *)
     open func trailingSwipeActionsConfiguration(_ content: ContentType) -> UISwipeActionsConfiguration? {
         return nil
     }
 
-    @available(iOSApplicationExtension 11.0, *)
+    @available(iOSApplicationExtension 11.0, iOS 11.0, *)
     override func trailingSwipeActionsConfigurationInternal(_ content: Any) -> UISwipeActionsConfiguration? {
         return trailingSwipeActionsConfiguration(typedContent(content)!)
     }
