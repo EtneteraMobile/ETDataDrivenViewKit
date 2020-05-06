@@ -1,3 +1,3 @@
 # TODO: Exclude RxSwift (keep only Differentiator)
 # [https://github.com/Carthage/Carthage/pull/1990](Exclude specific schemes via Cartfile.ignore)
-github "RxSwiftCommunity/RxDataSources" ~> 3.0
+github "RxSwiftCommunity/RxDataSources" ~> 4.0
