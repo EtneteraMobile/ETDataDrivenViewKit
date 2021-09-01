@@ -3,7 +3,7 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 47;
+	objectVersion = 52;
 	objects = {
 
 /* Begin PBXBuildFile section */
@@ -36,13 +36,11 @@
 		71704AD221272B44005A1E42 /* BaseAbstractFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71704AD121272B44005A1E42 /* BaseAbstractFactory.swift */; };
 		7173754621C2513E004A3335 /* TableSection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7173754521C2513E004A3335 /* TableSection.swift */; };
 		71800BC321108C2B0092832F /* DiffableRef.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71800BC221108C2B0092832F /* DiffableRef.swift */; };
-		71800BC421108D560092832F /* Differentiator.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 71F502F42110394500D15E40 /* Differentiator.framework */; };
-		71800BC521108D560092832F /* Differentiator.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 71F502F42110394500D15E40 /* Differentiator.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		71800BD821117BE30092832F /* UI+SectionedViewType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71800BD721117BE30092832F /* UI+SectionedViewType.swift */; };
 		71800BDA21117C420092832F /* AnimationConfiguration.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71800BD921117C420092832F /* AnimationConfiguration.swift */; };
 		71800BDC211189870092832F /* DiffableType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71800BDB211189870092832F /* DiffableType.swift */; };
 		71AC629F224A26D300A605E8 /* Error+DDVK.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71AC629E224A26D300A605E8 /* Error+DDVK.swift */; };
-		71F502F52110394500D15E40 /* Differentiator.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 71F502F42110394500D15E40 /* Differentiator.framework */; };
+		833C6C2726528D6D00C63A1B /* Differentiator.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = 833C6C2626528D6D00C63A1B /* Differentiator.xcframework */; };
 		8933C7851EB5B820000D00A4 /* TableAdapter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8933C7841EB5B820000D00A4 /* TableAdapter.swift */; };
 		8933C7901EB5B82D000D00A4 /* ETDataDrivenViewKitTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8933C7891EB5B82A000D00A4 /* ETDataDrivenViewKitTests.swift */; };
 		F41CD80023016F3E005049A4 /* Logger.swift in Sources */ = {isa = PBXBuildFile; fileRef = F41CD7FF23016F3E005049A4 /* Logger.swift */; };
@@ -72,7 +70,6 @@
 			dstPath = "";
 			dstSubfolderSpec = 10;
 			files = (
-				71800BC521108D560092832F /* Differentiator.framework in Embed Frameworks */,
 				71437E9120737ACB00A8CC96 /* ETDataDrivenViewKit.framework in Embed Frameworks */,
 			);
 			name = "Embed Frameworks";
@@ -116,7 +113,7 @@
 		71800BDB211189870092832F /* DiffableType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DiffableType.swift; sourceTree = "<group>"; };
 		71800BE121118AB60092832F /* README.txt */ = {isa = PBXFileReference; lastKnownFileType = text; path = README.txt; sourceTree = "<group>"; };
 		71AC629E224A26D300A605E8 /* Error+DDVK.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Error+DDVK.swift"; sourceTree = "<group>"; };
-		71F502F42110394500D15E40 /* Differentiator.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Differentiator.framework; path = Carthage/Build/iOS/Differentiator.framework; sourceTree = SOURCE_ROOT; };
+		833C6C2626528D6D00C63A1B /* Differentiator.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; name = Differentiator.xcframework; path = Carthage/Build/Differentiator.xcframework; sourceTree = "<group>"; };
 		8933C7841EB5B820000D00A4 /* TableAdapter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TableAdapter.swift; sourceTree = "<group>"; };
 		8933C7891EB5B82A000D00A4 /* ETDataDrivenViewKitTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ETDataDrivenViewKitTests.swift; sourceTree = "<group>"; };
 		AD2FAA261CD0B6D800659CF4 /* ETDataDrivenViewKit.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = ETDataDrivenViewKit.plist; sourceTree = "<group>"; };
@@ -129,7 +126,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				71F502F52110394500D15E40 /* Differentiator.framework in Frameworks */,
+				833C6C2726528D6D00C63A1B /* Differentiator.xcframework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -145,7 +142,6 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				71800BC421108D560092832F /* Differentiator.framework in Frameworks */,
 				71437E9020737ACB00A8CC96 /* ETDataDrivenViewKit.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -258,6 +254,7 @@
 		71800BDD21118A6E0092832F /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				833C6C2626528D6D00C63A1B /* Differentiator.xcframework */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -291,7 +288,6 @@
 		DD7502721C68FC1B006590AF /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
-				71F502F42110394500D15E40 /* Differentiator.framework */,
 				AD2FAA261CD0B6D800659CF4 /* ETDataDrivenViewKit.plist */,
 			);
 			name = Frameworks;
@@ -588,7 +584,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 12.1;
 				MTL_ENABLE_DEBUG_INFO = YES;
 				ONLY_ACTIVE_ARCH = YES;
 				OTHER_SWIFT_FLAGS = "-DDEBUG";
@@ -643,7 +639,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 12.1;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				SDKROOT = iphoneos;
 				SWIFT_VERSION = 4.2;
@@ -669,12 +665,16 @@
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
-					"$(PROJECT_DIR)/Carthage/Build/iOS",
+					"$(PROJECT_DIR)/Carthage/Build",
 				);
 				INFOPLIST_FILE = Configs/ETDataDrivenViewKit.plist;
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
-				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				IPHONEOS_DEPLOYMENT_TARGET = 12.1;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
 				ONLY_ACTIVE_ARCH = NO;
 				PRODUCT_BUNDLE_IDENTIFIER = "cz.etnetera.ETDataDrivenViewKit-iOS";
 				PRODUCT_NAME = ETDataDrivenViewKit;
@@ -700,17 +700,22 @@
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
-					"$(PROJECT_DIR)/Carthage/Build/iOS",
+					"$(PROJECT_DIR)/Carthage/Build",
 				);
 				INFOPLIST_FILE = Configs/ETDataDrivenViewKit.plist;
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
-				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				IPHONEOS_DEPLOYMENT_TARGET = 12.1;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
 				PRODUCT_BUNDLE_IDENTIFIER = "cz.etnetera.ETDataDrivenViewKit-iOS";
 				PRODUCT_NAME = ETDataDrivenViewKit;
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				SKIP_INSTALL = YES;
-				SWIFT_OPTIMIZATION_LEVEL = "-Owholemodule";
+				SWIFT_COMPILATION_MODE = wholemodule;
+				SWIFT_OPTIMIZATION_LEVEL = "-O";
 				SWIFT_VERSION = 5.0;
 			};
 			name = Release;
@@ -721,7 +726,11 @@
 				CLANG_ENABLE_MODULES = YES;
 				INFOPLIST_FILE = Configs/ETDataDrivenViewKitTests.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
 				PRODUCT_BUNDLE_IDENTIFIER = "com.ETDataDrivenViewKit.ETDataDrivenViewKit-iOS-Tests";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
@@ -735,10 +744,15 @@
 				CLANG_ENABLE_MODULES = YES;
 				INFOPLIST_FILE = Configs/ETDataDrivenViewKitTests.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
 				PRODUCT_BUNDLE_IDENTIFIER = "com.ETDataDrivenViewKit.ETDataDrivenViewKit-iOS-Tests";
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				SWIFT_OPTIMIZATION_LEVEL = "-Owholemodule";
+				SWIFT_COMPILATION_MODE = wholemodule;
+				SWIFT_OPTIMIZATION_LEVEL = "-O";
 				SWIFT_VERSION = 5.0;
 			};
 			name = Release;
@@ -765,7 +779,10 @@
 				GCC_C_LANGUAGE_STANDARD = gnu11;
 				INFOPLIST_FILE = example/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
 				PRODUCT_BUNDLE_IDENTIFIER = cz.etnetera.ETDataDrivenViewKit.example;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
@@ -796,10 +813,14 @@
 				GCC_C_LANGUAGE_STANDARD = gnu11;
 				INFOPLIST_FILE = example/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
 				PRODUCT_BUNDLE_IDENTIFIER = cz.etnetera.ETDataDrivenViewKit.example;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				SWIFT_OPTIMIZATION_LEVEL = "-Owholemodule";
+				SWIFT_COMPILATION_MODE = wholemodule;
+				SWIFT_OPTIMIZATION_LEVEL = "-O";
 				SWIFT_VERSION = 4.2;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
