@@ -1,6 +1,6 @@
 Pod::Spec.new do |s|
   s.name         = "ETDataDrivenViewKit"
-  s.version      = "0.6.1"
+  s.version      = "0.7.0"
   s.summary      = ""
   s.description  = <<-DESC
     Your description here.
